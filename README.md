@@ -15,12 +15,18 @@ Raising the profit of an *Indian takeaway restaurant* by giving marketing sugges
 
 ##     Source of data set and observations
 The dataset has more than `7000` observations and `6` columns. 
-    1.**Order Number:** receipt number.
-    2.**Order Date:** the day and time of the order.
-    3.**Item Name:** the name of the order in the menu.
-    4.**Quantity:** the number of orders per item for the receipt.
-    5.**Product Price:** item price without counting the quantity.
-    6.**Total products:** total number of items per receipt.
+
+1.**Order Number:** receipt number.
+
+2.**Order Date:** the day and time of the order.
+
+3.**Item Name:** the name of the order in the menu.
+
+4.**Quantity:** the number of orders per item for the receipt.
+
+5.**Product Price:** item price without counting the quantity.
+
+6.**Total products:** total number of items per receipt.
 
 Data source: [here](https://www.kaggle.com/datasets/henslersoftware/19560-indian-takeaway-orders?select=restaurant-1-orders.csv)
 
