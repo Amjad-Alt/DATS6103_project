@@ -37,3 +37,13 @@ plt.title('Least 20 sold items')
 data1 = data ["Total Price"].mean()
 print(data1)
 # %%
+data = pd.read_csv("restaurant-1-orders.csv")
+
+# %%
+data.shape
+data.info()
+data.describe()
+# %%
+data["Total Price"] = data["Product Price"] * data["Quantity"]
+data
+# %%
