@@ -47,3 +47,5 @@ data.describe()
 data["Total Price"] = data["Product Price"] * data["Quantity"]
 data
 # %%
+items = data['Item Name'].unique()
+print(items)
