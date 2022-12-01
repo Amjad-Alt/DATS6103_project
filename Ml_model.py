@@ -5,39 +5,67 @@
 import numpy as np
 import pandas as pd
 
-###### prepare the data for machine learning
+###### Very over detailed prbability of association between items ##########
 res = pd.read_csv('restaurant-1-orders.csv')
 res.head
 #take only the order number and the item name
 res1= res[['Order Number', 'Item Name']].copy()
-#make category
-#res1['item_cat'] = res1['Item Name'].astype('category')
-#res2 = res1.groupby('Order Number')['item_cat'].unique()
-#res3 = pd.DataFrame(res2)
-#code numbers
-res1['Item Name_num'] = res1['item_cat'].cat.codes
-res1.head
-#spread the column into multiple 0,1 columns
-df = pd.get_dummies(res1.set_index('Order Number'), prefix='', prefix_sep='').max(level=0).reset_index()
-#take only the codded column of orders and the order number
-res2= res1[['Order Number', 'Item Name_num']].copy()
-df2 = df.groupby(["Order Number"])
-#drop_item num
-df3 = df.drop('Item Name_num', axis=1)
-#I have to make sure that all values are 0 and 1
-df3.to_csv('out3.csv')  
+#group items each to its order number
+item_list = res1.groupby('Order Number')['Item Name'].unique()
+# sperade items each in one column and transform the values to TRUE if that item is there or 0 if it not there
+from mlxtend.preprocessing import TransactionEncoder
+te = TransactionEncoder()
+oht_orders = te.fit(item_list).transform(item_list, sparse=True)
+# convert it to dataframe using columns from the TransactionEncoder
+sparse_df_items = pd.DataFrame.sparse.from_spmatrix(oht_orders, columns=te.columns_)
+# replace True by 1
+sparse_df_items = sparse_df_items.astype('int')
+# make a sperate csv.file to use 
+#sparse_df_items.to_csv('data_2.csv')
+#As a threshold for the minimum frequency of a set of items(the support metric), we used the percentage of the average/unique order frequency, which is 2.22% and max len of set of items equals 10.
+from mlxtend.frequent_patterns import apriori, association_rules
+frequent_itemsets = apriori(sparse_df_items, min_support=0.02209, use_colnames=True, verbose=1)
+#These are the companations of orders we have on the chance of %2 and more
+frequent_itemsets.shape
+frequent_itemsets.head()
+# add a column length to see how many items compined 
+frequent_itemsets['length'] = frequent_itemsets['itemsets'].apply(lambda x: len(x))
+frequent_itemsets.groupby('length').describe()
+print('there are 88 companation of two items, 28 combanations of three items and only one of four items')
+print('according to Support average there are more frequency of one item and it become less with more items')
+#select results to our desired goal like in here we want two items that has the frequency of 3%
+frequent_itemsets[ (frequent_itemsets['length'] == 2) &
+                   (frequent_itemsets['support'] >= 0.03) ]
+# check the probability of a specific item to be with another 
+frequent_itemsets[ frequent_itemsets['itemsets'] == {'Plain Papadum', 'Mint Sauce'} ]
 
-######################################################
-#pip install mlxtend
-from mlxtend.frequent_patterns import apriori
 
-df4 = pd.read_csv('out3.csv',index_col=0)
-df5 = df4.drop('Order Number', axis=1)
-df6 = df5.iloc[:4000, :]
-rules = apriori(df6, min_support = 0.003, use_colnames=True)
-print(list(rules))
+
+############## a little general probability by groubing items ############
+res2= res[['Order Number', 'Item Name']].copy()
+
+# Grouping items if they have the same dish but different flavors 
+res2['Item Name'] = res2['Item Name'].apply(lambda x: 'Naan' if 'Naan' in x else 'Papadum' if 'Papadum' in x else 'Balti' if 'Balti' in x else 'Rice' if 'Rice' in x else 'Balti' if 'Balti' in x 
+                                            else 'Mushroom' if 'Mushroom' in x else 'Sauce' if 'Sauce' in x else 'Masala' if 'Masala' in x else 'Chutney' if 'Chutney' in x else 'Tandoori' if 'Tandoori' in x
+                                            else 'Pasanda' if 'Pasanda' in x else 'Biryani' if 'Biryani' in x else 'Korma' if 'Korma' in x else 'Bhajee' if 'Bhajee' in x else 'Sheek' if 'Sheek' in x 
+                                            else 'Samosa' if 'Samosa' in x else 'Hari Mirch' if 'Hari Mirch' in x else 'Madras' if 'Madras' in x else 'Karahi' if 'Karahi' in x else 'Jalfrezi' if 'Jalfrezi' in x
+                                            else ) 
+
+
+
+col = res2['Item Name']== 'Mushroom'
+res2[col]
+# get only rules that have a probability of buying the antecedents and consequents in the same order.
+market_basket_rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
+market_basket_rules.groupby('antecedents').size().sort_values(ascending=False)
+#filter the best recommendations we will use the highest confidence value for each antecedent. We ran with the top 20 most frequent items and got some recommendations
+best_item_recommendations = market_basket_rules.sort_values(['confidence','lift'],ascending='False').drop_duplicates(subset=['antecedents'])
+top_20_frequence_items = frequent_itemsets.sort_values('support',ascending=False).head(20)['itemsets']
+best_item_recommendations[best_item_recommendations['antecedents'].isin(top_20_frequence_items)]
+
 
 #rules1 = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
 #rules1.head()
 #RelationRecord(items=frozenset({'avocado', 'spaghetti', 'milk'}), support=0.003332888948140248, ordered_statistics=[OrderedStatistic(items_base=frozenset({'avocado', 'spaghetti'}), items_add=frozenset({'milk'}), confidence=0.41666666666666663, lift=3.215449245541838)]),
 #################################################################
+# %%
