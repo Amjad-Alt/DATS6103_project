@@ -170,3 +170,29 @@ plt.title('Total monthly sales')
 monthly[monthly['month'] >= datetime.date(2019, 1, 1)]
 #The month in which sales fell was August 2019.
 # %%
+## Order price distribution
+
+# We are going to visualize the distribution of the cost of the orders to the restaurant.
+order_total = data[['Order Number', 'Quantity', 'Product Price']].copy()
+order_total['total'] = order_total['Quantity'] * order_total['Product Price']
+
+# Add the order price
+order_totals = order_total.groupby('Order Number').agg({'total': 'sum'})
+plt.boxplot(order_totals['total'])
+plt.title('Order price distribution')
+
+
+#%%
+p_95 = order_totals['total'].describe(percentiles=[0.95])['95%']
+print('95% of the orders are less than or equal to {percentile} USD'.format(percentile=p_95))
+# 95% of the orders are less than or equal to 62.2 USD
+# Let's consider the distribution for the total price of orders less than 63 USD.
+
+#%%
+plt.boxplot(order_totals[order_totals['total'] < 63]['total'])
+plt.title('Order total USD')
+plt.ylabel('USD')
+
+#%%
+sns.distplot(order_totals[order_totals['total'] < 63], bins=20)
+plt.title('Order price distribution')
