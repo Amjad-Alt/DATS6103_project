@@ -225,3 +225,17 @@ print(Min_quantity)
 print(Max_Quantity)
 
 # %%
+for col in data:
+    if col == 'Item Name':
+        unique = (data[col].unique())
+        print(len(unique))
+print(unique)
+
+# %%
+Item_unique = pd.DataFrame(unique)
+Item_unique.columns = ['Name']
+Item_unique.head()
+
+# %%
+Item_sorted = Item_unique.sort_values('Name', ignore_index=True)
+Item_sorted.head()
