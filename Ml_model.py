@@ -4,6 +4,9 @@
 #%%
 import numpy as np
 import pandas as pd
+from mlxtend.frequent_patterns import association_rules, apriori
+from mlxtend.preprocessing import TransactionEncoder
+te = TransactionEncoder()
 
 ###### Very over detailed prbability of association between items ##########
 res = pd.read_csv('restaurant-1-orders.csv')
@@ -13,8 +16,6 @@ res1= res[['Order Number', 'Item Name']].copy()
 #group items each to its order number
 item_list = res1.groupby('Order Number')['Item Name'].unique()
 # sperade items each in one column and transform the values to TRUE if that item is there or 0 if it not there
-from mlxtend.preprocessing import TransactionEncoder
-te = TransactionEncoder()
 oht_orders = te.fit(item_list).transform(item_list, sparse=True)
 # convert it to dataframe using columns from the TransactionEncoder
 sparse_df_items = pd.DataFrame.sparse.from_spmatrix(oht_orders, columns=te.columns_)
@@ -73,27 +74,53 @@ oht_orders2 = te.fit(item_list2).transform(item_list2, sparse=True)
 sparse_df_items2 = pd.DataFrame.sparse.from_spmatrix(oht_orders2, columns=te.columns_)
 # replace True by 1
 sparse_df_items2 = sparse_df_items2.astype('int')
-frequent_itemsets2 = apriori(sparse_df_items2, min_support=0.02209, use_colnames=True, verbose=1)
+
+frequent_itemsets2 = apriori(sparse_df_items2, min_support=0.02209, use_colnames=True, verbose=2)
 #These are the companations of orders we have on the chance of %2 and more
 frequent_itemsets2.shape
 frequent_itemsets2.head()
+market_basket_rules = association_rules(frequent_itemsets2, metric="lift", min_threshold=2)
 # add a column length to see how many items compined 
 frequent_itemsets2['length'] = frequent_itemsets2['itemsets'].apply(lambda x: len(x))
 frequent_itemsets2.groupby('length').describe()
 print('After grouping items there are more compination of two items 116 and three items 112')
 
-# get only rules that have a probability of buying the antecedents and consequents in the same order.
-market_basket_rules2 = association_rules(frequent_itemsets2, metric="lift", min_threshold=1)
-market_basket_rules2.head()
-market_basket_rules2.groupby('antecedents').size().sort_values(ascending=False)
-
 # I have to check the left rule where it says 
 #filter the best recommendations we will use the highest confidence value for each antecedent. We ran with the top 20 most frequent items and got some recommendations
-best_item_recommendations = market_basket_rules2.sort_values(['confidence','lift'],ascending='False').drop_duplicates(subset=['antecedents'])
+best_item_recommendations = market_basket_rules.sort_values(['confidence','lift'],ascending=False).drop_duplicates(subset=['consequents'])
 top_20_frequence_items = frequent_itemsets2.sort_values('support',ascending=False).head(20)['itemsets']
-best_item_recommendations[best_item_recommendations['antecedents'].isin(top_20_frequence_items)]
+best_item_recommendations[best_item_recommendations['consequents'].isin(top_20_frequence_items)]
 
-#Check this method in the Apeori 
-#RelationRecord(items=frozenset({'avocado', 'spaghetti', 'milk'}), support=0.003332888948140248, ordered_statistics=[OrderedStatistic(items_base=frozenset({'avocado', 'spaghetti'}), items_add=frozenset({'milk'}), confidence=0.41666666666666663, lift=3.215449245541838)]),
-#################################################################
+# %% [markdown]
+#### Undersatnding Apriori parameters ###### 
+# The first parameter is the list of list that you want to extract rules from.
+# The second parameter is the 'min_support' parameter that is used to select the items with support values greater than the value specified by the parameter.
+# the 'min_confidence' parameter filters those rules that have confidence greater than the confidence threshold specified by the parameter. 
+# the 'min_lift' parameter specifies the minimum lift value for the short listed rules.
+# Finally, the 'min_length' parameter specifies the minimum number of items that you want in your rules.
+
+### doing the calculation 
+# Let's suppose that we want rules for only those items that are purchased at least 5 times a day, or 7 x 5 = 35 times in one week, since our dataset is for a one-week time period. 
+# The support for those items can be calculated as 35/7500 = 0.0045.
+# The minimum confidence for the rules is 20% or 0.2.
+# we specify the value for lift as 3 and finally min_length is 2 since we want at least two products in our rules.
+#### Understanding Apriori result #####
+# Measure 1: Support. This says how popular an itemset is, as measured by the proportion of transactions in which an itemset appears.
+# Support refers to the default popularity of an item and can be calculated by finding number of transactions containing a particular item divided by total number of transactions.
+# For instance if out of 1000 transactions, 100 transactions contain Ketchup then the support for item Ketchup can be calculated as: Support(Ketchup) = 100/1000 = 10%
+# Support(Ketchup) = (Transactions containingKetchup)/(Total Transactions)
+
+# Measure 2: Confidence. This says how likely item B is purchased when item A is purchased
+# Confidence refers to the likelihood that an item B is also bought if item A is bought.
+# This is because it only accounts for how popular apples are, but not beers. If beers are also very popular in general, there will be a higher chance that a transaction containing apples will also contain beers 
+#  It can be calculated by finding the number of transactions where A and B are bought together, divided by total number of transactions where A is bought. 
+# Confidence(A→B) = (Transactions containing both (A and B))/(Transactions containing A)
+     
+      
+# Measure 3: Lift. This says how likely item B is purchased when item A is purchased, while controlling for how popular item B is.
+# refers to the increase in the ratio of sale of B when A is sold.
+# Lift(Burger→Ketchup) = (Confidence (Burger→Ketchup))/(Support (Ketchup))
+# Lift basically tells us that the likelihood of buying a Burger and Ketchup together is 3.33 times more than the likelihood of just buying the ketchup. A Lift of 1 means there is no association between products A and B. 
+# Finally, Lift of less than 1 refers to the case where two products are unlikely to be bought together.
+                
 # %%
