@@ -1,4 +1,6 @@
 # %%[markdown]
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split, learning_curve
 import datetime
 import numpy as np
 import pandas as pd
@@ -240,17 +242,23 @@ Item_unique.head()
 Item_sorted = Item_unique.sort_values('Name', ignore_index=True)
 Item_sorted.head()
 
-#%%
+# %%
+
+correlation_matrix = data.corr()
+print(round(correlation_matrix, 2))
+
+
+sns.heatmap(correlation_matrix)
+
+# %%
 # See if there is any relationship between the product quantity and the total price
 sns.regplot(data=data, x="Quantity", y="Total Price")
 plt.show()
 
-# You can see that the product price has a linear relationship with the total price, 
-# and you can make simple predictions 
+# You can see that the product price has a linear relationship with the total price,
+# and you can make simple predictions
 # %%
 # Linear Regression Model Prediction
-from sklearn.model_selection import train_test_split, learning_curve
-from sklearn.linear_model import LinearRegression
 
 X = data["Quantity"].tolist()
 X = np.array(X).reshape(-1, 1)
