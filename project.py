@@ -239,3 +239,42 @@ Item_unique.head()
 # %%
 Item_sorted = Item_unique.sort_values('Name', ignore_index=True)
 Item_sorted.head()
+
+#%%
+# See if there is any relationship between the product quantity and the total price
+sns.regplot(data=data, x="Quantity", y="Total Price")
+plt.show()
+
+# You can see that the product price has a linear relationship with the total price, 
+# and you can make simple predictions 
+# %%
+# Linear Regression Model Prediction
+from sklearn.model_selection import train_test_split, learning_curve
+from sklearn.linear_model import LinearRegression
+
+X = data["Quantity"].tolist()
+X = np.array(X).reshape(-1, 1)
+y = data["Total Price"]
+X_train, X_test, y_train, y_test = train_test_split(X,
+                                                    y,
+                                                    test_size=0.3,
+                                                    random_state=0)
+model = LinearRegression()
+model = model.fit(X_train, y_train)
+model.score(X_test, y_test)
+
+# It can be seen that the accuracy is 0.03.
+# %%
+# draw the learning curve
+train_sizes, train_loss, test_loss = learning_curve(
+    LinearRegression(), X, y, train_sizes=[0.1, 0.25, 0.5, 0.75, 1])
+train_mean = np.mean(train_loss, axis=1)
+test_mean = np.mean(test_loss, axis=1)
+plt.plot(train_sizes, train_mean, label="Training")
+plt.plot(train_sizes, test_mean, label="Cross-validation")
+plt.xlabel("Training sizes")
+plt.ylabel("score")
+plt.legend()
+plt.show()
+
+# %%
