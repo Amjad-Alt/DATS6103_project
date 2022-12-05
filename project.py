@@ -228,6 +228,17 @@ plt.title('Item price VS item quantity')
 plt.show()
 
 # is theer carrolation between the product price and number of total orders of each item?
+#  Pearson correlation coefficient 
 from scipy.stats import pearsonr
 corr, _ = pearsonr(items['Product Price'], items['Quantity'])
 print('Pearsons correlation: %.3f' % corr)
+print('''The two varibles have low carrolation of .4 that means people decition of bying an item is not heavely based on the price.
+      However, the test shows a negative result therefore we could say that the generally when the price of an item goes up, probably
+      the number of orders will go down''')
+
+# Another test for no-liner relationship or not Normal Distribution varibles
+# Spearman correlation coefficient
+from scipy.stats import spearmanr
+corr, _ = spearmanr(items['Product Price'], items['Quantity'])
+print('Spearmans correlation: %.3f' % corr)
+print('There is .5 carrolation between the two samples however, it is not strong and we stick with our previous clime')
