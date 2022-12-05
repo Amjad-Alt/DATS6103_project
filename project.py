@@ -12,7 +12,8 @@ import seaborn as sns
 data = pd.read_csv("restaurant-1-orders.csv",  parse_dates=['Order Date'])
 
 #%%
-data.isna().mean()
+#I should say that I changed this part from mean to sum
+data.isna().sum()
 # %%
 data.shape
 data.info()
@@ -40,6 +41,7 @@ data1 = data ["Total Price"].mean()
 print(data1)
 
 #%%
+#I think we should delete this line coz we don't have na according to the previous code
 data = data.dropna()
 data = data.loc[data['Order Date'] >='2016-08-01']
 # %%
@@ -50,6 +52,8 @@ print("Monthly:\n", data.groupby([pd.Grouper(key='Order Date', freq='M')])['Quan
 
 # %%
 #create relevant Database df1 for total and df2 for bombay aloo
+
+### I am not sure what this part is ###
 df = data[['Order Date', 'Quantity']]
 df2 = data[data['Item Name'] == 'Bombay Aloo']
 df2 = df2[['Order Date', 'Quantity']]
@@ -94,7 +98,7 @@ def avg_hour(hour):
 
 hours = pd.DataFrame(sorted(data['hour'].unique()))
 hours.rename(columns={0:'hour'}, inplace=True)
-hours['Average orders'] = hours['hour'].apply(avg_hour)
+hours['Average orders'] = hours['hour'].apply(avg_hour) 
 hours.set_index('hour', inplace=True)
 hours.head()
 #%%
@@ -160,6 +164,7 @@ def sales_month(date):
 monthly['total'] = monthly['month'].apply(sales_month)
 monthly.head()
 # %%
+#################### can we have the dates 90 degree ###
 plt.plot(monthly['month'], monthly['total'])
 plt.xlabel('Date')
 plt.ylabel('Total sales (USD)')
@@ -171,11 +176,16 @@ monthly[monthly['month'] >= datetime.date(2019, 1, 1)]
 #The month in which sales fell was August 2019.
 # %%
 ## Order price distribution
+###################### I belive we should werk in this 
 
 # We are going to visualize the distribution of the cost of the orders to the restaurant.
 order_total = data[['Order Number', 'Quantity', 'Product Price']].copy()
+
+############ I belive we to answer the question of average restaurant prices we should not do math? ###
 order_total['total'] = order_total['Quantity'] * order_total['Product Price']
 
+
+############# very intereting!! Can we invistigate the very high prices?!
 # Add the order price
 order_totals = order_total.groupby('Order Number').agg({'total': 'sum'})
 plt.boxplot(order_totals['total'])
@@ -197,3 +207,27 @@ plt.ylabel('USD')
 sns.distplot(order_totals[order_totals['total'] < 63], bins=20)
 plt.title('Order price distribution')
 
+#%%
+
+# restaurant prices and restaurant quantity of each item
+item_freq2 = data.groupby('Item Name').agg({'Quantity': 'sum', 'Product Price':'mean'})
+item_freq2.mean()
+item_freq2.max()
+item_freq2.min()
+
+# plot
+sns.scatterplot(item_freq2, x= 'Product Price', y='Quantity')
+plt.title('Item price VS item quantity')
+plt.show()
+
+# delete outliers of quantity and price
+items = item_freq2[(item_freq2['Product Price'] <= 14.) & (item_freq2['Quantity'] <= 7000.)]
+
+sns.scatterplot(items, x= 'Product Price', y='Quantity')
+plt.title('Item price VS item quantity')
+plt.show()
+
+# is theer carrolation between the product price and number of total orders of each item?
+from scipy.stats import pearsonr
+corr, _ = pearsonr(items['Product Price'], items['Quantity'])
+print('Pearsons correlation: %.3f' % corr)
