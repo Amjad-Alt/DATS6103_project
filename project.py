@@ -1,4 +1,5 @@
 # %%[markdown]
+from scipy.stats import pearsonr
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split, learning_curve
 import datetime
@@ -284,5 +285,24 @@ plt.xlabel("Training sizes")
 plt.ylabel("score")
 plt.legend()
 plt.show()
+
+# %%
+data["date"] = pd.to_datetime(data['Order Date']).dt.date
+data
+
+# %%
+# get the values that are unique
+unique_data = data.drop_duplicates(subset=["Item Name"])
+unique_data
+
+# %%
+
+# Getting the count of the Items that are ordered as a total
+
+count = data.groupby(['Item Name']).count().reset_index()
+count = count.iloc[:, :2]
+count.columns = ['Item Name', "Count"]
+count
+
 
 # %%
