@@ -16,7 +16,7 @@ import seaborn as sns
 data = pd.read_csv("restaurant-1-orders.csv",  parse_dates=['Order Date'])
 
 # %%
-data.isna().mean()
+data.isna().sum()
 # %%
 data.shape
 data.info()
@@ -42,8 +42,20 @@ plt.title('Least 20 sold items')
 # %%
 data1 = data["Total Price"].mean()
 print(data1)
+data["Total Price"].max()
+data["Total Price"].min()
 
+# How much people pay for each day in the week 
+# How much people are paying during thr weeks of the month 
+print("Daily:\n", data.groupby(
+    [pd.Grouper(key='Order Date', freq='D')])['Total Price'].sum().mean())
+print("Weekly:\n", data.groupby(
+    [pd.Grouper(key='Order Date', freq='W-MON')])['Total Price'].sum().mean())
+print("Monthly:\n", data.groupby(
+    [pd.Grouper(key='Order Date', freq='M')])['Total Price'].sum().mean())
 # %%
+
+### the data has no Null values
 data = data.dropna()
 data = data.loc[data['Order Date'] >= '2016-08-01']
 # %%
