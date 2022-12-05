@@ -306,3 +306,20 @@ count
 
 
 # %%
+
+# joining the product price column to the above created data frame
+
+count_1 = count.merge(unique_data, on="Item Name", how="left")
+count_1 = count_1[["Item Name", "Count", "Product Price"]]
+count_1 = count_1.sort_values(by="Count", ascending=False)
+count_1
+
+# %%
+sns.scatterplot(x="Count", y="Product Price", data=count_1)
+plt.xlim(0, 1000)
+
+# %%
+corr, _ = pearsonr(count_1["Product Price"], count_1["Count"])
+print('Pearsons correlation: %.3f' % corr)
+
+# Greater the product price lower are the number of orders placed
