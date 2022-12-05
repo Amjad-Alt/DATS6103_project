@@ -5,8 +5,6 @@
 import numpy as np
 import pandas as pd
 from mlxtend.frequent_patterns import association_rules, apriori
-from mlxtend.preprocessing import TransactionEncoder
-te = TransactionEncoder()
 
 res = pd.read_csv('restaurant-1-orders.csv')
 res.head
@@ -39,11 +37,11 @@ res2[col2]
 res2[res2['Order Number'] == 11217]
 
 # Group order number so each order has its ouwn set of items
-item_list2 = res2.groupby('Order Number')['Item Name'].unique()
-# another way of grouping
 item_list2 = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
              .min().unstack().reset_index().fillna(0)
              .set_index('Order Number'))
+
+# create one hot incoding 
 def hot_encode(x):
     if(x<= 0):
         return 0
@@ -52,16 +50,6 @@ def hot_encode(x):
   
 # Encoding the datasets
 sparse_df_items2 = item_list2.applymap(hot_encode)
-
-# sperade items names each in one column
-# Set TRUE if the item is order in that order item 
-oht_orders2 = te.fit(item_list2).transform(item_list2, sparse=True)
-
-# convert it to dataframe using columns from the previous code
-sparse_df_items2 = pd.DataFrame.sparse.from_spmatrix(oht_orders2, columns=te.columns_)
-sparse_df_items2['Naan']
-# replace True by 1
-sparse_df_items2 = sparse_df_items2.astype('int')
 
 ############### ML section 
 # %% [markdown]
@@ -130,5 +118,5 @@ best_item_recommendations[ (best_item_recommendations['lift'] >= 0.4) &
                            (best_item_recommendations['support'] >= 0.04)]
 
 # check the probability of a specific item to be with another       
-best_item_recommendations.loc[(best_item_recommendations['antecedents'] == 'Curry') & (best_item_recommendations['consequents'] == 'Naan')]
+best_item_recommendations.loc[(best_item_recommendations['antecedents'] == 'Rice') & (best_item_recommendations['consequents'] == 'Naan')]
 # %%
