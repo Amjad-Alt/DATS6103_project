@@ -7,7 +7,7 @@ import pandas as pd
 from mlxtend.frequent_patterns import association_rules, apriori
 
 res = pd.read_csv('restaurant-1-orders.csv')
-res.head
+res.head()
 #%%
 #####  preparing data  #######
 # Take only the needed columns
@@ -32,12 +32,10 @@ res2['Item Name'] = res2['Item Name'].apply( lambda x: 'Naan' if 'Naan' in x els
 # check if it worked
 col = res2['Item Name']== 'wine'
 res2[col]
-col2 = res2['Item Name']== 'Naan'
-res2[col2]
 res2[res2['Order Number'] == 11217]
 
 # Group order number so each order has its ouwn set of items
-item_list2 = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
+item_list = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
              .min().unstack().reset_index().fillna(0)
              .set_index('Order Number'))
 
@@ -49,7 +47,10 @@ def hot_encode(x):
         return 1
   
 # Encoding the datasets
-sparse_df_items2 = item_list2.applymap(hot_encode)
+sparse_df_items = item_list.applymap(hot_encode)
+
+#Check if the order number has the same values as before applying the function
+sparse_df_items.loc[11217][["Naan", "Bhajee", "Rice", "Curry", "Masala", "Balti"]]
 
 ############### ML section 
 # %% [markdown]
@@ -93,30 +94,32 @@ sparse_df_items2 = item_list2.applymap(hot_encode)
 # from https://www.kdnuggets.com/2016/04/association-rules-apriori-algorithm-tutorial.html
  #%%
 # Do ML to claculate probability of association 
-frequent_itemsets2 = apriori(sparse_df_items2, min_support=0.02209, use_colnames=True, verbose=1)
+frequent_itemsets = apriori(sparse_df_items, min_support=0.02209, use_colnames=True, verbose=1)
 
 #These are the companations of orders we have on the chance of %2 and more
-frequent_itemsets2.shape
-frequent_itemsets2.head()
-market_basket_rules = association_rules(frequent_itemsets2, metric="lift", min_threshold=1)
+frequent_itemsets.shape
+frequent_itemsets.head()
+association = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
 
 # I have to check the left rule where it says 
 #filter the best recommendations we will use the highest confidence value for each antecedent. We ran with the top 20 most frequent items and got some recommendations
-best_item_recommendations = market_basket_rules.sort_values(['confidence', 'lift'],ascending=False)
+recommendations = association.sort_values(['confidence', 'lift'],ascending=False)
 #Explain why we are interrested in lift more than others
 
 # Save it to csv for any future useage instead of running the code file
-#best_item_recommendations.to_csv('companations.csv')
+#recommendations.to_csv('companations.csv')
 
 #We are interested in giving unusual recommenditions to the restaurant 
-best_item_recommendations3 = best_item_recommendations.drop_duplicates(subset=['consequents']).head(20)
+best_item_recommendations2 = recommendations.drop_duplicates(subset=['consequents']).head(20)
 
 # Searching for the left, support and confedint of specific companations
 # the best companations based on the highest numbers 
-best_item_recommendations[ (best_item_recommendations['lift'] >= 0.4) &
-                           (best_item_recommendations['confidence'] >= 0.9) &
-                           (best_item_recommendations['support'] >= 0.04)]
+recommendations[ (recommendations['lift'] >= 0.4) &
+                 (recommendations['confidence'] >= 0.9) &
+                 (recommendations['support'] >= 0.04)]
 
-# check the probability of a specific item to be with another       
-best_item_recommendations.loc[(best_item_recommendations['antecedents'] == 'Rice') & (best_item_recommendations['consequents'] == 'Naan')]
+# check the probability of a specific item to be with another  
+recommendations.loc[(recommendations['antecedents'] == {'Korma'}) & (recommendations['consequents'] == {'Naan'})]
+# check What could come with a specidic item 
+recommendations.loc[recommendations['antecedents'] == {'Korma'}]
 # %%
