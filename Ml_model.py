@@ -121,5 +121,6 @@ recommendations[ (recommendations['lift'] >= 0.4) &
 # check the probability of a specific item to be with another  
 recommendations.loc[(recommendations['antecedents'] == {'Korma'}) & (recommendations['consequents'] == {'Naan'})]
 # check What could come with a specidic item 
+# do names with the lowest orders
 recommendations.loc[recommendations['antecedents'] == {'Korma'}]
 # %%
