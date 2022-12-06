@@ -1,8 +1,14 @@
 # %%[markdown]
+
+#############
+## Imports ##
+#############
+
 from scipy.stats import pearsonr
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split, learning_curve
 import datetime
+from IPython.display import display
 import numpy as np
 import pandas as pd
 import os
@@ -14,19 +20,68 @@ from scipy.stats import spearmanr
 from mlxtend.frequent_patterns import association_rules, apriori
 
 
+##################################################
+#<<<<<<<<<<<<<<<< End of Section >>>>>>>>>>>>>>>>#
+
+#%%
+
+##########################
+## Set Display Settings ##
+##########################
+
+#DF Settings
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', 1000)
+pd.set_option('display.colheader_justify', 'center')
+pd.set_option('display.precision', 3)
+
+#Select Color Palette
+sns.set_palette('Set2')
+
+##################################################
+#<<<<<<<<<<<<<<<< End of Section >>>>>>>>>>>>>>>>#
 # %%
+###############
+## Load Data ##
+###############
+
 data = pd.read_csv("restaurant-1-orders.csv",  parse_dates=['Order Date'])
 
+#%%
+
+# Show number of obs and display full restaurant-1-orders head
+print('\nShow head and number of observarions in FULL Restaurant-1-orders data set...\n')
+print(f'Restaurant-1-orders observations: {len(data)}')
+display(data.head().style.set_sticky(axis="index"))
+
+##################################################
+#<<<<<<<<<<<<<<<< End of Section >>>>>>>>>>>>>>>>#
+
 # %%
+
+################
+## Clean Data ##
+################
+
+# Data Cleaning
+# checking Na value 
 data.isna().sum()
+
 # %%
-data.shape
+# Use info() function to print full summary of the dataframe.
+# describe() function is used to generate descriptive statistics
+#data.shape
 data.info()
 data.describe()
+
 # %%
+# Added new column Total Price 
 data["Total Price"] = data["Product Price"] * data["Quantity"]
 data
 # %%
+# Frequency for Top 20 sold items
+
 item_freq = data.groupby('Item Name').agg({'Quantity': 'sum'})
 item_freq = item_freq.sort_values(by=['Quantity'])
 top_20 = item_freq.tail(20)
@@ -36,12 +91,16 @@ plt.title('Top 20 sold items')
 print('Number of unique item name: ', len(data['Item Name'].unique()))
 
 # %%
+# Frequency For Least 20 Sold Items
+
 item_freq = data.groupby('Item Name').agg({'Quantity': 'sum'})
 item_freq = item_freq.sort_values(by=['Quantity'])
 top_20 = item_freq.head(20)
 top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Least 20 sold items')
+
 # %%
+# Getting the average of Total price column with maximum and minimum Total price of orders
 data1 = data["Total Price"].mean()
 print(data1)
 data["Total Price"].max()
