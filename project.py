@@ -23,20 +23,20 @@ from mlxtend.frequent_patterns import association_rules, apriori
 ##################################################
 #<<<<<<<<<<<<<<<< End of Section >>>>>>>>>>>>>>>>#
 
-#%%
+# %%
 
 ##########################
 ## Set Display Settings ##
 ##########################
 
-#DF Settings
+# DF Settings
 pd.set_option('display.max_rows', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 1000)
 pd.set_option('display.colheader_justify', 'center')
 pd.set_option('display.precision', 3)
 
-#Select Color Palette
+# Select Color Palette
 sns.set_palette('Set2')
 
 ##################################################
@@ -48,7 +48,7 @@ sns.set_palette('Set2')
 
 data = pd.read_csv("restaurant-1-orders.csv",  parse_dates=['Order Date'])
 
-#%%
+# %%
 
 # Show number of obs and display full restaurant-1-orders head
 print('\nShow head and number of observarions in FULL Restaurant-1-orders data set...\n')
@@ -65,18 +65,18 @@ display(data.head().style.set_sticky(axis="index"))
 ################
 
 # Data Cleaning
-# checking Na value 
+# checking Na value
 data.isna().sum()
 
 # %%
 # Use info() function to print full summary of the dataframe.
 # describe() function is used to generate descriptive statistics
-#data.shape
+# data.shape
 data.info()
 data.describe()
 
 # %%
-# Added new column Total Price 
+# Added new column Total Price
 data["Total Price"] = data["Product Price"] * data["Quantity"]
 data
 # %%
@@ -107,9 +107,9 @@ data["Total Price"].max()
 data["Total Price"].min()
 
 
-#%%
-# How much people pay for each day in the week 
-# How much people are paying during thr weeks of the month 
+# %%
+# How much people pay for each day in the week
+# How much people are paying during thr weeks of the month
 print("Daily:\n", data.groupby(
     [pd.Grouper(key='Order Date', freq='D')])['Total Price'].sum().mean())
 print("Weekly:\n", data.groupby(
@@ -117,7 +117,7 @@ print("Weekly:\n", data.groupby(
 print("Monthly:\n", data.groupby(
     [pd.Grouper(key='Order Date', freq='M')])['Total Price'].sum().mean())
 # %%
-### the data has no Null values
+# the data has no Null values
 
 data = data.dropna()
 data = data.loc[data['Order Date'] >= '2016-08-01']
@@ -131,7 +131,7 @@ print("Monthly:\n", data.groupby(
     [pd.Grouper(key='Order Date', freq='M')])['Quantity'].sum().mean())
 
 # %%
-#create relevant Database df1 for total and df2 for bombay aloo
+# create relevant Database df1 for total and df2 for bombay aloo
 
 df = data[['Order Date', 'Quantity']]
 df2 = data[data['Item Name'] == 'Bombay Aloo']
@@ -279,7 +279,7 @@ order_total = data[['Order Number', 'Quantity', 'Product Price']].copy()
 order_total['total'] = order_total['Quantity'] * order_total['Product Price']
 
 
-############# very intereting!! Can we invistigate the very high prices?!
+# very intereting!! Can we invistigate the very high prices?!
 # Add the order price
 order_totals = order_total.groupby('Order Number').agg({'total': 'sum'})
 plt.boxplot(order_totals['total'])
@@ -302,28 +302,30 @@ plt.ylabel('USD')
 sns.distplot(order_totals[order_totals['total'] < 63], bins=20)
 plt.title('Order price distribution')
 
-#%%
+# %%
 
 # restaurant prices and restaurant quantity of each item
-item_freq2 = data.groupby('Item Name').agg({'Quantity': 'sum', 'Product Price':'mean'})
+item_freq2 = data.groupby('Item Name').agg(
+    {'Quantity': 'sum', 'Product Price': 'mean'})
 item_freq2.mean()
 item_freq2.max()
 item_freq2.min()
 
 # plot
-sns.scatterplot(item_freq2, x= 'Product Price', y='Quantity')
+sns.scatterplot(item_freq2, x='Product Price', y='Quantity')
 plt.title('Item price VS item quantity')
 plt.show()
 
 # delete outliers of quantity and price
-items = item_freq2[(item_freq2['Product Price'] <= 14.) & (item_freq2['Quantity'] <= 7000.)]
+items = item_freq2[(item_freq2['Product Price'] <= 14.)
+                   & (item_freq2['Quantity'] <= 7000.)]
 
-sns.scatterplot(items, x= 'Product Price', y='Quantity')
+sns.scatterplot(items, x='Product Price', y='Quantity')
 plt.title('Item price VS item quantity')
 plt.show()
-#%% 
+# %%
 # is theer carrolation between the product price and number of total orders of each item?
-#  Pearson correlation coefficient 
+#  Pearson correlation coefficient
 corr, _ = pearsonr(items['Product Price'], items['Quantity'])
 print('Pearsons correlation: %.3f' % corr)
 print('''The two varibles have low carrolation of .4 that means people decition of bying an item is not heavely based on the price.
@@ -336,29 +338,29 @@ corr, _ = spearmanr(items['Product Price'], items['Quantity'])
 print('Spearmans correlation: %.3f' % corr)
 print('There is .5 carrolation between the two samples however, it is not strong and we stick with our previous clime')
 
-#%%
+# %%
 #####  preparing data  #######
 # Take only the needed columns
-res2= data[['Order Number', 'Item Name', 'Quantity']].copy()
+res2 = data[['Order Number', 'Item Name', 'Quantity']].copy()
 
-# Create cateogries for each item that has different flavors  
-res2['Item Name'] = res2['Item Name'].apply( lambda x: 'Naan' if 'Naan' in x else 'Sauce' if 'Sauce' in x else 'Papadum' if 'Papadum' in x else 'Salad' if 'Salad' in x else 'Balti' if 'Balti' in x 
+# Create cateogries for each item that has different flavors
+res2['Item Name'] = res2['Item Name'].apply(lambda x: 'Naan' if 'Naan' in x else 'Sauce' if 'Sauce' in x else 'Papadum' if 'Papadum' in x else 'Salad' if 'Salad' in x else 'Balti' if 'Balti' in x
                                             else 'Rice' if 'Rice' in x else 'Balti' if 'Balti' in x else 'Bhajee' if 'Bhajee' in x else 'Bhajee' if 'Bhaji' in x else 'Mushroom' if 'Mushroom' in x else
-                                            'Chutney' if 'Chutney' in x else'Pasanda' if 'Pasanda' in x else 'Biryani' if 'Biryani' in x else 'Korma' if 'Korma' in x else 'Aloo' if 'Aloo' in x else 
-                                            'Curry' if 'Curry' in x else 'Sheek' if 'Sheek' in x else 'Samosa' if 'Samosa' in x else 'Hari Mirch' if 'Hari Mirch' in x else 'Madras' if 'Madras' in x 
-                                            else 'wine' if 'wine' in x else 'Lemonade' if 'Lemonade' in x else 'Water' if 'Water' in x else 'COBRA' if 'COBRA' in x else 'Coke' if 'Coke' in x else 
-                                            'Karahi' if 'Karahi' in x else 'Jalfrezi' if 'Jalfrezi' in x else 'Bhuna' if 'Bhuna' in x else 'Dupiaza' if 'Dupiaza' in x else 'Methi' if 'Methi' in x 
-                                            else 'Lal Mirch' if 'Lal Mirch' in x else 'Shashlick' if 'Shashlick' in x else 'Shashlick' if 'Shaslick' in x else 'Sizzler' if 'Sizzler' in x else 
-                                            'Dall' if 'Dall' in x else 'Sylhet' if 'Sylhet' in x  else 'Mysore' if 'Mysore' in x else 'Puree' if 'Puree' in x else 'Paratha' if 'Paratha' in x else 
-                                            'Chaat' if 'Chaat' in x else 'Achar' if 'Achar' in x else 'Vindaloo' if 'Vindaloo' in x else  'Dhansak' if 'Dhansak' in x else 'Haryali' if 'Haryali' in x 
-                                            else 'Rogon' if 'Rogon' in x  else 'Hazary' if 'Hazary' in x else 'Roshni' if 'Roshni' in x else 'Jeera' if 'Jeera' in x else 'Rezala' if 'Rezala' in x 
-                                            else 'Bengal' if 'Bengal' in x  else 'Bengal' if 'Butterfly' in x  else 'Pathia' if 'Pathia' in x else 'Masala' if 'Masala' in x else 'Paneer' if 'Paneer' in x
-                                            else 'Saag' if 'Saag' in x else 'Tandoori' if 'Tandoori' in x  else 'Tikka' if 'Tikka' in x else 'Chilli Garlic' if 'Chilli' in x else 'Chapati' if 'Chapati' in x
-                                            else 'Pickle' if 'Pickle' in x else 'Pakora' if 'Pakora' in x  else 'Fries' if 'Fries' in x else 'Starters' if 'Starter' in x else 'Raitha' if 'Raitha' in x
-                                            else 'Rolls' if 'Roll' in x else 'Butter Chicken' if 'Butter' in x  else 'Persian') 
+                                            'Chutney' if 'Chutney' in x else'Pasanda' if 'Pasanda' in x else 'Biryani' if 'Biryani' in x else 'Korma' if 'Korma' in x else 'Aloo' if 'Aloo' in x else
+                                            'Curry' if 'Curry' in x else 'Sheek' if 'Sheek' in x else 'Samosa' if 'Samosa' in x else 'Hari Mirch' if 'Hari Mirch' in x else 'Madras' if 'Madras' in x
+                                            else 'wine' if 'wine' in x else 'Lemonade' if 'Lemonade' in x else 'Water' if 'Water' in x else 'COBRA' if 'COBRA' in x else 'Coke' if 'Coke' in x else
+                                            'Karahi' if 'Karahi' in x else 'Jalfrezi' if 'Jalfrezi' in x else 'Bhuna' if 'Bhuna' in x else 'Dupiaza' if 'Dupiaza' in x else 'Methi' if 'Methi' in x
+                                            else 'Lal Mirch' if 'Lal Mirch' in x else 'Shashlick' if 'Shashlick' in x else 'Shashlick' if 'Shaslick' in x else 'Sizzler' if 'Sizzler' in x else
+                                            'Dall' if 'Dall' in x else 'Sylhet' if 'Sylhet' in x else 'Mysore' if 'Mysore' in x else 'Puree' if 'Puree' in x else 'Paratha' if 'Paratha' in x else
+                                            'Chaat' if 'Chaat' in x else 'Achar' if 'Achar' in x else 'Vindaloo' if 'Vindaloo' in x else 'Dhansak' if 'Dhansak' in x else 'Haryali' if 'Haryali' in x
+                                            else 'Rogon' if 'Rogon' in x else 'Hazary' if 'Hazary' in x else 'Roshni' if 'Roshni' in x else 'Jeera' if 'Jeera' in x else 'Rezala' if 'Rezala' in x
+                                            else 'Bengal' if 'Bengal' in x else 'Bengal' if 'Butterfly' in x else 'Pathia' if 'Pathia' in x else 'Masala' if 'Masala' in x else 'Paneer' if 'Paneer' in x
+                                            else 'Saag' if 'Saag' in x else 'Tandoori' if 'Tandoori' in x else 'Tikka' if 'Tikka' in x else 'Chilli Garlic' if 'Chilli' in x else 'Chapati' if 'Chapati' in x
+                                            else 'Pickle' if 'Pickle' in x else 'Pakora' if 'Pakora' in x else 'Fries' if 'Fries' in x else 'Starters' if 'Starter' in x else 'Raitha' if 'Raitha' in x
+                                            else 'Rolls' if 'Roll' in x else 'Butter Chicken' if 'Butter' in x else 'Persian')
 
 # check if it worked
-col = res2['Item Name']== 'wine'
+col = res2['Item Name'] == 'wine'
 res2[col]
 res2[res2['Order Number'] == 11217]
 
@@ -367,34 +369,38 @@ item_list = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
              .min().unstack().reset_index().fillna(0)
              .set_index('Order Number'))
 
-# create one hot incoding 
+# create one hot incoding
+
+
 def hot_encode(x):
-    if(x<= 0):
+    if(x <= 0):
         return 0
-    if(x>= 1):
+    if(x >= 1):
         return 1
-  
+
+
 # Encoding the datasets
 sparse_df_items = item_list.applymap(hot_encode)
 
-#Check if the order number has the same values as before applying the function
-sparse_df_items.loc[11217][["Naan", "Bhajee", "Rice", "Curry", "Masala", "Balti"]]
+# Check if the order number has the same values as before applying the function
+sparse_df_items.loc[11217][["Naan", "Bhajee",
+                            "Rice", "Curry", "Masala", "Balti"]]
 
-############### ML section 
+# ML section
 # %% [markdown]
-#### Undersatnding Apriori parameters ###### 
-#Apriori is a popular algorithm [1] for 
-#extracting frequent itemsets with applications 
-#in association rule learning. The apriori algorithm has been designed 
-#to operate on databases containing transactions, such as purchases by customers 
-#of a store. An itemset is considered as "frequent" if it meets a user-specified support
-#threshold. For instance, if the support threshold is set to 0.5 (50%), 
-#a frequent itemset is defined as a set of items that occur together 
-#in at least 50% of all transactions in the database.
+#### Undersatnding Apriori parameters ######
+# Apriori is a popular algorithm [1] for
+# extracting frequent itemsets with applications
+# in association rule learning. The apriori algorithm has been designed
+# to operate on databases containing transactions, such as purchases by customers
+# of a store. An itemset is considered as "frequent" if it meets a user-specified support
+# threshold. For instance, if the support threshold is set to 0.5 (50%),
+# a frequent itemset is defined as a set of items that occur together
+# in at least 50% of all transactions in the database.
 # from http://rasbt.github.io/mlxtend/user_guide/frequent_patterns/apriori/
 
-### doing the calculation 
-# Let's suppose that we want rules for only those items that are purchased at least 5 times a day, or 7 x 5 = 35 times in one week, since our dataset is for a one-week time period. 
+# doing the calculation
+# Let's suppose that we want rules for only those items that are purchased at least 5 times a day, or 7 x 5 = 35 times in one week, since our dataset is for a one-week time period.
 # The support for those items can be calculated as 35/7500 = 0.0045.
 # The minimum confidence for the rules is 20% or 0.2.
 # we specify the value for lift as 3 and finally min_length is 2 since we want at least two products in our rules.
@@ -407,48 +413,53 @@ sparse_df_items.loc[11217][["Naan", "Bhajee", "Rice", "Curry", "Masala", "Balti"
 
 # Measure 2: Confidence. This says how likely item B is purchased when item A is purchased
 # Confidence refers to the likelihood that an item B is also bought if item A is bought.
-# This is because it only accounts for how popular apples are, but not beers. If beers are also very popular in general, there will be a higher chance that a transaction containing apples will also contain beers 
-#  It can be calculated by finding the number of transactions where A and B are bought together, divided by total number of transactions where A is bought. 
+# This is because it only accounts for how popular apples are, but not beers. If beers are also very popular in general, there will be a higher chance that a transaction containing apples will also contain beers
+#  It can be calculated by finding the number of transactions where A and B are bought together, divided by total number of transactions where A is bought.
 # Confidence(A→B) = (Transactions containing both (A and B))/(Transactions containing A)
-     
-      
+
+
 # Measure 3: Lift. This says how likely item B is purchased when item A is purchased, while controlling for how popular item B is.
 # refers to the increase in the ratio of sale of B when A is sold.
 # Lift(Burger→Ketchup) = (Confidence (Burger→Ketchup))/(Support (Ketchup))
-# Lift basically tells us that the likelihood of buying a Burger and Ketchup together is 3.33 times more than the likelihood of just buying the ketchup. A Lift of 1 means there is no association between products A and B. 
+# Lift basically tells us that the likelihood of buying a Burger and Ketchup together is 3.33 times more than the likelihood of just buying the ketchup. A Lift of 1 means there is no association between products A and B.
 # Finally, Lift of less than 1 refers to the case where two products are unlikely to be bought together.
 
 # from https://stackabuse.com/association-rule-mining-via-apriori-algorithm-in-python/
 # from https://www.kdnuggets.com/2016/04/association-rules-apriori-algorithm-tutorial.html
- #%%
-# Do ML to claculate probability of association 
-frequent_itemsets = apriori(sparse_df_items, min_support=0.02209, use_colnames=True, verbose=1)
+# %%
+# Do ML to claculate probability of association
+frequent_itemsets = apriori(
+    sparse_df_items, min_support=0.02209, use_colnames=True, verbose=1)
 
-#These are the companations of orders we have on the chance of %2 and more
+# These are the companations of orders we have on the chance of %2 and more
 frequent_itemsets.shape
 frequent_itemsets.head()
-association = association_rules(frequent_itemsets, metric="lift", min_threshold=1)
+association = association_rules(
+    frequent_itemsets, metric="lift", min_threshold=1)
 
-# I have to check the left rule where it says 
-#filter the best recommendations we will use the highest confidence value for each antecedent. We ran with the top 20 most frequent items and got some recommendations
-recommendations = association.sort_values(['confidence', 'lift'],ascending=False)
-#Explain why we are interrested in lift more than others
+# I have to check the left rule where it says
+# filter the best recommendations we will use the highest confidence value for each antecedent. We ran with the top 20 most frequent items and got some recommendations
+recommendations = association.sort_values(
+    ['confidence', 'lift'], ascending=False)
+# Explain why we are interrested in lift more than others
 
 # Save it to csv for any future useage instead of running the code file
-#recommendations.to_csv('companations.csv')
+# recommendations.to_csv('companations.csv')
 
-#We are interested in giving unusual recommenditions to the restaurant 
-best_item_recommendations2 = recommendations.drop_duplicates(subset=['consequents']).head(20)
+# We are interested in giving unusual recommenditions to the restaurant
+best_item_recommendations2 = recommendations.drop_duplicates(
+    subset=['consequents']).head(20)
 
 # Searching for the left, support and confedint of specific companations
-# the best companations based on the highest numbers 
-recommendations[ (recommendations['lift'] >= 0.4) &
-                 (recommendations['confidence'] >= 0.9) &
-                 (recommendations['support'] >= 0.04)]
+# the best companations based on the highest numbers
+recommendations[(recommendations['lift'] >= 0.4) &
+                (recommendations['confidence'] >= 0.9) &
+                (recommendations['support'] >= 0.04)]
 
-# check the probability of a specific item to be with another  
-recommendations.loc[(recommendations['antecedents'] == {'Korma'}) & (recommendations['consequents'] == {'Naan'})]
-# check What could come with a specidic item 
+# check the probability of a specific item to be with another
+recommendations.loc[(recommendations['antecedents'] == {'Korma'}) & (
+    recommendations['consequents'] == {'Naan'})]
+# check What could come with a specidic item
 # We should search for the lowest ordered items
 recommendations.loc[recommendations['antecedents'] == {'Korma'}]
 # %%
@@ -475,13 +486,6 @@ Item_unique.head()
 Item_sorted = Item_unique.sort_values('Name', ignore_index=True)
 Item_sorted.head()
 
-# %%
-
-correlation_matrix = data.corr()
-print(round(correlation_matrix, 2))
-
-
-sns.heatmap(correlation_matrix)
 
 # %%
 # See if there is any relationship between the product quantity and the total price
@@ -566,4 +570,3 @@ count_1
 
 # This gives the average number of orders that an item is being ordered in a day
 # %%
-
