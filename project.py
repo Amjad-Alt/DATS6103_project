@@ -79,6 +79,7 @@ data.describe()
 # Added new column Total Price
 data["Total Price"] = data["Product Price"] * data["Quantity"]
 data
+
 # %%
 # Frequency for Top 20 sold items
 
@@ -87,6 +88,7 @@ item_freq = item_freq.sort_values(by=['Quantity'])
 top_20 = item_freq.tail(20)
 top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Top 20 sold items')
+
 # %%
 print('Number of unique item name: ', len(data['Item Name'].unique()))
 
@@ -122,13 +124,14 @@ print("Monthly:\n", data.groupby(
 data = data.dropna()
 data = data.loc[data['Order Date'] >= '2016-08-01']
 # %%
+
 # Investigating average order volume by periods
-print("Daily:\n", data.groupby(
-    [pd.Grouper(key='Order Date', freq='D')])['Quantity'].sum().mean())
-print("Weekly:\n", data.groupby(
-    [pd.Grouper(key='Order Date', freq='W-MON')])['Quantity'].sum().mean())
-print("Monthly:\n", data.groupby(
-    [pd.Grouper(key='Order Date', freq='M')])['Quantity'].sum().mean())
+# print("Daily:\n", data.groupby(
+#     [pd.Grouper(key='Order Date', freq='D')])['Quantity'].sum().mean())
+# print("Weekly:\n", data.groupby(
+#     [pd.Grouper(key='Order Date', freq='W-MON')])['Quantity'].sum().mean())
+# print("Monthly:\n", data.groupby(
+#     [pd.Grouper(key='Order Date', freq='M')])['Quantity'].sum().mean())
 
 # %%
 # create relevant Database df1 for total and df2 for bombay aloo
