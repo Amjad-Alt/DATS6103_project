@@ -559,6 +559,8 @@ corr, _ = pearsonr(count_1["Product Price"], count_1["Count"])
 print('Pearsons correlation: %.3f' % corr)
 
 # Greater the product price lower are the number of orders placed
+
+
 # %%
 
 date_count = data['date'].nunique()
@@ -568,5 +570,5 @@ date_count
 count_1['average_orders_per_day'] = count_1['Count']/date_count
 count_1
 
-# This gives the average number of orders that an item is being ordered in a day
+# This gives the average number of orders that an item is being ordered in a day.
 # %%
