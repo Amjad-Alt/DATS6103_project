@@ -79,6 +79,7 @@ data.describe()
 # Added new column Total Price
 data["Total Price"] = data["Product Price"] * data["Quantity"]
 data
+
 # %%
 # Frequency for Top 20 sold items
 
@@ -87,6 +88,7 @@ item_freq = item_freq.sort_values(by=['Quantity'])
 top_20 = item_freq.tail(20)
 top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Top 20 sold items')
+
 # %%
 print('Number of unique item name: ', len(data['Item Name'].unique()))
 
@@ -122,13 +124,14 @@ print("Monthly:\n", data.groupby(
 data = data.dropna()
 data = data.loc[data['Order Date'] >= '2016-08-01']
 # %%
+
 # Investigating average order volume by periods
-print("Daily:\n", data.groupby(
-    [pd.Grouper(key='Order Date', freq='D')])['Quantity'].sum().mean())
-print("Weekly:\n", data.groupby(
-    [pd.Grouper(key='Order Date', freq='W-MON')])['Quantity'].sum().mean())
-print("Monthly:\n", data.groupby(
-    [pd.Grouper(key='Order Date', freq='M')])['Quantity'].sum().mean())
+# print("Daily:\n", data.groupby(
+#     [pd.Grouper(key='Order Date', freq='D')])['Quantity'].sum().mean())
+# print("Weekly:\n", data.groupby(
+#     [pd.Grouper(key='Order Date', freq='W-MON')])['Quantity'].sum().mean())
+# print("Monthly:\n", data.groupby(
+#     [pd.Grouper(key='Order Date', freq='M')])['Quantity'].sum().mean())
 
 # %%
 # create relevant Database df1 for total and df2 for bombay aloo
@@ -155,10 +158,140 @@ for i in range(1, 15):
     df2[label] = df2['Quantity'].rolling(i).mean()
 df = df.dropna()
 df2 = df2.dropna()
+#%%
 print(df)
 # %%
 print(df2)
+#%%
+#one hot encode df using pandas get_dummies
+for column in ['Week','Month']:
+    tempdf = pd.get_dummies(df[column], prefix=column)
+    df = pd.merge(
+        left=df,
+        right=tempdf,
+        left_index=True,
+        right_index=True,
+    )
+    df = df.drop(columns=column)
+df.shape
+#%%
+#one hot encode df2 using pandas get_dummies
+for column in ['Week','Month']:
+    tempdf = pd.get_dummies(df2[column], prefix=column)
+    df2 = pd.merge(
+        left=df2,
+        right=tempdf,
+        left_index=True,
+        right_index=True,
+    )
+    df2 = df2.drop(columns=column)
+df.shape
+#%%
+#143 rows so we split the data up to  row 107 for train and test sets for df
+train = df[:107].drop('Order Date', axis = 1)
+test = df[107:].drop('Order Date', axis = 1)
+xtrain = train.drop(['Quantity'], axis = 1)
+xtest = test.drop(['Quantity'], axis = 1)
+ytrain = train['Quantity']
+ytest =test['Quantity']
+
+#%%
+#143 rows so we split the data up to  row 107 for train and test sets for df2
+train2 = df2[:107].drop('Order Date', axis = 1)
+test2 = df2[107:].drop('Order Date', axis = 1)
+xtrain2 = train2.drop(['Quantity'], axis = 1)
+xtest2 = test2.drop(['Quantity'], axis = 1)
+ytrain2 = train2['Quantity']
+ytest2 =test2['Quantity']
+
+#%%
+#  in the abscence of more data length, and more explanatory variables, 
+# I have chosen XGBoost (it can handle sparcity without needing to convert to CSR and can handle multiple regressors).
+# We could run this model and save the results through a loop, to run it across multipel epochs for further into the
+#  future predictions. But as per our problem statement, we are going to focus on just the next week at a time 
+# (in a real life situation, as the busniess owner, we may run this at the end of each week, to get orders and staff prepared over the weekend for next week).
+
+#Model for df
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, r2_score, mean_squared_log_error
+from xgboost import XGBRegressor
+
+model = XGBRegressor(n_estimators=500, learning_rate=0.01)
+eval_set = [(xtrain, ytrain)]
+model.fit(xtrain, ytrain, eval_metric="rmsle", eval_set=eval_set, early_stopping_rounds=20, verbose=False)
+ypred = model.predict(xtest)
+
+#%%
+#Model for df2
+model2 = XGBRegressor(n_estimators=500, learning_rate=0.01)
+eval_set = [(xtrain2, ytrain2)]
+model2.fit(xtrain2, ytrain2, eval_metric="rmsle", eval_set=eval_set, early_stopping_rounds=20, verbose=False)
+ypred2 = model2.predict(xtest2)
+
+#%%
+# Finally, I evaluate both the models: both on graphs, and then using the relevant metrics. We optmised scoring 
+# for root mean square log error as it standardises for when a quantity is already high and thus the absolute percentage change is low
+
+#First we add the results to our original dataframe, after first aligning the indexes
+
+#df
+ypred = pd.Series(ypred)
+eval_df = df[107:].reset_index(drop = True)
+eval_df['ypred'] = ypred
+eval_df = eval_df[['Order Date','Quantity', 'ypred']]
+eval_df.head()
+
+#df2
+ypred2 = pd.Series(ypred2)
+eval_df2 = df2[107:].reset_index(drop = True)
+eval_df2['ypred'] = round(ypred2)
+eval_df2 = eval_df2[['Order Date','Quantity', 'ypred']]
+eval_df2.head()
+
+#%%
+#And Now we plot the results of the train vs test sets
+#df
+plt.figure(figsize = (20,8))
+plt.plot(eval_df['Order Date'], eval_df['Quantity'], label = "Actual Quanitity")
+plt.plot(eval_df['Order Date'], eval_df['ypred'], color = 'red', label = 'Predicted Quantity')
+plt.xlabel('Date')
+plt.ylabel('Quantity')
+plt.legend()
+plt.title('Total Sales')
+
+#df2
+plt.figure(figsize = (20,8))
+plt.plot(eval_df2['Order Date'], eval_df2['Quantity'], label = "Actual Quanitity")
+plt.plot(eval_df2['Order Date'], eval_df2['ypred'], color = 'red', label = 'Predicted Quantity')
+plt.xlabel('Date')
+plt.ylabel('Quantity')
+plt.legend()
+plt.title('Bombay Aloo Sales')
+
+#%%
+#Lastly metrics mean_absolute_error, r2_score, mean_squared_log_error
+#df
+print("Metrics for Total Sale\n")
+print("Mean Absolute Error:\n", mean_absolute_error(ytest, ypred))
+print("R Squared:\n", r2_score(ytest, ypred))
+print("Mean Squared Log Error:\n", mean_squared_log_error(ytest, ypred))
+
+#df2
+print("\n")
+print("Metrics for Bombay Aloo Sales\n")
+print("Mean Absolute Error:\n", mean_absolute_error(ytest2, ypred2))
+print("R Squared:\n", r2_score(ytest2, ypred2))
+print("Mean Squared Log Error:\n", mean_squared_log_error(ytest2, ypred2))
+
+# The clearest metric is the RMSE. This shows clearly that the model for Total sales worked really quite well.
+#  The Bombay Aloo model however was less successful, most likely due to the far smaller quantity per week.
+# So the Total sales model looks like it would be good to start deploying, but perhaps the Bombay Aloo model 
+# should be rethought/scrapped, or alternatively changed to a monthly model, which may improve accuracy (though may not be as useful to the business)
+# As always, improvement could be had with cross validation, more data, hyperparameter optimisation, and 
+# possibly tryign some of the other models mentioned above)
 # %%
+
+
 # Orders by time of day
 # We are going to calculate the average number of orders that are placed in each hour
 # of the day to give us an idea of ​​when the demand is greatest.
@@ -571,4 +704,56 @@ count_1['average_orders_per_day'] = count_1['Count']/date_count
 count_1
 
 # This gives the average number of orders that an item is being ordered in a day.
+# %%
+
+
+# Pairs of best-selling items
+# We are going to visualize which are the items that are bought the most together
+
+all_items = list(data['Item Name'].unique())
+
+# association table
+
+associations = pd.DataFrame(index=all_items, columns=all_items)
+associations.fillna(0, inplace=True)
+associations.iloc[:4,:4]
+# %%
+# We are going to populate the previous table by counting in each entry the number 
+# of times that a pair of items was requested in different orders.
+orders = data.groupby('Order Number')['Item Name'].apply(lambda x: ','.join(x)).reset_index()
+orders.rename(columns={'Item Name': 'Order'}, inplace=True)
+orders['Order'] = orders['Order'].str.split(',')
+orders.head(20)
+
+# %%
+
+# Popular the table
+for Order in orders['Order']:
+    associations.loc[Order, Order] += 1
+# %%
+associations.iloc[:4, :4]
+# %%
+# As this table is very large, we are going to restrict ourselves only to the 
+# pairs within the top 20 best-selling items.
+
+associations_top = associations.loc[list(top_20.index), list(top_20.index)]
+
+for i in range(associations_top.shape[0]):
+    for j in range(i, associations_top.shape[0]):
+        associations_top.iloc[i, j] = 0
+        
+associations_top.iloc[:5, :5]
+# %%
+# We will generate a heat map to visually identify which are the most common pairs.
+plt.figure(figsize=(12,8))
+plt.title('Common sold together items')
+sns.heatmap(associations_top, cmap="Greens", annot=False)
+# %%
+# data.columns.is_unique
+# data.columns.duplicated()
+# data.loc[:, ~data.columns.duplicated()]
+# # %%
+# df.columns.is_unique
+# df.columns.duplicated()
+# df.loc[:, ~df.columns.duplicated()]
 # %%
