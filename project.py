@@ -111,6 +111,14 @@ top_20 = item_freq.head(20)
 top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Least 20 sold items')
 
+
+# %%
+
+# %%
+sns.lineplot(data=top_20, y="Item Name", x='Quantity')
+
+# lineplot for least 20 items
+
 # %%
 # Getting the average of Total price column with maximum and minimum Total price of orders
 data1 = data["Total Price"].mean()
