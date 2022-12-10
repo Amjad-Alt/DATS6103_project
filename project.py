@@ -358,6 +358,18 @@ plt.xlabel('Hour')
 plt.title('Average number of orders by hour of the day')
 # As can be seen, the hours at which the greatest number of orders are made on average
 # are 5, 6, and 7:00 p.m., with a peak at 6:00 p.m.
+
+# %%
+
+# Trying someother plots for the above smart question i.e., avergae number of orders in an hour per each day
+
+# %%
+sns.scatterplot(data=data, x="hour", y="Quantity", s=5)
+sns.rugplot(data=data, x="hour", y="Quantity", lw=1, alpha=.005)
+
+# %%
+sns.pointplot(data=data, x="hour", y="Quantity")
+
 # %%
 # Orders by day of the week
 # We are going to do the same analysis as before but this time considering the
