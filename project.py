@@ -93,6 +93,13 @@ top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Top 20 sold items')
 
 # %%
+
+top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
+plt.title('Top 20 sold items')
+
+
+# Pie diagram for the top 20 items that are being sold based on their quantity.
+# %%
 print('Number of unique item name: ', len(data['Item Name'].unique()))
 
 # %%
