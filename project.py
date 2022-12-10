@@ -369,7 +369,11 @@ sns.rugplot(data=data, x="hour", y="Quantity", lw=1, alpha=.005)
 
 # %%
 sns.pointplot(data=data, x="hour", y="Quantity")
+# %%
+sns.boxenplot(data=data, x="hour", y="Quantity")
 
+# %%
+sns.swarmplot(data=data, x="hour", y="Quantity")
 # %%
 # Orders by day of the week
 # We are going to do the same analysis as before but this time considering the
