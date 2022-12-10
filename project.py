@@ -99,6 +99,12 @@ plt.title('Top 20 sold items')
 
 
 # Pie diagram for the top 20 items that are being sold based on their quantity.
+
+
+# %%
+sns.lineplot(data=top_20, y="Item Name", x='Quantity')
+
+# line plot for top 20 items using seaborn library
 # %%
 print('Number of unique item name: ', len(data['Item Name'].unique()))
 
@@ -118,7 +124,11 @@ plt.title('Least 20 sold items')
 sns.lineplot(data=top_20, y="Item Name", x='Quantity')
 
 # lineplot for least 20 items
+# %%
+top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
+plt.title('Least 20 sold items')
 
+# pie chart for the least 20 items
 # %%
 # Getting the average of Total price column with maximum and minimum Total price of orders
 data1 = data["Total Price"].mean()
