@@ -753,7 +753,12 @@ sns.scatterplot(data=date_count, x="date", y="count")
 count_1['average_orders_per_day'] = count_1['Count']/date_count
 count_1
 
+
 # This gives the average number of orders that an item is being ordered in a day.
+
+# %%
+
+sns.pointplot(data=count_1, x="hour", y="average_orders_per_day")
 # %%
 
 
