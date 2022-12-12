@@ -442,7 +442,7 @@ monthly.head()
 #################### can we have the dates 90 degree ###
 plt.plot(monthly['month'], monthly['total'])
 plt.xlabel('Date')
-plt.ylabel('Total sales (USD)')
+plt.ylabel('Total sales (POUND)')
 plt.title('Total monthly sales')
 # You can see that monthly sales had been growing up to a point in the middle of
 # 2019, where they suffered a big drop. Let's identify this point.
@@ -467,15 +467,15 @@ plt.title('Order price distribution')
 
 # %%
 p_95 = order_totals['total'].describe(percentiles=[0.95])['95%']
-print('95% of the orders are less than or equal to {percentile} USD'.format(
+print('95% of the orders are less than or equal to {percentile} Pound'.format(
     percentile=p_95))
 # 95% of the orders are less than or equal to 62.2 USD
 # Let's consider the distribution for the total price of orders less than 63 USD.
 
 # %%
 plt.boxplot(order_totals[order_totals['total'] < 63]['total'])
-plt.title('Order total USD')
-plt.ylabel('USD')
+plt.title('Order total Pound')
+plt.ylabel('POUND')
 
 # %%
 sns.distplot(order_totals[order_totals['total'] < 63], bins=20)
