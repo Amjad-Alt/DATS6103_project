@@ -760,45 +760,45 @@ count_1
 # Pairs of best-selling items
 # We are going to visualize which are the items that are bought the most together
 
-all_items = list(data['Item Name'].unique())
+# all_items = list(data['Item Name'].unique())
 
-# association table
+# # association table
 
-associations = pd.DataFrame(index=all_items, columns=all_items)
-associations.fillna(0, inplace=True)
-associations.iloc[:4, :4]
-# %%
-# We are going to populate the previous table by counting in each entry the number
-# of times that a pair of items was requested in different orders.
-orders = data.groupby('Order Number')['Item Name'].apply(
-    lambda x: ','.join(x)).reset_index()
-orders.rename(columns={'Item Name': 'Order'}, inplace=True)
-orders['Order'] = orders['Order'].str.split(',')
-orders.head(20)
+# associations = pd.DataFrame(index=all_items, columns=all_items)
+# associations.fillna(0, inplace=True)
+# associations.iloc[:4, :4]
+# # %%
+# # We are going to populate the previous table by counting in each entry the number
+# # of times that a pair of items was requested in different orders.
+# orders = data.groupby('Order Number')['Item Name'].apply(
+#     lambda x: ','.join(x)).reset_index()
+# orders.rename(columns={'Item Name': 'Order'}, inplace=True)
+# orders['Order'] = orders['Order'].str.split(',')
+# orders.head(20)
 
-# %%
+# # %%
 
-# Popular the table
-for Order in orders['Order']:
-    associations.loc[Order, Order] += 1
-# %%
-associations.iloc[:4, :4]
-# %%
-# As this table is very large, we are going to restrict ourselves only to the
-# pairs within the top 20 best-selling items.
+# # Popular the table
+# for Order in orders['Order']:
+#     associations.loc[Order, Order] += 1
+# # %%
+# associations.iloc[:4, :4]
+# # %%
+# # As this table is very large, we are going to restrict ourselves only to the
+# # pairs within the top 20 best-selling items.
 
-associations_top = associations.loc[list(top_20.index), list(top_20.index)]
+# associations_top = associations.loc[list(top_20.index), list(top_20.index)]
 
-for i in range(associations_top.shape[0]):
-    for j in range(i, associations_top.shape[0]):
-        associations_top.iloc[i, j] = 0
+# for i in range(associations_top.shape[0]):
+#     for j in range(i, associations_top.shape[0]):
+#         associations_top.iloc[i, j] = 0
 
-associations_top.iloc[:5, :5]
-# %%
-# We will generate a heat map to visually identify which are the most common pairs.
-plt.figure(figsize=(12, 8))
-plt.title('Common sold together items')
-sns.heatmap(associations_top, cmap="Greens", annot=False)
+# associations_top.iloc[:5, :5]
+# # %%
+# # We will generate a heat map to visually identify which are the most common pairs.
+# plt.figure(figsize=(12, 8))
+# plt.title('Common sold together items')
+# sns.heatmap(associations_top, cmap="Greens", annot=False)
 # %%
 # data.columns.is_unique
 # data.columns.duplicated()
