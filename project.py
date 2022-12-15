@@ -733,9 +733,7 @@ Item_sorted.head()
 # sns.scatterplot(x="Count", y="Product Price", data=count_1)
 # plt.xlim(0, 1000)
 
-# # %%
-# corr, _ = pearsonr(count_1["Product Price"], count_1["Count"])
-# print('Pearsons correlation: %.3f' % corr)
+
 
 # # Greater the product price lower are the number of orders placed
 
