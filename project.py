@@ -701,57 +701,59 @@ Item_sorted.head()
 # plt.legend()
 # plt.show()
 
-# # %%
-# data["date"] = pd.to_datetime(data['Order Date']).dt.date
-# data
+ # %%
+data["date"] = pd.to_datetime(data['Order Date']).dt.date
+data
 
-# # %%
+# Here we are just trying to get the date from the order date as it is having both date and time values.
+ # %%
 # # get the values that are unique
-# unique_data = data.drop_duplicates(subset=["Item Name"])
-# unique_data
+ unique_data = data.drop_duplicates(subset=["Item Name"])
+ unique_data
 
-# # %%
+# Here we can see 
+ # %%
 
 # # Getting the count of the Items that are ordered as a total
 
-# count = data.groupby(['Item Name']).count().reset_index()
-# count = count.iloc[:, :2]
-# count.columns = ['Item Name', "Count"]
-# count
+count = data.groupby(['Item Name']).count().reset_index()
+ count = count.iloc[:, :2]
+count.columns = ['Item Name', "Count"]
+count
 
 
-# # %%
+ # %%
 
-# # joining the product price column to the above created data frame
+# joining the product price column to the above created data frame
 
-# count_1 = count.merge(unique_data, on="Item Name", how="left")
-# count_1 = count_1[["Item Name", "Count", "Product Price"]]
-# count_1 = count_1.sort_values(by="Count", ascending=False)
-# count_1
+count_1 = count.merge(unique_data, on="Item Name", how="left")
+ count_1 = count_1[["Item Name", "Count", "Product Price"]]
+ count_1 = count_1.sort_values(by="Count", ascending=False)
+ count_1
 
-# # %%
-# sns.scatterplot(x="Count", y="Product Price", data=count_1)
-# plt.xlim(0, 1000)
-
-
-
-# # Greater the product price lower are the number of orders placed
+ # %%
+ sns.scatterplot(x="Count", y="Product Price", data=count_1)
+ plt.xlim(0, 1000)
 
 
-# # %%
 
-# date_count = data['date'].nunique()
-# date_count
+ # Greater the product price lower are the number of orders placed
 
-# # %%
 
-# sns.scatterplot(data=date_count, x="date", y="count")
+ # %%
 
-# # %%
-# count_1['average_orders_per_day'] = count_1['Count']/date_count
-# count_1
+ date_count = data['date'].nunique()
+ date_count
 
-# # This gives the average number of orders that an item is being ordered in a day.
+ # %%
+
+ sns.scatterplot(data=date_count, x="date", y="count")
+
+ # %%
+ count_1['average_orders_per_day'] = count_1['Count']/date_count
+ count_1
+
+ # This gives the average number of orders that an item is being ordered in a day.
 # # %%
 
 
