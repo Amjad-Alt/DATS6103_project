@@ -666,150 +666,143 @@ Item_sorted = Item_unique.sort_values('Name', ignore_index=True)
 Item_sorted.head()
 
 
-# %%
-# See if there is any relationship between the product quantity and the total price
-sns.regplot(data=data, x="Quantity", y="Total Price")
-plt.show()
-
-# You can see that the product price has a linear relationship with the total price,
-# and you can make simple predictions
-# %%
-# Linear Regression Model Prediction
-
-X = data["Quantity"].tolist()
-X = np.array(X).reshape(-1, 1)
-y = data["Total Price"]
-X_train, X_test, y_train, y_test = train_test_split(X,
-                                                    y,
-                                                    test_size=0.3,
-                                                    random_state=0)
-model = LinearRegression()
-model = model.fit(X_train, y_train)
-model.score(X_test, y_test)
-
-# It can be seen that the accuracy is 0.03.
-# %%
-# draw the learning curve
-train_sizes, train_loss, test_loss = learning_curve(
-    LinearRegression(), X, y, train_sizes=[0.1, 0.25, 0.5, 0.75, 1])
-train_mean = np.mean(train_loss, axis=1)
-test_mean = np.mean(test_loss, axis=1)
-plt.plot(train_sizes, train_mean, label="Training")
-plt.plot(train_sizes, test_mean, label="Cross-validation")
-plt.xlabel("Training sizes")
-plt.ylabel("score")
-plt.legend()
-plt.show()
-
-# %%
-data["date"] = pd.to_datetime(data['Order Date']).dt.date
-data
-
-# %%
-# get the values that are unique
-unique_data = data.drop_duplicates(subset=["Item Name"])
-unique_data
-
-# %%
-
-# Getting the count of the Items that are ordered as a total
-
-count = data.groupby(['Item Name']).count().reset_index()
-count = count.iloc[:, :2]
-count.columns = ['Item Name', "Count"]
-count
-
-
-# %%
-
-# joining the product price column to the above created data frame
-
-count_1 = count.merge(unique_data, on="Item Name", how="left")
-count_1 = count_1[["Item Name", "Count", "Product Price"]]
-count_1 = count_1.sort_values(by="Count", ascending=False)
-count_1
-
-# %%
-sns.scatterplot(x="Count", y="Product Price", data=count_1)
-plt.xlim(0, 1000)
-
-# %%
-corr, _ = pearsonr(count_1["Product Price"], count_1["Count"])
-print('Pearsons correlation: %.3f' % corr)
-
-# Greater the product price lower are the number of orders placed
-
-
-# %%
-
-date_count = data['date'].nunique()
-date_count
-
-# %%
-
-sns.scatterplot(data=date_count, x="date", y="count")
-
-# %%
-count_1['average_orders_per_day'] = count_1['Count']/date_count
-count_1
-
-
-# This gives the average number of orders that an item is being ordered in a day.
-
-# %%
-
-sns.pointplot(data=count_1, x="hour", y="average_orders_per_day")
-# %%
-
-
-# Pairs of best-selling items
-# We are going to visualize which are the items that are bought the most together
-
-# all_items = list(data['Item Name'].unique())
-
-# # association table
-
-# associations = pd.DataFrame(index=all_items, columns=all_items)
-# associations.fillna(0, inplace=True)
-# associations.iloc[:4, :4]
 # # %%
-# # We are going to populate the previous table by counting in each entry the number
-# # of times that a pair of items was requested in different orders.
-# orders = data.groupby('Order Number')['Item Name'].apply(
-#     lambda x: ','.join(x)).reset_index()
-# orders.rename(columns={'Item Name': 'Order'}, inplace=True)
-# orders['Order'] = orders['Order'].str.split(',')
-# orders.head(20)
+# # See if there is any relationship between the product quantity and the total price
+# sns.regplot(data=data, x="Quantity", y="Total Price")
+# plt.show()
+
+# # You can see that the product price has a linear relationship with the total price,
+# # and you can make simple predictions
+# # %%
+# # Linear Regression Model Prediction
+
+# X = data["Quantity"].tolist()
+# X = np.array(X).reshape(-1, 1)
+# y = data["Total Price"]
+# X_train, X_test, y_train, y_test = train_test_split(X,
+#                                                     y,
+#                                                     test_size=0.3,
+#                                                     random_state=0)
+# model = LinearRegression()
+# model = model.fit(X_train, y_train)
+# model.score(X_test, y_test)
+
+# # It can be seen that the accuracy is 0.03.
+# # %%
+# # draw the learning curve
+# train_sizes, train_loss, test_loss = learning_curve(
+#     LinearRegression(), X, y, train_sizes=[0.1, 0.25, 0.5, 0.75, 1])
+# train_mean = np.mean(train_loss, axis=1)
+# test_mean = np.mean(test_loss, axis=1)
+# plt.plot(train_sizes, train_mean, label="Training")
+# plt.plot(train_sizes, test_mean, label="Cross-validation")
+# plt.xlabel("Training sizes")
+# plt.ylabel("score")
+# plt.legend()
+# plt.show()
+
+# # %%
+# data["date"] = pd.to_datetime(data['Order Date']).dt.date
+# data
+
+# # %%
+# # get the values that are unique
+# unique_data = data.drop_duplicates(subset=["Item Name"])
+# unique_data
 
 # # %%
 
-# # Popular the table
-# for Order in orders['Order']:
-#     associations.loc[Order, Order] += 1
-# # %%
-# associations.iloc[:4, :4]
-# # %%
-# # As this table is very large, we are going to restrict ourselves only to the
-# # pairs within the top 20 best-selling items.
+# # Getting the count of the Items that are ordered as a total
 
-# associations_top = associations.loc[list(top_20.index), list(top_20.index)]
+# count = data.groupby(['Item Name']).count().reset_index()
+# count = count.iloc[:, :2]
+# count.columns = ['Item Name', "Count"]
+# count
 
-# for i in range(associations_top.shape[0]):
-#     for j in range(i, associations_top.shape[0]):
-#         associations_top.iloc[i, j] = 0
 
-# associations_top.iloc[:5, :5]
 # # %%
-# # We will generate a heat map to visually identify which are the most common pairs.
-# plt.figure(figsize=(12, 8))
-# plt.title('Common sold together items')
-# sns.heatmap(associations_top, cmap="Greens", annot=False)
-# %%
-# data.columns.is_unique
-# data.columns.duplicated()
-# data.loc[:, ~data.columns.duplicated()]
+
+# # joining the product price column to the above created data frame
+
+# count_1 = count.merge(unique_data, on="Item Name", how="left")
+# count_1 = count_1[["Item Name", "Count", "Product Price"]]
+# count_1 = count_1.sort_values(by="Count", ascending=False)
+# count_1
+
 # # %%
-# df.columns.is_unique
-# df.columns.duplicated()
-# df.loc[:, ~df.columns.duplicated()]
-# %%
+# sns.scatterplot(x="Count", y="Product Price", data=count_1)
+# plt.xlim(0, 1000)
+
+
+
+# # Greater the product price lower are the number of orders placed
+
+
+# # %%
+
+# date_count = data['date'].nunique()
+# date_count
+
+# # %%
+
+# sns.scatterplot(data=date_count, x="date", y="count")
+
+# # %%
+# count_1['average_orders_per_day'] = count_1['Count']/date_count
+# count_1
+
+# # This gives the average number of orders that an item is being ordered in a day.
+# # %%
+
+
+# # Pairs of best-selling items
+# # We are going to visualize which are the items that are bought the most together
+
+# # all_items = list(data['Item Name'].unique())
+
+# # # association table
+
+# # associations = pd.DataFrame(index=all_items, columns=all_items)
+# # associations.fillna(0, inplace=True)
+# # associations.iloc[:4, :4]
+# # # %%
+# # # We are going to populate the previous table by counting in each entry the number
+# # # of times that a pair of items was requested in different orders.
+# # orders = data.groupby('Order Number')['Item Name'].apply(
+# #     lambda x: ','.join(x)).reset_index()
+# # orders.rename(columns={'Item Name': 'Order'}, inplace=True)
+# # orders['Order'] = orders['Order'].str.split(',')
+# # orders.head(20)
+
+# # # %%
+
+# # # Popular the table
+# # for Order in orders['Order']:
+# #     associations.loc[Order, Order] += 1
+# # # %%
+# # associations.iloc[:4, :4]
+# # # %%
+# # # As this table is very large, we are going to restrict ourselves only to the
+# # # pairs within the top 20 best-selling items.
+
+# # associations_top = associations.loc[list(top_20.index), list(top_20.index)]
+
+# # for i in range(associations_top.shape[0]):
+# #     for j in range(i, associations_top.shape[0]):
+# #         associations_top.iloc[i, j] = 0
+
+# # associations_top.iloc[:5, :5]
+# # # %%
+# # # We will generate a heat map to visually identify which are the most common pairs.
+# # plt.figure(figsize=(12, 8))
+# # plt.title('Common sold together items')
+# # sns.heatmap(associations_top, cmap="Greens", annot=False)
+# # %%
+# # data.columns.is_unique
+# # data.columns.duplicated()
+# # data.loc[:, ~data.columns.duplicated()]
+# # # %%
+# # df.columns.is_unique
+# # df.columns.duplicated()
+# # df.loc[:, ~df.columns.duplicated()]
+# # %%
