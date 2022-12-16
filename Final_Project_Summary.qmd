@@ -1,0 +1,52 @@
+---
+title: "Indian Restaurant- Raising the profit of an Indian takeaway restaurant by
+        giving marketing suggestions of association supported by data."
+author: Amjad Altuwayjiri  - Kismat Khatri - Sai Dontukurti
+format:
+  html:
+    code-fold: true
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    toc-float: true
+  pdf:
+    number-sections: true
+    toc: true
+    toc-depth: 3
+jupyter: python3
+---
+
+
+
+# Introduction  
+
+**Python Class 01**  
+
+
+
+# Introduction -
+
+
+##  
+
+```{python}
+
+
+```
+
+
+
+```{python}
+
+```
+
+## 
+
+```{python}
+#| label: test-print2
+
+
+```
+
+
+
