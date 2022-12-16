@@ -560,19 +560,22 @@ plt.xlabel('Day of week')
 plt.ylabel('Average number of orders')
 plt.title('Average orders by day of week')
 plt.xticks(rotation=90)
+
 # The graph shows that the day with the highest average number of orders is Saturday.
-# Interestingly, more averages are performed on Friday than on Sundays.
+# Interestingly, more averages are performed on Friday than on Sundays.  
+# We have to point out that UK weekends are saturday and sunday. Therefore we can say that the average number of orders in the weekends is higher than the weekdays.
+
 
 # %%
 # We will visualize sales over time considering monthly time periods
 print('First Sale: ', data['Order Date'].min())
 print('Last Sale: ', data['Order Date'].max())
 # %%
-# We will then consider the dates between January 2016 and December 2019.
+# We will then consider the dates between January 2015 and December 2019.
 
 months = []
 
-for year in range(2016, 2020):
+for year in range(2015, 2020):
     for month in range(1, 13):
         d = datetime.date(year, month, 1)
         months.append(d)
@@ -584,8 +587,6 @@ monthly.head()
 # Now we will assign each month its total sales.
 
 # %%
-
-
 def sales_month(date):
     year_month = date.strftime('%y/%m')
     data1 = data[data['date'].str[:5] == year_month].copy()
@@ -601,11 +602,14 @@ plt.plot(monthly['month'], monthly['total'])
 plt.xlabel('Date')
 plt.ylabel('Total sales (POUND)')
 plt.title('Total monthly sales')
+
 # You can see that monthly sales had been growing up to a point in the middle of
 # 2019, where they suffered a big drop. Let's identify this point.
 # %%
+# Finding the monthly  total sales of year 2019.
 monthly[monthly['month'] >= datetime.date(2019, 1, 1)]
-# The month in which sales fell was August 2019.
+
+# The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.
 # %%
 
 # We are going to visualize the distribution of the cost of the orders to the restaurant.
@@ -626,7 +630,8 @@ plt.title('Order price distribution')
 p_95 = order_totals['total'].describe(percentiles=[0.95])['95%']
 print('95% of the orders are less than or equal to {percentile} Pound'.format(
     percentile=p_95))
-# 95% of the orders are less than or equal to 62.2 USD
+# 95% of the orders are less than or equal to 62.2 Pound.
+
 # Let's consider the distribution for the total price of orders less than 63 USD.
 
 # %%
