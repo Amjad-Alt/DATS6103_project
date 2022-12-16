@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.280">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Amjad Altuwayjiri, Kismat Khatri, Sai Dontukurti">
+
+<title>Indian Restaurant- Raising the profit of an Indian takeaway restaurant by giving marketing suggestions of association supported by data.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="Final_Project_Summary_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Final_Project_Summary_files/libs/quarto-html/quarto.js"></script>
+<script src="Final_Project_Summary_files/libs/quarto-html/popper.min.js"></script>
+<script src="Final_Project_Summary_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Final_Project_Summary_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Final_Project_Summary_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Final_Project_Summary_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Final_Project_Summary_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Final_Project_Summary_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Final_Project_Summary_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="toc-section-number">1</span>  Introduction</a></li>
+  <li><a href="#smart-questions" id="toc-smart-questions" class="nav-link" data-scroll-target="#smart-questions"><span class="toc-section-number">2</span>  SMART Questions</a></li>
+  <li><a href="#literature-review" id="toc-literature-review" class="nav-link" data-scroll-target="#literature-review"><span class="toc-section-number">3</span>  Literature Review</a></li>
+  <li><a href="#description-of-data" id="toc-description-of-data" class="nav-link" data-scroll-target="#description-of-data"><span class="toc-section-number">4</span>  Description Of Data</a></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis"><span class="toc-section-number">5</span>  Analysis</a>
+  <ul class="collapse">
+  <li><a href="#eda-and-graphs" id="toc-eda-and-graphs" class="nav-link" data-scroll-target="#eda-and-graphs"><span class="toc-section-number">5.1</span>  EDA and Graphs</a></li>
+  <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling"><span class="toc-section-number">5.2</span>  Modeling</a></li>
+  <li><a href="#results-and-interpretation" id="toc-results-and-interpretation" class="nav-link" data-scroll-target="#results-and-interpretation"><span class="toc-section-number">5.3</span>  Results and Interpretation</a></li>
+  </ul></li>
+  <li><a href="#limitations-other-considerations" id="toc-limitations-other-considerations" class="nav-link" data-scroll-target="#limitations-other-considerations"><span class="toc-section-number">6</span>  Limitations &amp; Other Considerations</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="toc-section-number">7</span>  Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="toc-section-number">8</span>  References</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Indian Restaurant- Raising the profit of an Indian takeaway restaurant by giving marketing suggestions of association supported by data.</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Amjad Altuwayjiri, Kismat Khatri, Sai Dontukurti </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+<p>Restaurants play a crucial role in a nation’ s economy and culture. Most of us have visited at least once, whether it was for social events or a fast snack. Given the recent increase in food trucks and popup restaurants, it is crucial for the business owner to decide when and where to create new restaurants because doing so requires a significant investment of time, money, and effort. This raises the issue of determining the appropriate time and location to establish a new restaurant.The business environment is changing quickly in the restaurant industry. The introduction of several restaurants with varied features or unique themes serves as a sign of this. “The rise of food and beverage businesses is still documented as strong growth in various parts of the world. Due to the increasing expansion of the restaurant industry, there is currently competition among restaurant business owners. As a result, restaurant owners must be well-prepared for this competition, which spans everything from restaurant concepts to product innovation and operational systems.</p>
+<p>One of the reasons for the growth of the restaurant industry is that the current food and beverage industry, particularly this restaurant, promises enormous profits and views people’s need to eat and drink as a basic necessity that must be met in order to exist. This is a chance that can be used as a successful business opportunity. It makes sense that there are so many restaurants with a variety of concepts, operational methods, and creativity with diverse product developments that showcase what these establishments have to offer to draw clients or notions that can be displayed to customers.</p>
+<p>Knowing the consumer’s preferences, their purchasing habits with regard to the products they frequently purchase, and their product purchase patterns, which can be seen through purchase transaction data, are all necessary for developing the right sales strategy and creating the right target promotion. Data mining techniques can be used to extract information from stored transaction data in order to create new data or data patterns. For instance, data to determine the sales trends in relation to the menu association rules. A priori algorithm, also known as market basket analysis, is a technique that may be used to examine customer purchasing behavior and generate association rules using the “if then” pattern.</p>
+</section>
+<section id="smart-questions" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> SMART Questions</h1>
+<p>With the intention of focusing the project to Raising the profit of an Indian takeaway restaurant by giving marketing suggestions of association supported by data, we focused on recent data for Indian takeaway restaurant’s dataset placed in London, UK . In particular, we inquired into to two aspects of Indian restaurant which is given below:</p>
+<p>Quantity:</p>
+<ul>
+<li><p>What is the most ordered product?</p></li>
+<li><p>What is the least ordered product?</p></li>
+<li><p>What is the quantity of product ordered each day, week, year?</p></li>
+</ul>
+<p>Profit:</p>
+<ul>
+<li><p>What is the average profit of the day, week, year?</p></li>
+<li><p>How to raise the profit by using role of association?</p></li>
+</ul>
+</section>
+<section id="literature-review" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Literature Review</h1>
+</section>
+<section id="description-of-data" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Description Of Data</h1>
+</section>
+<section id="analysis" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Analysis</h1>
+<section id="eda-and-graphs" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="eda-and-graphs"><span class="header-section-number">5.1</span> EDA and Graphs</h2>
+</section>
+<section id="modeling" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="modeling"><span class="header-section-number">5.2</span> Modeling</h2>
+</section>
+<section id="results-and-interpretation" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="results-and-interpretation"><span class="header-section-number">5.3</span> Results and Interpretation</h2>
+</section>
+</section>
+<section id="limitations-other-considerations" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Limitations &amp; Other Considerations</h1>
+</section>
+<section id="conclusion" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Conclusion</h1>
+<p>As a result of the study’s findings, the analysis of the application to determine the sales pattern (item association rules) in the Indian restaurant Takeaways that was submitted in earlier chapters, and the data mining technique used to uncover new information patterns, it can be said that the following:</p>
+<ol type="1">
+<li><p>The employment of a priori algorithms in the field of data mining is known to provide new, useful information patterns that may be utilized to identify sales patterns (item association rules).</p></li>
+<li><p>Indian&nbsp;restaurants can use item association (menu) rules in consumer purchase patterns to inform their promotional development strategies based on items (menus) bought at the same time to increase sales. This application of knowing the sales pattern (item association rule) is made possible by the implementation of an a priori data mining science algorithm.</p></li>
+<li><p>Compared to applying promotional methods manually, this program generates item association rules or menu combinations in customer purchase patterns that are precise and on-target.</p></li>
+</ol>
+</section>
+<section id="references" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> References</h1>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
