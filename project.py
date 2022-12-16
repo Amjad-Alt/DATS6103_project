@@ -312,6 +312,10 @@ print("Weekly:\n", data.groupby(
     [pd.Grouper(key='Order Date', freq='W-MON')])['Total Price'].sum().mean())
 print("Monthly:\n", data.groupby(
     [pd.Grouper(key='Order Date', freq='M')])['Total Price'].sum().mean())
+
+# The average of sum  of total price  per daily basis is 248.89 , per weekly 
+# basis is 1737.42198 and per monthly basis id 6441.9575.
+
 # %%
 # the data has no Null values
 
