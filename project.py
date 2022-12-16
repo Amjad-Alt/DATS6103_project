@@ -640,7 +640,7 @@ recommendations.loc[(recommendations['antecedents'] == {'Korma'}) & (
     recommendations['consequents'] == {'Naan'})]
 # check What could come with a specidic item
 # We should search for the lowest ordered items
-recommendations.loc[recommendations['antecedents'] == {'Korma'}]
+recommendations.loc[recommendations['consequents'] == {'Korma'}]
 # %%
 # %%
 
