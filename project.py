@@ -216,7 +216,7 @@ data = pd.read_csv("restaurant-1-orders.csv",  parse_dates=['Order Date'])
 # %%
 
 # Show number of obs and display full restaurant-1-orders head
-print('\nShow head and number of observarions in FULL Restaurant-1-orders data set...\n')
+print('\nShow head and number of observations in FULL Restaurant-1-orders data set...\n')
 print(f'Restaurant-1-orders observations: {len(data)}')
 display(data.head().style.set_sticky(axis="index"))
 

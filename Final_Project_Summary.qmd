@@ -1,8 +1,8 @@
 ---
 title: "Indian Restaurant- Raising the profit of an Indian takeaway restaurant by
         giving marketing suggestions of association supported by data."
-author: Amjad Altuwayjiri, Kismat Khatri, Sai Dontukurti
-Date: system()
+author: "Amjad Altuwayjiri, Kismat Khatri, Sai Dontukurti"
+Date: "`python Sys.Date()`"
 format:
   html:
     code-fold: true
@@ -49,6 +49,29 @@ Profit:
 
 
 # Description Of Data
+Our data was sourced from the kaggle  and it is Indian takeaway restaurant’s dataset placed in London, UK from the year of 2015 to 2019. Our Dataset contain 74,818 number of observations  with 6 variable and then we have added extra 4 variable to the datatset.
+
+1.Order Number - receipt number.
+
+2.Order Date - date and time of the order.
+
+3.Item Name - name of the order in the menu.
+
+4.Quantity - number of orders per item for the receipt.
+
+5.Product Price - item price without counting the quantity.
+
+6.Total products - total number of items per receipt.
+
+7.Total Price​​ - total payment for a customer
+
+8.Time - time of order placing 
+
+9.Date -  Date of order placing
+
+10.Day - Name of the day in the week 
+
+
 
 # Analysis
 ## EDA and Graphs
@@ -56,8 +79,16 @@ Profit:
 ## Modeling
 
 ## Results and Interpretation
+Create some rules based on the outcomes of the application of the Apriori algorithm approach with association rules to the sales transaction data in an Indian restaurant. 
+
+-If a customer ordered Madras, Chutney Items, and  Papadum would then be ordered with a 89% confidence level. 
+
+-If a consumer ordered Butter Chicken and Papadum, Rice would then be ordered with a 95% confidence level.   
+
+-If a consumer orders Aloo, Rice, and Curry Items, Nana would then be ordered with a 80% confidence level. 
 
 # Limitations & Other Considerations
+It is the simplest, however the database takes up a lot of memory. The menu list's items could vary over time.
 
 # Conclusion
 As a result of the study's findings, the analysis of the application to determine the sales pattern (item association rules) in the Indian restaurant Takeaways that was submitted in earlier chapters, and the data mining technique used to uncover new information patterns, it can be said that the following: 
@@ -70,6 +101,14 @@ As a result of the study's findings, the analysis of the application to determin
 
 
 # References
+Kurnia, Y.,  Isharianto, Y.,  Giap, Y.C.,  Hermawan, A.,  & Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm.  1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.
+
+Siddamsetty, S., Vangala, R.R., Reddy, L.,& Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.
+
+Dhanawde, S.(2022). Food Sales Prediction System using Apriori
+Algorithm. International Journal of Creative Research Thoughts (IJCRT), Volume. 10, Issue 4, ISSN: 2320-2882.
+
+
 
 ```{python}
  
