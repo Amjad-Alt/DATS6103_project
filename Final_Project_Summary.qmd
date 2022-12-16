@@ -1,0 +1,134 @@
+---
+title: "Indian Restaurant- Raising the profit of an Indian takeaway restaurant by
+        giving marketing suggestions of association supported by data."
+author: "Amjad Altuwayjiri, Kismat Khatri, Sai Dontukurti"
+Date: "`python Sys.Date()`"
+format:
+  html:
+    code-fold: true
+    number-sections: true
+    toc: true
+    toc-depth: 3
+    toc-float: true
+  pdf:
+    number-sections: true
+    toc: true
+    toc-depth: 3
+jupyter: python3
+---
+
+
+
+# Introduction  
+ Restaurants play a crucial role in a nation' s economy and culture. Most of us have visited at least once, whether it was for social events or a fast snack. Given the recent increase in food trucks and popup restaurants, it is crucial for the business owner to decide when and where to create new restaurants because doing so requires a significant investment of time, money, and effort. This raises the issue of determining the appropriate time and location to establish a new restaurant.The business environment is changing quickly in the restaurant industry. The introduction of several restaurants with varied features or unique themes serves as a sign of this. "The rise of food and beverage businesses is still documented as strong growth in various parts of the world. Due to the increasing expansion of the restaurant industry, there is currently competition among restaurant business owners. As a result, restaurant owners must be well-prepared for this competition, which spans everything from restaurant concepts to product innovation and operational systems. 
+
+ One of the reasons for the growth of the restaurant industry is that the current food and beverage industry, particularly this restaurant, promises enormous profits and views people's need to eat and drink as a basic necessity that must be met in order to exist. This is a chance that can be used as a successful business opportunity. It makes sense that there are so many restaurants with a variety of concepts, operational methods, and creativity with diverse product developments that showcase what these establishments have to offer to draw clients or notions that can be displayed to customers.
+
+ Knowing the consumer's preferences, their purchasing habits with regard to the products they frequently purchase, and their product purchase patterns, which can be seen through purchase transaction data, are all necessary for developing the right sales strategy and creating the right target promotion. Data mining techniques can be used to extract information from stored transaction data in order to create new data or data patterns. For instance, data to determine the sales trends in relation to the menu association rules. A priori algorithm, also known as market basket analysis, is a technique that may be used to examine customer purchasing behavior and generate association rules using the "if then" pattern.
+
+
+# SMART Questions
+With the intention of focusing the project to Raising the profit of an Indian takeaway restaurant by giving marketing suggestions of association supported by data, we focused on recent data for Indian takeaway restaurant’s dataset placed in London, UK . In particular, we inquired into to two  aspects of Indian restaurant which is given below:
+
+Quantity:
+
+- What is the most ordered product?
+
+- What is the least ordered product?
+
+- What is the quantity of product ordered each day, week, year?
+
+Profit:
+
+- What is the average profit of the day, week, year?
+
+- How to raise the profit by using role of association?
+
+
+# Literature Review
+
+
+# Description Of Data
+Our data was sourced from the kaggle  and it is Indian takeaway restaurant’s dataset placed in London, UK from the year of 2015 to 2019. Our Dataset contain 74,818 number of observations  with 6 variable and then we have added extra 4 variable to the datatset.
+
+1.Order Number - receipt number.
+
+2.Order Date - date and time of the order.
+
+3.Item Name - name of the order in the menu.
+
+4.Quantity - number of orders per item for the receipt.
+
+5.Product Price - item price without counting the quantity.
+
+6.Total products - total number of items per receipt.
+
+7.Total Price​​ - total payment for a customer
+
+8.Time - time of order placing 
+
+9.Date -  Date of order placing
+
+10.Day - Name of the day in the week 
+
+
+
+# Analysis
+## EDA and Graphs
+
+## Modeling
+
+## Results and Interpretation
+Create some rules based on the outcomes of the application of the Apriori algorithm approach with association rules to the sales transaction data in an Indian restaurant. 
+
+-If a customer ordered Madras, Chutney Items, and  Papadum would then be ordered with a 89% confidence level. 
+
+-If a consumer ordered Butter Chicken and Papadum, Rice would then be ordered with a 95% confidence level.   
+
+-If a consumer orders Aloo, Rice, and Curry Items, Nana would then be ordered with a 80% confidence level. 
+
+# Limitations & Other Considerations
+It is the simplest, however the database takes up a lot of memory. The menu list's items could vary over time.
+
+# Conclusion
+As a result of the study's findings, the analysis of the application to determine the sales pattern (item association rules) in the Indian restaurant Takeaways that was submitted in earlier chapters, and the data mining technique used to uncover new information patterns, it can be said that the following: 
+
+1. The employment of a priori algorithms in the field of data mining is known to provide new, useful information patterns that may be utilized to identify sales patterns (item association rules).
+
+2. Indian restaurants can use item association (menu) rules in consumer purchase patterns to inform their promotional development strategies based on items (menus) bought at the same time to increase sales. This application of knowing the sales pattern (item association rule) is made possible by the implementation of an a priori data mining science algorithm. 
+
+3. Compared to applying promotional methods manually, this program generates item association rules or menu combinations in customer purchase patterns that are precise and on-target.
+
+
+# References
+Kurnia, Y.,  Isharianto, Y.,  Giap, Y.C.,  Hermawan, A.,  & Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm.  1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.
+
+Siddamsetty, S., Vangala, R.R., Reddy, L.,& Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.
+
+Dhanawde, S.(2022). Food Sales Prediction System using Apriori
+Algorithm. International Journal of Creative Research Thoughts (IJCRT), Volume. 10, Issue 4, ISSN: 2320-2882.
+
+
+
+```{python}
+ 
+
+
+```
+
+
+
+```{python}
+
+```
+
+
+
+```{python}
+
+
+
+```
+
+
+

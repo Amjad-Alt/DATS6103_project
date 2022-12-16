@@ -42,6 +42,168 @@ pd.set_option('display.precision', 3)
 # Select Color Palette
 sns.set_palette('Set2')
 
+
+#RGB values of pallette
+#print(sns.color_palette('Set2').as_hex())
+#col_pallette=['#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f', '#e5c494', '#b3b3b3']
+
+##################################################
+#<<<<<<<<<<<<<<<< End of Section >>>>>>>>>>>>>>>>#
+
+#%%
+
+###############
+## Functions ##
+###############
+
+def clean_strnumbers_to_numeric(val):
+    
+    try:
+        #Attempt to identify and extract the integer value
+        regex=r'^[0-9]+'
+        new_val=re.findall(regex, val)[0]
+        #Convert to integer then float and return if positive, Nan if less than 0
+        #new_val=float(int(new_val))
+        new_val=int(new_val)
+        #print(f'{type(new_val)} {new_val}')
+        return (new_val if new_val>=0 else np.nan) 
+    except:
+        #Catch all for situations not covered
+        return np.nan
+    
+    #Note:
+    # This is working, but values end up being float in df.
+    # That is what is desired, but only converted to int here.
+    # It's working, so I am leaving it alone.
+
+##################################################
+
+def clean_int_rate(val):
+    
+    try:
+        #remove any whitespace
+        new_val=val.strip()
+        #Attempt to convert directly to float
+        new_val=float(val)
+        #return NaN if negative
+        return (new_val if new_val>=0 else np.nan)
+    except:
+        pass
+    
+    #Convert interest rate to 0, if exempt
+    if val=='Exempt':
+        return 0
+    
+    #Catch all for situations not covered
+    return np.nan
+
+    #Note:
+    # Currently, Exempt is being turned into int_rate of 0
+    # Is this desired? Other conversion better?
+
+##################################################
+
+def make_scatter(data, x, y, xlab, ylab, title):
+    
+    plt.figure(facecolor="white")
+    ax1=sns.regplot(data=data, x=x, y=y, color="#b3b3b3", scatter_kws={'alpha':0.03})
+    ax1.lines[0].set_color("#e5c494")
+    ax1.set_xlabel(xlab)
+    ax1.set_ylabel(ylab)
+    plt.ticklabel_format(style='plain')
+    plt.xticks(rotation=45)
+    #plt.title("Property Value Against Community Factors")
+    #plt.title("\n\n\n\n\n")
+    plt.title(title)
+    plt.show()
+    
+    return None
+
+##################################################
+
+def make_hist_kde(data, x, bins, hue, replacements):
+    #change line color 
+    #source: https://github.com/mwaskom/seaborn/issues/2344
+    
+    plt.figure(facecolor="white")
+    
+    #Initialize graph
+    ax1=sns.histplot(data=data, x=x, bins=bins, color="#8da0cb", hue=hue,
+                     multiple="stack", kde=True, line_kws=dict(linewidth=4))
+    #Change color of KDE line
+    ax1.lines[0].set_color("#e78ac3")
+    
+    #Rename Label
+    xlabel = ax1.get_xlabel()
+    if xlabel in replacements.keys():
+        ax1.set_xlabel(replacements[xlabel])
+        title=f"Distribution of {replacements[xlabel]}"
+    
+    #Format and display
+    plt.ticklabel_format(style='plain')
+    plt.xticks(rotation=45)
+    plt.title(title)
+    plt.show()
+
+    return None
+
+##################################################
+
+def create_vif_table(df, vars, replacements):
+
+    vif_filter = df.iloc[:, np.r_[vars]]
+    
+    #for i,feature in enumerate(vif_filter):
+    #    if feature in replacements.keys():
+    #        vif_filter[i]=replacements[feature]
+    
+    # VIF dataframe
+    vif_data = pd.DataFrame()
+    vif_data["Feature"] = vif_filter.columns
+    
+    
+    vif_data["Feature"]=vif_data["Feature"].apply(lambda x: replacements[x])
+    
+    # calculating VIF for each feature
+    vif_data["VIF"] = [variance_inflation_factor(vif_filter.values, i)
+                    for i in range(len(vif_filter.columns))]
+
+    #Display results
+    display(vif_data)
+    
+    return None
+
+##################################################
+
+def create_count_df(df, col_name):
+    
+    #Get count of every level of variable
+    val_count=df[col_name].value_counts()
+    #Create DF of the counts
+    count_df=pd.DataFrame({"categorical_levels": val_count.index,
+                  "count": val_count.values})
+    #Convert level counts into percentages of total
+    #freq_df['freq']=round(freq_df['freq'].apply(lambda x: x/sum(freq_df['freq'])), 3)
+    
+    return count_df
+
+##################################################
+
+def create_freq_df(df, col_name):
+    
+    freq_df=create_count_df(df,col_name).rename(columns={'count':'freq'})
+    freq_df['freq']=round(freq_df['freq'].apply(lambda x: x/sum(freq_df['freq'])), 3)
+    
+    return freq_df
+
+##################################################
+
+    #************************#
+##### NEW FUNCTIONS ADD HERE #####
+    #************************#
+
+
+
 ##################################################
 #<<<<<<<<<<<<<<<< End of Section >>>>>>>>>>>>>>>>#
 # %%
@@ -54,7 +216,7 @@ data = pd.read_csv("restaurant-1-orders.csv",  parse_dates=['Order Date'])
 # %%
 
 # Show number of obs and display full restaurant-1-orders head
-print('\nShow head and number of observarions in FULL Restaurant-1-orders data set...\n')
+print('\nShow head and number of observations in FULL Restaurant-1-orders data set...\n')
 print(f'Restaurant-1-orders observations: {len(data)}')
 display(data.head().style.set_sticky(axis="index"))
 
@@ -79,10 +241,15 @@ data.info()
 data.describe()
 
 # %%
-# Added new column Total Price
+# Added new column Total Price to get total payment for a customer
+
 data["Total Price"] = data["Product Price"] * data["Quantity"]
 data
 
+# %%
+print('Number of unique item name: ', len(data['Item Name'].unique()))
+
+# the number of unique  item name is 248
 # %%
 # Frequency for Top 20 sold items
 
@@ -92,21 +259,19 @@ top_20 = item_freq.tail(20)
 top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Top 20 sold items')
 
+# In the whole data of 248 items  of 2016-2019 years the most ordered product 
+# is Plain Papadum being ordered 10000 times
 # %%
 
-top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
-plt.title('Top 20 sold items')
+# top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
+# plt.title('Top 20 sold items')
 
+# # Pie diagram for the top 20 items that are being sold based on their quantity.
 
-# Pie diagram for the top 20 items that are being sold based on their quantity.
+# # %%
+# sns.lineplot(data=top_20, y="Item Name", x='Quantity')
 
-
-# %%
-sns.lineplot(data=top_20, y="Item Name", x='Quantity')
-
-# line plot for top 20 items using seaborn library
-# %%
-print('Number of unique item name: ', len(data['Item Name'].unique()))
+# # line plot for top 20 items using seaborn library
 
 # %%
 # Frequency For Least 20 Sold Items
@@ -117,23 +282,25 @@ top_20 = item_freq.head(20)
 top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Least 20 sold items')
 
-
+#On the other hand during the same time the least ordered product is 
+# multiple items of Prown, Kurma and Lamp Persion being ordered only once.
 # %%
 
-# %%
-sns.lineplot(data=top_20, y="Item Name", x='Quantity')
+# # %%
+# sns.lineplot(data=top_20, y="Item Name", x='Quantity')
 
-# lineplot for least 20 items
-# %%
-top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
-plt.title('Least 20 sold items')
+# # lineplot for least 20 items
+# # %%
+# top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
+# plt.title('Least 20 sold items')
 
-# pie chart for the least 20 items
+# # pie chart for the least 20 items
 # %%
-# Getting the average of Total price column with maximum and minimum Total price of orders
+# Getting the average of Total price i.e 5.968 column 
+# with maximum and minimum Total price of orders i.e 660.44 and 0.5.
 data1 = data["Total Price"].mean()
 print(data1)
-data["Total Price"].max()
+print(data["Total Price"].max())
 data["Total Price"].min()
 
 
@@ -146,6 +313,10 @@ print("Weekly:\n", data.groupby(
     [pd.Grouper(key='Order Date', freq='W-MON')])['Total Price'].sum().mean())
 print("Monthly:\n", data.groupby(
     [pd.Grouper(key='Order Date', freq='M')])['Total Price'].sum().mean())
+
+# The average of sum  of total price  per daily basis is 248.89 , per weekly 
+# basis is 1737.42198 and per monthly basis id 6441.9575.
+
 # %%
 # the data has no Null values
 
@@ -162,6 +333,7 @@ data = data.loc[data['Order Date'] >= '2016-08-01']
 #     [pd.Grouper(key='Order Date', freq='M')])['Quantity'].sum().mean())
 
 # %%
+
 # create relevant Database df1 for total and df2 for bombay aloo
 
 df = data[['Order Date', 'Quantity']]
@@ -267,7 +439,7 @@ eval_df = df[107:].reset_index(drop=True)
 eval_df['ypred'] = ypred
 eval_df = eval_df[['Order Date', 'Quantity', 'ypred']]
 eval_df.head()
-
+#%%
 # df2
 ypred2 = pd.Series(ypred2)
 eval_df2 = df2[107:].reset_index(drop=True)
@@ -321,30 +493,28 @@ print("Mean Squared Log Error:\n", mean_squared_log_error(ytest2, ypred2))
 # possibly tryign some of the other models mentioned above)
 # %%
 
-
 # Orders by time of day
 # We are going to calculate the average number of orders that are placed in each hour
 # of the day to give us an idea of ​​when the demand is greatest.
 # Add column with the time of the order
 data['hour'] = data['Order Date'].dt.hour
 data.sample(5)
+
 # %%
+# # Add column with date of order placing
 data['date'] = data['Order Date'].dt.strftime(
-    '%y/%m/%d')  # Add column with date
+    '%y/%m/%d')  
 data.sample(5)
 
+#%%
 # The way we will calculate the average orders per hour is as follows:
 # For a specified hour, we will calculate the number of orders that were taken at that hour considering
 # the average per day.
-# %%
-
 
 def avg_hour(hour):
     by_hour = data[data['hour'] == hour]
     avg = len(by_hour['Order Number'].unique()) / len(data['date'].unique())
     return avg
-
-
 hours = pd.DataFrame(sorted(data['hour'].unique()))
 
 hours.rename(columns={0: 'hour'}, inplace=True)
@@ -356,24 +526,11 @@ hours.head()
 hours.plot.bar(figsize=(11, 6), rot=0)
 plt.xlabel('Hour')
 plt.title('Average number of orders by hour of the day')
-# As can be seen, the hours at which the greatest number of orders are made on average
-# are 5, 6, and 7:00 p.m., with a peak at 6:00 p.m.
+# As can be seen, Usually customers start ordering from 10 o'clock 
+#  in the morning. The rush horse start from 4 o'clock and the peak is
+#  at 6 then orders decline until 12 o'clock in the evening
 
-# %%
 
-# Trying someother plots for the above smart question i.e., avergae number of orders in an hour per each day
-
-# %%
-sns.scatterplot(data=data, x="hour", y="Quantity", s=5)
-sns.rugplot(data=data, x="hour", y="Quantity", lw=1, alpha=.005)
-
-# %%
-sns.pointplot(data=data, x="hour", y="Quantity")
-# %%
-sns.boxenplot(data=data, x="hour", y="Quantity")
-
-# %%
-sns.swarmplot(data=data, x="hour", y="Quantity")
 # %%
 # Orders by day of the week
 # We are going to do the same analysis as before but this time considering the
@@ -403,19 +560,22 @@ plt.xlabel('Day of week')
 plt.ylabel('Average number of orders')
 plt.title('Average orders by day of week')
 plt.xticks(rotation=90)
+
 # The graph shows that the day with the highest average number of orders is Saturday.
-# Interestingly, more averages are performed on Friday than on Sundays.
+# Interestingly, more averages are performed on Friday than on Sundays.  
+# We have to point out that UK weekends are saturday and sunday. Therefore we can say that the average number of orders in the weekends is higher than the weekdays.
+
 
 # %%
 # We will visualize sales over time considering monthly time periods
 print('First Sale: ', data['Order Date'].min())
 print('Last Sale: ', data['Order Date'].max())
 # %%
-# We will then consider the dates between January 2016 and December 2019.
+# We will then consider the dates between January 2015 and December 2019.
 
 months = []
 
-for year in range(2016, 2020):
+for year in range(2015, 2020):
     for month in range(1, 13):
         d = datetime.date(year, month, 1)
         months.append(d)
@@ -427,8 +587,6 @@ monthly.head()
 # Now we will assign each month its total sales.
 
 # %%
-
-
 def sales_month(date):
     year_month = date.strftime('%y/%m')
     data1 = data[data['date'].str[:5] == year_month].copy()
@@ -444,11 +602,14 @@ plt.plot(monthly['month'], monthly['total'])
 plt.xlabel('Date')
 plt.ylabel('Total sales (POUND)')
 plt.title('Total monthly sales')
+
 # You can see that monthly sales had been growing up to a point in the middle of
 # 2019, where they suffered a big drop. Let's identify this point.
 # %%
+# Finding the monthly  total sales of year 2019.
 monthly[monthly['month'] >= datetime.date(2019, 1, 1)]
-# The month in which sales fell was August 2019.
+
+# The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.
 # %%
 
 # We are going to visualize the distribution of the cost of the orders to the restaurant.
@@ -469,7 +630,8 @@ plt.title('Order price distribution')
 p_95 = order_totals['total'].describe(percentiles=[0.95])['95%']
 print('95% of the orders are less than or equal to {percentile} Pound'.format(
     percentile=p_95))
-# 95% of the orders are less than or equal to 62.2 USD
+# 95% of the orders are less than or equal to 62.2 Pound.
+
 # Let's consider the distribution for the total price of orders less than 63 USD.
 
 # %%
@@ -666,150 +828,151 @@ Item_sorted = Item_unique.sort_values('Name', ignore_index=True)
 Item_sorted.head()
 
 
-# %%
-# See if there is any relationship between the product quantity and the total price
-sns.regplot(data=data, x="Quantity", y="Total Price")
-plt.show()
+# # %%
+# # See if there is any relationship between the product quantity and the total price
+# sns.regplot(data=data, x="Quantity", y="Total Price")
+# plt.show()
 
-# You can see that the product price has a linear relationship with the total price,
-# and you can make simple predictions
-# %%
-# Linear Regression Model Prediction
+# # You can see that the product price has a linear relationship with the total price,
+# # and you can make simple predictions
+# # %%
+# # Linear Regression Model Prediction
 
-X = data["Quantity"].tolist()
-X = np.array(X).reshape(-1, 1)
-y = data["Total Price"]
-X_train, X_test, y_train, y_test = train_test_split(X,
-                                                    y,
-                                                    test_size=0.3,
-                                                    random_state=0)
-model = LinearRegression()
-model = model.fit(X_train, y_train)
-model.score(X_test, y_test)
+# X = data["Quantity"].tolist()
+# X = np.array(X).reshape(-1, 1)
+# y = data["Total Price"]
+# X_train, X_test, y_train, y_test = train_test_split(X,
+#                                                     y,
+#                                                     test_size=0.3,
+#                                                     random_state=0)
+# model = LinearRegression()
+# model = model.fit(X_train, y_train)
+# model.score(X_test, y_test)
 
-# It can be seen that the accuracy is 0.03.
-# %%
-# draw the learning curve
-train_sizes, train_loss, test_loss = learning_curve(
-    LinearRegression(), X, y, train_sizes=[0.1, 0.25, 0.5, 0.75, 1])
-train_mean = np.mean(train_loss, axis=1)
-test_mean = np.mean(test_loss, axis=1)
-plt.plot(train_sizes, train_mean, label="Training")
-plt.plot(train_sizes, test_mean, label="Cross-validation")
-plt.xlabel("Training sizes")
-plt.ylabel("score")
-plt.legend()
-plt.show()
+# # It can be seen that the accuracy is 0.03.
+# # %%
+# # draw the learning curve
+# train_sizes, train_loss, test_loss = learning_curve(
+#     LinearRegression(), X, y, train_sizes=[0.1, 0.25, 0.5, 0.75, 1])
+# train_mean = np.mean(train_loss, axis=1)
+# test_mean = np.mean(test_loss, axis=1)
+# plt.plot(train_sizes, train_mean, label="Training")
+# plt.plot(train_sizes, test_mean, label="Cross-validation")
+# plt.xlabel("Training sizes")
+# plt.ylabel("score")
+# plt.legend()
+# plt.show()
 
-# %%
+ # %%
 data["date"] = pd.to_datetime(data['Order Date']).dt.date
 data
 
-# %%
-# get the values that are unique
-unique_data = data.drop_duplicates(subset=["Item Name"])
-unique_data
+# Here we are just trying to get the date from the order date as it is having both date and time values.
+ # %%
+# # get the values that are unique
+ unique_data = data.drop_duplicates(subset=["Item Name"])
+ unique_data
 
-# %%
+# Here we can see 
+ # %%
 
-# Getting the count of the Items that are ordered as a total
+# # Getting the count of the Items that are ordered as a total
 
 count = data.groupby(['Item Name']).count().reset_index()
 count = count.iloc[:, :2]
 count.columns = ['Item Name', "Count"]
 count
 
-
-# %%
+# This gives the count of the Item names that the resturant sells which are present in the data set and there are 248 different Items.
+ # %%
 
 # joining the product price column to the above created data frame
 
 count_1 = count.merge(unique_data, on="Item Name", how="left")
-count_1 = count_1[["Item Name", "Count", "Product Price"]]
-count_1 = count_1.sort_values(by="Count", ascending=False)
-count_1
+ count_1 = count_1[["Item Name", "Count", "Product Price"]]
+ count_1 = count_1.sort_values(by="Count", ascending=False)
+ count_1
 
-# %%
-sns.scatterplot(x="Count", y="Product Price", data=count_1)
-plt.xlim(0, 1000)
+# Here we can see how many times each item has been ordered from 2016 to 2019.
+ # %%
+ sns.scatterplot(x="Count", y="Product Price", data=count_1)
+ plt.xlim(0, 1000)
 
-# %%
+#Here using the scatterplot we can see how the count of order based on their product price is related.
+
+#%%
 corr, _ = pearsonr(count_1["Product Price"], count_1["Count"])
 print('Pearsons correlation: %.3f' % corr)
-
-# Greater the product price lower are the number of orders placed
-
-
-# %%
-
-date_count = data['date'].nunique()
-date_count
-
-# %%
-
-sns.scatterplot(data=date_count, x="date", y="count")
-
-# %%
-count_1['average_orders_per_day'] = count_1['Count']/date_count
-count_1
+ # Greater the product price lower are the number of orders placed
 
 
-# This gives the average number of orders that an item is being ordered in a day.
+ # %%
 
-# %%
+ date_count = data['date'].nunique()
+ date_count
 
-sns.pointplot(data=count_1, x="hour", y="average_orders_per_day")
-# %%
+# We have data of the resturant for a total of 1207 days.
+ # %%
 
+ sns.scatterplot(data=date_count, x="date", y="count")
 
-# Pairs of best-selling items
-# We are going to visualize which are the items that are bought the most together
+ # %%
+ count_1['average_orders_per_day'] = count_1['Count']/date_count
+ count_1
 
-all_items = list(data['Item Name'].unique())
-
-# association table
-
-associations = pd.DataFrame(index=all_items, columns=all_items)
-associations.fillna(0, inplace=True)
-associations.iloc[:4, :4]
-# %%
-# We are going to populate the previous table by counting in each entry the number
-# of times that a pair of items was requested in different orders.
-orders = data.groupby('Order Number')['Item Name'].apply(
-    lambda x: ','.join(x)).reset_index()
-orders.rename(columns={'Item Name': 'Order'}, inplace=True)
-orders['Order'] = orders['Order'].str.split(',')
-orders.head(20)
-
-# %%
-
-# Popular the table
-for Order in orders['Order']:
-    associations.loc[Order, Order] += 1
-# %%
-associations.iloc[:4, :4]
-# %%
-# As this table is very large, we are going to restrict ourselves only to the
-# pairs within the top 20 best-selling items.
-
-associations_top = associations.loc[list(top_20.index), list(top_20.index)]
-
-for i in range(associations_top.shape[0]):
-    for j in range(i, associations_top.shape[0]):
-        associations_top.iloc[i, j] = 0
-
-associations_top.iloc[:5, :5]
-# %%
-# We will generate a heat map to visually identify which are the most common pairs.
-plt.figure(figsize=(12, 8))
-plt.title('Common sold together items')
-sns.heatmap(associations_top, cmap="Greens", annot=False)
-# %%
-# data.columns.is_unique
-# data.columns.duplicated()
-# data.loc[:, ~data.columns.duplicated()]
+ # This gives the average number of orders that an item is being ordered in a day.
+#%%
 # # %%
-# df.columns.is_unique
-# df.columns.duplicated()
-# df.loc[:, ~df.columns.duplicated()]
-# %%
+
+
+# # Pairs of best-selling items
+# # We are going to visualize which are the items that are bought the most together
+
+# # all_items = list(data['Item Name'].unique())
+
+# # # association table
+
+# # associations = pd.DataFrame(index=all_items, columns=all_items)
+# # associations.fillna(0, inplace=True)
+# # associations.iloc[:4, :4]
+# # # %%
+# # # We are going to populate the previous table by counting in each entry the number
+# # # of times that a pair of items was requested in different orders.
+# # orders = data.groupby('Order Number')['Item Name'].apply(
+# #     lambda x: ','.join(x)).reset_index()
+# # orders.rename(columns={'Item Name': 'Order'}, inplace=True)
+# # orders['Order'] = orders['Order'].str.split(',')
+# # orders.head(20)
+
+# # # %%
+
+# # # Popular the table
+# # for Order in orders['Order']:
+# #     associations.loc[Order, Order] += 1
+# # # %%
+# # associations.iloc[:4, :4]
+# # # %%
+# # # As this table is very large, we are going to restrict ourselves only to the
+# # # pairs within the top 20 best-selling items.
+
+# # associations_top = associations.loc[list(top_20.index), list(top_20.index)]
+
+# # for i in range(associations_top.shape[0]):
+# #     for j in range(i, associations_top.shape[0]):
+# #         associations_top.iloc[i, j] = 0
+
+# # associations_top.iloc[:5, :5]
+# # # %%
+# # # We will generate a heat map to visually identify which are the most common pairs.
+# # plt.figure(figsize=(12, 8))
+# # plt.title('Common sold together items')
+# # sns.heatmap(associations_top, cmap="Greens", annot=False)
+# # %%
+# # data.columns.is_unique
+# # data.columns.duplicated()
+# # data.loc[:, ~data.columns.duplicated()]
+# # # %%
+# # df.columns.is_unique
+# # df.columns.duplicated()
+# # df.loc[:, ~df.columns.duplicated()]
+# # %%
