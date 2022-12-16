@@ -100,6 +100,7 @@ The data for this project was sourced from Kaggle and consists of 74,818 observa
 # Analysis
 ## EDA and Graphs
 
+**Top 20 and Least 20 Sold Items**
 ```{python}
 item_freq = data.groupby('Item Name').agg({'Quantity': 'sum'})
 item_freq = item_freq.sort_values(by=['Quantity'])
@@ -116,6 +117,100 @@ plt.title('Least 20 sold items')
 
 
 We can see from the above two figure ,In the whole data of 248 items of 2015-2019 years the most ordered product  is Plain Papadum being ordered 10000 times. On the other hand during the same time the least ordered product is multiple items of Prown, Kurma and Lamp Persion being ordered only once.
+
+**Average Number of Orders by Hour of the Day**
+```{python}
+# Add column with the time of the order
+data['hour'] = data['Order Date'].dt.hour
+data.sample(5)
+
+# Add column with date of order placing
+data['date'] = data['Order Date'].dt.strftime(
+    '%y/%m/%d')  
+data.sample(5)
+
+def avg_hour(hour):
+    by_hour = data[data['hour'] == hour]
+    avg = len(by_hour['Order Number'].unique()) / len(data['date'].unique())
+    return avg
+hours = pd.DataFrame(sorted(data['hour'].unique()))
+
+hours.rename(columns={0: 'hour'}, inplace=True)
+hours['Average orders'] = hours['hour'].apply(avg_hour)
+
+hours.set_index('hour', inplace=True)
+hours.head()
+
+hours.plot.bar(figsize=(11, 6), rot=0)
+plt.xlabel('Hour')
+plt.title('Average number of orders by hour of the day')
+```
+
+
+From the above bar graph, we  visualized that Usually customers start ordering from 10 o'clock  in the morning. The rush horse start from 4 o'clock and the peak is at 6 then orders decline until 12 o'clock in the evening.
+
+**Average Orders by Day of Week**
+```{python}
+# Column with the name of the day
+data['day'] = data['Order Date'].dt.day_name()
+data.sample(5)
+
+def by_day(day):
+    data_day = data[data['day'] == day]
+    avg = len(data_day['Order Number'].unique()) / \
+        len(data_day['date'].unique())
+    return(avg)
+
+
+days = pd.DataFrame(['Monday', 'Tuesday', 'Wednesday',
+                    'Thursday', 'Friday', 'Saturday', 'Sunday'])
+days.rename(columns={0: 'day'}, inplace=True)
+days['avg_orders'] = days['day'].apply(by_day)
+days
+
+plt.bar(days['day'], days['avg_orders'])
+plt.xlabel('Day of week')
+plt.ylabel('Average number of orders')
+plt.title('Average orders by day of week')
+plt.xticks(rotation=90)
+```
+
+We see from the above graph for the days, Fridays and Saturdays are the most busiest days in the week, and we have to point out that UK weekends are saturday and sunday. Therefore we can say that the average number of orders in the weekends is higher than the weekdays.
+
+**Total Monthly Sales**
+```{python}
+print('First Sale: ', data['Order Date'].min())
+print('Last Sale: ', data['Order Date'].max())
+
+months = []
+
+for year in range(2015, 2020):
+    for month in range(1, 13):
+        d = datetime.date(year, month, 1)
+        months.append(d)
+
+monthly = pd.DataFrame(months)
+monthly.rename(columns={0: 'month'}, inplace=True)
+monthly.head()
+
+def sales_month(date):
+    year_month = date.strftime('%y/%m')
+    data1 = data[data['date'].str[:5] == year_month].copy()
+    total = (data1['Quantity'] * data1['Product Price']).sum()
+    return(total)
+
+
+monthly['total'] = monthly['month'].apply(sales_month)
+monthly.head()
+
+plt.plot(monthly['month'], monthly['total'])
+plt.xlabel('Date')
+plt.ylabel('Total sales (POUND)')
+plt.title('Total monthly sales')
+```
+
+From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.
+
 
 ## Modeling
 ### Apriori Algorithm
