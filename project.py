@@ -296,10 +296,11 @@ plt.title('Least 20 sold items')
 
 # # pie chart for the least 20 items
 # %%
-# Getting the average of Total price column with maximum and minimum Total price of orders
+# Getting the average of Total price i.e 5.968 column 
+# with maximum and minimum Total price of orders i.e 660.44 and 0.5.
 data1 = data["Total Price"].mean()
 print(data1)
-data["Total Price"].max()
+print(data["Total Price"].max())
 data["Total Price"].min()
 
 
@@ -332,6 +333,7 @@ data = data.loc[data['Order Date'] >= '2016-08-01']
 #     [pd.Grouper(key='Order Date', freq='M')])['Quantity'].sum().mean())
 
 # %%
+
 # create relevant Database df1 for total and df2 for bombay aloo
 
 df = data[['Order Date', 'Quantity']]
@@ -437,7 +439,7 @@ eval_df = df[107:].reset_index(drop=True)
 eval_df['ypred'] = ypred
 eval_df = eval_df[['Order Date', 'Quantity', 'ypred']]
 eval_df.head()
-
+#%%
 # df2
 ypred2 = pd.Series(ypred2)
 eval_df2 = df2[107:].reset_index(drop=True)
@@ -491,30 +493,28 @@ print("Mean Squared Log Error:\n", mean_squared_log_error(ytest2, ypred2))
 # possibly tryign some of the other models mentioned above)
 # %%
 
-
 # Orders by time of day
 # We are going to calculate the average number of orders that are placed in each hour
 # of the day to give us an idea of ​​when the demand is greatest.
 # Add column with the time of the order
 data['hour'] = data['Order Date'].dt.hour
 data.sample(5)
+
 # %%
+# # Add column with date of order placing
 data['date'] = data['Order Date'].dt.strftime(
-    '%y/%m/%d')  # Add column with date
+    '%y/%m/%d')  
 data.sample(5)
 
+#%%
 # The way we will calculate the average orders per hour is as follows:
 # For a specified hour, we will calculate the number of orders that were taken at that hour considering
 # the average per day.
-# %%
-
 
 def avg_hour(hour):
     by_hour = data[data['hour'] == hour]
     avg = len(by_hour['Order Number'].unique()) / len(data['date'].unique())
     return avg
-
-
 hours = pd.DataFrame(sorted(data['hour'].unique()))
 
 hours.rename(columns={0: 'hour'}, inplace=True)
@@ -526,24 +526,11 @@ hours.head()
 hours.plot.bar(figsize=(11, 6), rot=0)
 plt.xlabel('Hour')
 plt.title('Average number of orders by hour of the day')
-# As can be seen, the hours at which the greatest number of orders are made on average
-# are 5, 6, and 7:00 p.m., with a peak at 6:00 p.m.
+# As can be seen, Usually customers start ordering from 10 o'clock 
+#  in the morning. The rush horse start from 4 o'clock and the peak is
+#  at 6 then orders decline until 12 o'clock in the evening
 
-# %%
 
-# Trying someother plots for the above smart question i.e., avergae number of orders in an hour per each day
-
-# %%
-sns.scatterplot(data=data, x="hour", y="Quantity", s=5)
-sns.rugplot(data=data, x="hour", y="Quantity", lw=1, alpha=.005)
-
-# %%
-sns.pointplot(data=data, x="hour", y="Quantity")
-# %%
-sns.boxenplot(data=data, x="hour", y="Quantity")
-
-# %%
-sns.swarmplot(data=data, x="hour", y="Quantity")
 # %%
 # Orders by day of the week
 # We are going to do the same analysis as before but this time considering the
