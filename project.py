@@ -42,6 +42,168 @@ pd.set_option('display.precision', 3)
 # Select Color Palette
 sns.set_palette('Set2')
 
+
+#RGB values of pallette
+#print(sns.color_palette('Set2').as_hex())
+#col_pallette=['#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3', '#a6d854', '#ffd92f', '#e5c494', '#b3b3b3']
+
+##################################################
+#<<<<<<<<<<<<<<<< End of Section >>>>>>>>>>>>>>>>#
+
+#%%
+
+###############
+## Functions ##
+###############
+
+def clean_strnumbers_to_numeric(val):
+    
+    try:
+        #Attempt to identify and extract the integer value
+        regex=r'^[0-9]+'
+        new_val=re.findall(regex, val)[0]
+        #Convert to integer then float and return if positive, Nan if less than 0
+        #new_val=float(int(new_val))
+        new_val=int(new_val)
+        #print(f'{type(new_val)} {new_val}')
+        return (new_val if new_val>=0 else np.nan) 
+    except:
+        #Catch all for situations not covered
+        return np.nan
+    
+    #Note:
+    # This is working, but values end up being float in df.
+    # That is what is desired, but only converted to int here.
+    # It's working, so I am leaving it alone.
+
+##################################################
+
+def clean_int_rate(val):
+    
+    try:
+        #remove any whitespace
+        new_val=val.strip()
+        #Attempt to convert directly to float
+        new_val=float(val)
+        #return NaN if negative
+        return (new_val if new_val>=0 else np.nan)
+    except:
+        pass
+    
+    #Convert interest rate to 0, if exempt
+    if val=='Exempt':
+        return 0
+    
+    #Catch all for situations not covered
+    return np.nan
+
+    #Note:
+    # Currently, Exempt is being turned into int_rate of 0
+    # Is this desired? Other conversion better?
+
+##################################################
+
+def make_scatter(data, x, y, xlab, ylab, title):
+    
+    plt.figure(facecolor="white")
+    ax1=sns.regplot(data=data, x=x, y=y, color="#b3b3b3", scatter_kws={'alpha':0.03})
+    ax1.lines[0].set_color("#e5c494")
+    ax1.set_xlabel(xlab)
+    ax1.set_ylabel(ylab)
+    plt.ticklabel_format(style='plain')
+    plt.xticks(rotation=45)
+    #plt.title("Property Value Against Community Factors")
+    #plt.title("\n\n\n\n\n")
+    plt.title(title)
+    plt.show()
+    
+    return None
+
+##################################################
+
+def make_hist_kde(data, x, bins, hue, replacements):
+    #change line color 
+    #source: https://github.com/mwaskom/seaborn/issues/2344
+    
+    plt.figure(facecolor="white")
+    
+    #Initialize graph
+    ax1=sns.histplot(data=data, x=x, bins=bins, color="#8da0cb", hue=hue,
+                     multiple="stack", kde=True, line_kws=dict(linewidth=4))
+    #Change color of KDE line
+    ax1.lines[0].set_color("#e78ac3")
+    
+    #Rename Label
+    xlabel = ax1.get_xlabel()
+    if xlabel in replacements.keys():
+        ax1.set_xlabel(replacements[xlabel])
+        title=f"Distribution of {replacements[xlabel]}"
+    
+    #Format and display
+    plt.ticklabel_format(style='plain')
+    plt.xticks(rotation=45)
+    plt.title(title)
+    plt.show()
+
+    return None
+
+##################################################
+
+def create_vif_table(df, vars, replacements):
+
+    vif_filter = df.iloc[:, np.r_[vars]]
+    
+    #for i,feature in enumerate(vif_filter):
+    #    if feature in replacements.keys():
+    #        vif_filter[i]=replacements[feature]
+    
+    # VIF dataframe
+    vif_data = pd.DataFrame()
+    vif_data["Feature"] = vif_filter.columns
+    
+    
+    vif_data["Feature"]=vif_data["Feature"].apply(lambda x: replacements[x])
+    
+    # calculating VIF for each feature
+    vif_data["VIF"] = [variance_inflation_factor(vif_filter.values, i)
+                    for i in range(len(vif_filter.columns))]
+
+    #Display results
+    display(vif_data)
+    
+    return None
+
+##################################################
+
+def create_count_df(df, col_name):
+    
+    #Get count of every level of variable
+    val_count=df[col_name].value_counts()
+    #Create DF of the counts
+    count_df=pd.DataFrame({"categorical_levels": val_count.index,
+                  "count": val_count.values})
+    #Convert level counts into percentages of total
+    #freq_df['freq']=round(freq_df['freq'].apply(lambda x: x/sum(freq_df['freq'])), 3)
+    
+    return count_df
+
+##################################################
+
+def create_freq_df(df, col_name):
+    
+    freq_df=create_count_df(df,col_name).rename(columns={'count':'freq'})
+    freq_df['freq']=round(freq_df['freq'].apply(lambda x: x/sum(freq_df['freq'])), 3)
+    
+    return freq_df
+
+##################################################
+
+    #************************#
+##### NEW FUNCTIONS ADD HERE #####
+    #************************#
+
+
+
 ##################################################
 #<<<<<<<<<<<<<<<< End of Section >>>>>>>>>>>>>>>>#
 # %%
@@ -79,10 +241,15 @@ data.info()
 data.describe()
 
 # %%
-# Added new column Total Price
+# Added new column Total Price to get total payment for a customer
+
 data["Total Price"] = data["Product Price"] * data["Quantity"]
 data
 
+# %%
+print('Number of unique item name: ', len(data['Item Name'].unique()))
+
+# the number of unique  item name is 248
 # %%
 # Frequency for Top 20 sold items
 
@@ -92,21 +259,19 @@ top_20 = item_freq.tail(20)
 top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Top 20 sold items')
 
+# In the whole data of 248 items  of 2016-2019 years the most ordered product 
+# is Plain Papadum being ordered 10000 times
 # %%
 
-top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
-plt.title('Top 20 sold items')
+# top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
+# plt.title('Top 20 sold items')
 
+# # Pie diagram for the top 20 items that are being sold based on their quantity.
 
-# Pie diagram for the top 20 items that are being sold based on their quantity.
+# # %%
+# sns.lineplot(data=top_20, y="Item Name", x='Quantity')
 
-
-# %%
-sns.lineplot(data=top_20, y="Item Name", x='Quantity')
-
-# line plot for top 20 items using seaborn library
-# %%
-print('Number of unique item name: ', len(data['Item Name'].unique()))
+# # line plot for top 20 items using seaborn library
 
 # %%
 # Frequency For Least 20 Sold Items
@@ -117,18 +282,19 @@ top_20 = item_freq.head(20)
 top_20.plot(kind="barh", figsize=(16, 8))
 plt.title('Least 20 sold items')
 
-
+#On the other hand during the same time the least ordered product is 
+# multiple items of Prown, Kurma and Lamp Persion being ordered only once.
 # %%
 
-# %%
-sns.lineplot(data=top_20, y="Item Name", x='Quantity')
+# # %%
+# sns.lineplot(data=top_20, y="Item Name", x='Quantity')
 
-# lineplot for least 20 items
-# %%
-top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
-plt.title('Least 20 sold items')
+# # lineplot for least 20 items
+# # %%
+# top_20.plot(kind="pie", figsize=(16, 8), subplots=True, legend=None)
+# plt.title('Least 20 sold items')
 
-# pie chart for the least 20 items
+# # pie chart for the least 20 items
 # %%
 # Getting the average of Total price column with maximum and minimum Total price of orders
 data1 = data["Total Price"].mean()
