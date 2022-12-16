@@ -875,8 +875,8 @@ data
 # Here we are just trying to get the date from the order date as it is having both date and time values.
  # %%
 # # get the values that are unique
- unique_data = data.drop_duplicates(subset=["Item Name"])
- unique_data
+unique_data = data.drop_duplicates(subset=["Item Name"])
+unique_data
 
 # Here we can see 
  # %%
@@ -894,14 +894,14 @@ count
 # joining the product price column to the above created data frame
 
 count_1 = count.merge(unique_data, on="Item Name", how="left")
- count_1 = count_1[["Item Name", "Count", "Product Price"]]
- count_1 = count_1.sort_values(by="Count", ascending=False)
- count_1
+count_1 = count_1[["Item Name", "Count", "Product Price"]]
+count_1 = count_1.sort_values(by="Count", ascending=False)
+count_1
 
-# Here we can see how many times each item has been ordered from 2016 to 2019.
+# Here we can see how many times each item has been ordered from 2015 to 2019.
  # %%
- sns.scatterplot(x="Count", y="Product Price", data=count_1)
- plt.xlim(0, 1000)
+sns.scatterplot(x="Count", y="Product Price", data=count_1)
+plt.xlim(0, 1000)
 
 #Here using the scatterplot we can see how the count of order based on their product price is related.
 
@@ -913,17 +913,17 @@ print('Pearsons correlation: %.3f' % corr)
 
  # %%
 
- date_count = data['date'].nunique()
- date_count
+date_count = data['date'].nunique()
+date_count
 
 # We have data of the resturant for a total of 1207 days.
  # %%
 
- sns.scatterplot(data=date_count, x="date", y="count")
+sns.scatterplot(data=date_count, x="date", y="count")
 
  # %%
- count_1['average_orders_per_day'] = count_1['Count']/date_count
- count_1
+count_1['average_orders_per_day'] = count_1['Count']/date_count
+count_1
 
  # This gives the average number of orders that an item is being ordered in a day.
 #%%
