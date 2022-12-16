@@ -703,7 +703,6 @@ res2['Item Name'] = res2['Item Name'].apply(lambda x: 'Naan' if 'Naan' in x else
 # check if it worked
 col = res2['Item Name'] == 'wine'
 res2[col]
-res2[res2['Order Number'] == 11217]
 
 # Group order number so each order has its ouwn set of items
 item_list = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
@@ -724,9 +723,13 @@ def hot_encode(x):
 sparse_df_items = item_list.applymap(hot_encode)
 
 # Check if the order number has the same values as before applying the function
+res2[res2['Order Number'] == 11217]
 sparse_df_items.loc[11217][["Naan", "Bhajee",
                             "Rice", "Curry", "Masala", "Balti"]]
 
+#number of items before and after grouping
+print('Number of unique item name: ', len(data['Item Name'].unique()))
+print('Number of unique item name: ', len(res2['Item Name'].unique()))
 # ML section
 # %% [markdown]
 #### Undersatnding Apriori parameters ######
@@ -770,19 +773,21 @@ sparse_df_items.loc[11217][["Naan", "Bhajee",
 # %%
 # Do ML to claculate probability of association
 frequent_itemsets = apriori(
-    sparse_df_items, min_support=0.02209, use_colnames=True, verbose=1)
+    sparse_df_items, min_support=0.0315, use_colnames=True, verbose=1)
 
 # These are the companations of orders we have on the chance of %2 and more
-frequent_itemsets.shape
 frequent_itemsets.head()
-association = association_rules(
-    frequent_itemsets, metric="lift", min_threshold=1)
+frequent_itemsets.shape
 
-# I have to check the left rule where it says
+#adding left
+association = association_rules(
+    frequent_itemsets, metric="lift", min_threshold=1.5)
+#number of items with 1.5 lift
+association.shape
+
 # filter the best recommendations we will use the highest confidence value for each antecedent. We ran with the top 20 most frequent items and got some recommendations
 recommendations = association.sort_values(
     ['confidence', 'lift'], ascending=False)
-# Explain why we are interrested in lift more than others
 
 # Save it to csv for any future useage instead of running the code file
 # recommendations.to_csv('companations.csv')
@@ -802,7 +807,7 @@ recommendations.loc[(recommendations['antecedents'] == {'Korma'}) & (
     recommendations['consequents'] == {'Naan'})]
 # check What could come with a specidic item
 # We should search for the lowest ordered items
-recommendations.loc[recommendations['antecedents'] == {'Korma'}]
+recommendations.loc[recommendations['consequents'] == {'Korma'}]
 # %%
 # %%
 
