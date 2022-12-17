@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.2.280">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -89,6 +89,7 @@ ul.task-list li input[type="checkbox"] {
           </div>
   </div>
     
+  
     
   </div>
   
@@ -143,7 +144,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="5.1" class="anchored" data-anchor-id="eda-and-graphs"><span class="header-section-number">5.1</span> EDA and Graphs</h2>
 <p><strong>Top 20 and Least 20 Sold Items</strong></p>
 <div class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="36">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>Text(0.5, 1.0, 'Least 20 sold items')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -156,7 +157,7 @@ ul.task-list li input[type="checkbox"] {
 <p>We can see from the above two figure ,In the whole data of 248 items of 2015-2019 years the most ordered product is Plain Papadum being ordered 10000 times. On the other hand during the same time the least ordered product is multiple items of Prown, Kurma and Lamp Persion being ordered only once.</p>
 <p><strong>Average Number of Orders by Hour of the Day</strong></p>
 <div class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>Text(0.5, 1.0, 'Average number of orders by hour of the day')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -166,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
 <p>From the above bar graph, we visualized that Usually customers start ordering from 10 o’clock in the morning. The rush horse start from 4 o’clock and the peak is at 6 then orders decline until 12 o’clock in the evening.</p>
 <p><strong>Average Orders by Day of Week</strong></p>
 <div class="cell" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="38">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>([0, 1, 2, 3, 4, 5, 6],
  [Text(0, 0, ''),
   Text(0, 0, ''),
@@ -187,7 +188,7 @@ ul.task-list li input[type="checkbox"] {
 <pre><code>First Sale:  2015-01-09 14:42:00
 Last Sale:  2019-12-07 22:24:00</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="39">
+<div class="cell-output cell-output-display" data-execution_count="6">
 
 <div>
 
@@ -271,7 +272,7 @@ Last Sale:  2019-12-07 22:24:00</code></pre>
 <p>From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.</p>
 <p><strong>Product Price and Total Quantity of Items</strong></p>
 <div class="cell" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>(0.0, 1000.0)</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -304,12 +305,12 @@ Last Sale:  2019-12-07 22:24:00</code></pre>
 <pre><code>Processing 1190 combinations | Sampling itemset size 2Processing 1641 combinations | Sampling itemset size 3Processing 1024 combinations | Sampling itemset size 4Processing 105 combinations | Sampling itemset size 5Processing 12 combinations | Sampling itemset size 6</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\duvvi\miniconda3\lib\site-packages\mlxtend\frequent_patterns\fpcommon.py:111: DeprecationWarning:
+<pre><code>/Users/kismatkhatri/opt/anaconda3/lib/python3.9/site-packages/mlxtend/frequent_patterns/fpcommon.py:111: DeprecationWarning:
 
 DataFrames with non-bool types result in worse computationalperformance and their support might be discontinued in the future.Please use a DataFrame with bool type
 </code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="42">
+<div class="cell-output cell-output-display" data-execution_count="9">
 
 <div>
 
@@ -330,9 +331,9 @@ DataFrames with non-bool types result in worse computationalperformance and thei
   </thead>
   <tbody>
     <tr>
-      <th>279</th>
+      <th>278</th>
       <td>(Papadum)</td>
-      <td>(Naan, Rice, Chutney, Aloo)</td>
+      <td>(Chutney, Naan, Rice, Aloo)</td>
       <td>0.284392</td>
       <td>0.040681</td>
       <td>0.031574</td>
@@ -342,7 +343,7 @@ DataFrames with non-bool types result in worse computationalperformance and thei
       <td>1.079128</td>
     </tr>
     <tr>
-      <th>235</th>
+      <th>237</th>
       <td>(Naan, Rice)</td>
       <td>(Korma, Papadum)</td>
       <td>0.468986</td>
@@ -354,9 +355,9 @@ DataFrames with non-bool types result in worse computationalperformance and thei
       <td>1.034251</td>
     </tr>
     <tr>
-      <th>182</th>
+      <th>184</th>
       <td>(Naan, Rice)</td>
-      <td>(Masala, Chutney)</td>
+      <td>(Chutney, Masala)</td>
       <td>0.468986</td>
       <td>0.054714</td>
       <td>0.039561</td>
@@ -366,7 +367,7 @@ DataFrames with non-bool types result in worse computationalperformance and thei
       <td>1.032372</td>
     </tr>
     <tr>
-      <th>243</th>
+      <th>244</th>
       <td>(Naan, Rice)</td>
       <td>(Masala, Sauce)</td>
       <td>0.468986</td>
@@ -378,9 +379,9 @@ DataFrames with non-bool types result in worse computationalperformance and thei
       <td>1.030910</td>
     </tr>
     <tr>
-      <th>293</th>
+      <th>294</th>
       <td>(Naan, Rice)</td>
-      <td>(Papadum, Masala, Chutney)</td>
+      <td>(Chutney, Masala, Papadum)</td>
       <td>0.468986</td>
       <td>0.044189</td>
       <td>0.032022</td>
@@ -477,7 +478,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -513,24 +531,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
