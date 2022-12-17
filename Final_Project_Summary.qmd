@@ -218,46 +218,44 @@ monthly[monthly['month'] >= datetime.date(2019, 1, 1)]
 
 From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.
 
+**Product Price and Total Quantity of Items**
 ```{python}
 data["date"] = pd.to_datetime(data['Order Date']).dt.date
 data
 
-# Here we are just trying to get the date from the order date as it is having both date and time values.
- # %%
-# # get the values that are unique
 unique_data = data.drop_duplicates(subset=["Item Name"])
 unique_data
-
-# Here we can see 
- # %%
-
-# # Getting the count of the Items that are ordered as a total
 
 count = data.groupby(['Item Name']).count().reset_index()
 count = count.iloc[:, :2]
 count.columns = ['Item Name', "Count"]
-count
-
-# This gives the count of the Item names that the resturant sells which are present in the data set and there are 248 different Items.
- # %%
-
-# joining the product price column to the above created data frame
 
 count_1 = count.merge(unique_data, on="Item Name", how="left")
 count_1 = count_1[["Item Name", "Count", "Product Price"]]
 count_1 = count_1.sort_values(by="Count", ascending=False)
 count_1
 
-# Here we can see how many times each item has been ordered from 2015 to 2019.
- # %%
 sns.scatterplot(x="Count", y="Product Price", data=count_1)
 plt.xlim(0, 1000)
-
-
 ```
 
+From the above scatter plot we can see the relation between product price and count of the items ordered, as most of the points are clustered towards lower price and the count towards the higher price category is also very less hence we can incur that the lower the product price more the number of orders placed and it is vice versa for the higher priced items.
 
 
+```{python}
+
+date_count = data['date'].nunique()
+date_count
+
+count = data.groupby(['Item Name']).count().reset_index()
+count = count.iloc[:, :2]
+count.columns = ['Item Name', "Count"]
+sns.scatterplot(data=date_count, x="date", y="count")
+
+ # %%
+count_1['average_orders_per_day'] = count_1['Count']/date_count
+count_1
+```
 
 ## Modeling
 ### Apriori Algorithm

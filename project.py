@@ -316,7 +316,64 @@ print("Monthly:\n", data.groupby(
 
 # The average of sum  of total price  per daily basis is 248.89 , per weekly 
 # basis is 1737.42198 and per monthly basis id 6441.9575.
+# %%
+data["date"] = pd.to_datetime(data['Order Date']).dt.date
+data
 
+# Here we are just trying to get the date from the order date as it is having both date and time values.
+ # %%
+# # get the values that are unique
+unique_data = data.drop_duplicates(subset=["Item Name"])
+unique_data
+
+# Here we can see 
+ # %%
+
+# # Getting the count of the Items that are ordered as a total
+
+count = data.groupby(['Item Name']).count().reset_index()
+count = count.iloc[:, :2]
+count.columns = ['Item Name', "Count"]
+count
+
+# This gives the count of the Item names that the resturant sells which are present in the data set and there are 248 different Items.
+ # %%
+
+# joining the product price column to the above created data frame
+
+count_1 = count.merge(unique_data, on="Item Name", how="left")
+count_1 = count_1[["Item Name", "Count", "Product Price"]]
+count_1 = count_1.sort_values(by="Count", ascending=False)
+count_1
+
+# Here we can see how many times each item has been ordered from 2015 to 2019.
+ # %%
+sns.scatterplot(x="Count", y="Product Price", data=count_1)
+plt.xlim(0, 1000)
+
+#Here using the scatterplot we can see how the count of order based on their product price is related.
+
+#%%
+corr, _ = pearsonr(count_1["Product Price"], count_1["Count"])
+print('Pearsons correlation: %.3f' % corr)
+# Greater the product price lower are the number of orders placed
+
+
+ # %%
+
+date_count = data['date'].nunique()
+date_count
+
+# We have data of the resturant for a total of 1207 days.
+ # %%
+
+sns.scatterplot(data=date_count, x="date", y="count")
+
+ # %%
+count_1['average_orders_per_day'] = count_1['Count']/date_count
+count_1
+
+ # This gives the average number of orders that an item is being ordered in a day.
 # %%
 # the data has no Null values
 
@@ -868,64 +925,7 @@ Item_sorted.head()
 # plt.legend()
 # plt.show()
 
- # %%
-data["date"] = pd.to_datetime(data['Order Date']).dt.date
-data
-
-# Here we are just trying to get the date from the order date as it is having both date and time values.
- # %%
-# # get the values that are unique
-unique_data = data.drop_duplicates(subset=["Item Name"])
-unique_data
-
-# Here we can see 
- # %%
-
-# # Getting the count of the Items that are ordered as a total
-
-count = data.groupby(['Item Name']).count().reset_index()
-count = count.iloc[:, :2]
-count.columns = ['Item Name', "Count"]
-count
-
-# This gives the count of the Item names that the resturant sells which are present in the data set and there are 248 different Items.
- # %%
-
-# joining the product price column to the above created data frame
-
-count_1 = count.merge(unique_data, on="Item Name", how="left")
-count_1 = count_1[["Item Name", "Count", "Product Price"]]
-count_1 = count_1.sort_values(by="Count", ascending=False)
-count_1
-
-# Here we can see how many times each item has been ordered from 2015 to 2019.
- # %%
-sns.scatterplot(x="Count", y="Product Price", data=count_1)
-plt.xlim(0, 1000)
-
-#Here using the scatterplot we can see how the count of order based on their product price is related.
-
-#%%
-corr, _ = pearsonr(count_1["Product Price"], count_1["Count"])
-print('Pearsons correlation: %.3f' % corr)
-# Greater the product price lower are the number of orders placed
-
-
- # %%
-
-date_count = data['date'].nunique()
-date_count
-
-# We have data of the resturant for a total of 1207 days.
- # %%
-
-sns.scatterplot(data=date_count, x="date", y="count")
-
- # %%
-count_1['average_orders_per_day'] = count_1['Count']/date_count
-count_1
-
- # This gives the average number of orders that an item is being ordered in a day.
+ 
 #%%
 # # %%
 
