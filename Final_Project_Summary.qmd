@@ -242,20 +242,6 @@ plt.xlim(0, 1000)
 From the above scatter plot we can see the relation between product price and count of the items ordered, as most of the points are clustered towards lower price and the count towards the higher price category is also very less hence we can incur that the lower the product price more the number of orders placed and it is vice versa for the higher priced items.
 
 
-```{python}
-
-date_count = data['date'].nunique()
-date_count
-
-count = data.groupby(['Item Name']).count().reset_index()
-count = count.iloc[:, :2]
-count.columns = ['Item Name', "Count"]
-sns.scatterplot(data=date_count, x="date", y="count")
-
- # %%
-count_1['average_orders_per_day'] = count_1['Count']/date_count
-count_1
-```
 
 ## Modeling
 ### Apriori Algorithm
