@@ -222,7 +222,90 @@ Apriori algorithm is a powerful tool for discovering frequent item sets in large
 
 3.	Lift is a useful metric for identifying interesting and potentially useful associations in a dataset. If the lift for the association between A and B is 3, this means that customers are three times more likely to purchase A and B together than they would be if the two items were independent. A lift value of 1 to infinity would indicate that there is no relationship between the two items, while a lift value greater than 1 indicates a positive relationship and a lift value less than 1 indicates a negative relationship. The minimum lift threshold is set by the user and in this project we set it by **1.5**
 
-## Results and Interpretation
+### Prepering data
+
+## Results 
+```{python}
+
+res2 = data[['Order Number', 'Item Name', 'Quantity']].copy()
+
+# Create cateogries for each item that has different flavors
+res2['Item Name'] = res2['Item Name'].apply(lambda x: 'Naan' if 'Naan' in x else 'Sauce' if 'Sauce' in x else 'Papadum' if 'Papadum' in x else 'Salad' if 'Salad' in x else 'Balti' if 'Balti' in x
+                                            else 'Rice' if 'Rice' in x else 'Balti' if 'Balti' in x else 'Bhajee' if 'Bhajee' in x else 'Bhajee' if 'Bhaji' in x else 'Mushroom' if 'Mushroom' in x else
+                                            'Chutney' if 'Chutney' in x else'Pasanda' if 'Pasanda' in x else 'Biryani' if 'Biryani' in x else 'Korma' if 'Korma' in x else 'Aloo' if 'Aloo' in x else
+                                            'Curry' if 'Curry' in x else 'Sheek' if 'Sheek' in x else 'Samosa' if 'Samosa' in x else 'Hari Mirch' if 'Hari Mirch' in x else 'Madras' if 'Madras' in x
+                                            else 'wine' if 'wine' in x else 'Lemonade' if 'Lemonade' in x else 'Water' if 'Water' in x else 'COBRA' if 'COBRA' in x else 'Coke' if 'Coke' in x else
+                                            'Karahi' if 'Karahi' in x else 'Jalfrezi' if 'Jalfrezi' in x else 'Bhuna' if 'Bhuna' in x else 'Dupiaza' if 'Dupiaza' in x else 'Methi' if 'Methi' in x
+                                            else 'Lal Mirch' if 'Lal Mirch' in x else 'Shashlick' if 'Shashlick' in x else 'Shashlick' if 'Shaslick' in x else 'Sizzler' if 'Sizzler' in x else
+                                            'Dall' if 'Dall' in x else 'Sylhet' if 'Sylhet' in x else 'Mysore' if 'Mysore' in x else 'Puree' if 'Puree' in x else 'Paratha' if 'Paratha' in x else
+                                            'Chaat' if 'Chaat' in x else 'Achar' if 'Achar' in x else 'Vindaloo' if 'Vindaloo' in x else 'Dhansak' if 'Dhansak' in x else 'Haryali' if 'Haryali' in x
+                                            else 'Rogon' if 'Rogon' in x else 'Hazary' if 'Hazary' in x else 'Roshni' if 'Roshni' in x else 'Jeera' if 'Jeera' in x else 'Rezala' if 'Rezala' in x
+                                            else 'Bengal' if 'Bengal' in x else 'Bengal' if 'Butterfly' in x else 'Pathia' if 'Pathia' in x else 'Masala' if 'Masala' in x else 'Paneer' if 'Paneer' in x
+                                            else 'Saag' if 'Saag' in x else 'Tandoori' if 'Tandoori' in x else 'Tikka' if 'Tikka' in x else 'Chilli Garlic' if 'Chilli' in x else 'Chapati' if 'Chapati' in x
+                                            else 'Pickle' if 'Pickle' in x else 'Pakora' if 'Pakora' in x else 'Fries' if 'Fries' in x else 'Starters' if 'Starter' in x else 'Raitha' if 'Raitha' in x
+                                            else 'Rolls' if 'Roll' in x else 'Butter Chicken' if 'Butter' in x else 'Persian')
+
+# check if it worked
+col = res2['Item Name'] == 'wine'
+res2[col]
+
+# Group order number so each order has its ouwn set of items
+item_list = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
+             .min().unstack().reset_index().fillna(0)
+             .set_index('Order Number'))
+
+# create one hot incoding
+
+
+def hot_encode(x):
+    if(x <= 0):
+        return 0
+    if(x >= 1):
+        return 1
+
+
+# Encoding the datasets
+sparse_df_items = item_list.applymap(hot_encode)# Do ML to claculate probability of association
+frequent_itemsets = apriori(
+    sparse_df_items, min_support=0.0315, use_colnames=True, verbose=1)
+
+# These are the companations of orders we have on the chance of %2 and more
+frequent_itemsets.head()
+frequent_itemsets.shape
+
+#adding left
+association = association_rules(
+    frequent_itemsets, metric="lift", min_threshold=1.5)
+#number of items with 1.5 lift
+association.shape
+
+# filter the best recommendations we will use the highest confidence value for each antecedent. We ran with the top 20 most frequent items and got some recommendations
+recommendations = association.sort_values(
+    ['confidence', 'lift'], ascending=False)
+
+# Save it to csv for any future useage instead of running the code file
+# recommendations.to_csv('companations.csv')
+
+# We are interested in giving unusual recommenditions to the restaurant
+best_item_recommendations2 = recommendations.drop_duplicates(
+    subset=['consequents']).head(20)
+
+# Searching for the left, support and confedint of specific companations
+# the best companations based on the highest numbers
+recommendations[(recommendations['lift'] >= 0.4) &
+                (recommendations['confidence'] >= 0.9) &
+                (recommendations['support'] >= 0.04)]
+
+# check the probability of a specific item to be with another
+recommendations.loc[(recommendations['antecedents'] == {'Korma'}) & (
+    recommendations['consequents'] == {'Naan'})]
+# check What could come with a specidic item
+# We should search for the lowest ordered items
+recommendations.loc[recommendations['consequents'] == {'Korma'}]
+
+
+
+```
 Create some rules based on the outcomes of the application of the Apriori algorithm approach with association rules to the sales transaction data in an Indian restaurant. 
 
 -If a customer ordered Madras, Chutney Items, and  Papadum would then be ordered with a 89% confidence level. 
