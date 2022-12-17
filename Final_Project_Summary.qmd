@@ -223,7 +223,7 @@ Apriori algorithm is a powerful tool for discovering frequent item sets in large
 3.	Lift is a useful metric for identifying interesting and potentially useful associations in a dataset. If the lift for the association between A and B is 3, this means that customers are three times more likely to purchase A and B together than they would be if the two items were independent. A lift value of 1 to infinity would indicate that there is no relationship between the two items, while a lift value greater than 1 indicates a positive relationship and a lift value less than 1 indicates a negative relationship. The minimum lift threshold is set by the user and in this project we set it by **1.5**
 
 ### Prepering data
-It is often necessary to classify and organize different items into categories for the purpose of analysis and comparison. One approach that is taken in this project is to treat items that are the same thing but have different flavors or variations as separate categories. However, it has been suggested that a more effective method may be to group these items under the main category of the main item name, without indicating the specific flavors or variations. This approach has the advantage of allowing for a more streamlined and concise organization of data, as well as reducing the potential for confusion or misunderstanding. Additionally, grouping items in this way can facilitate a more holistic and comprehensive analysis of the data, as it allows for a more integrated and comprehensive view of the relationships between different items.
+It is often necessary to classify and organize different items into categories for the purpose of analysis and comparison. One approach that is taken in this project is to treat items that are the same thing but have different flavors or variations as separate categories. However, a more effective method is to group these items under the main category of the main item name, without indicating the specific flavors or variations. Therefore items names in the list reduced from **248** to be **63**. This approach has the advantage of allowing for a more streamlined and concise organization of data, as well as reducing the potential for confusion or misunderstanding. Additionally, grouping items in this way can facilitate a more holistic and comprehensive analysis of the data, as it allows for a more integrated and comprehensive view of the relationships between different items.
 
 On consumer behavior and purchasing patterns, it is often necessary to analyze data on individual receipts and the items that were purchased. One approach that has been taken is to group items under a receipt number and then convert the items into columns, with each column indicating the presence or absence of that item on the receipt. This approach allows for the creation of a matrix-like structure in which each row represents a receipt and each column represents a specific item. This type of organization is useful because it allows for the efficient analysis of data on multiple receipts at once, as well as facilitating the identification of trends and patterns in consumer behavior. 
 
@@ -257,60 +257,24 @@ def hot_encode(x):
     if(x >= 1):
         return 1
 # Encoding the datasets
-sparse_df_items = item_list.applymap(hot_encode)# Do ML to claculate probability of 
+sparse_df_items = item_list.applymap(hot_encode)
 ```
 ## Results 
 ```{python}
-
-
-#association
 frequent_itemsets = apriori(
     sparse_df_items, min_support=0.0315, use_colnames=True, verbose=1)
 
-# These are the companations of orders we have on the chance of %2 and more
-frequent_itemsets.head()
-frequent_itemsets.shape
-
-#adding left
+#adding left number of items with 1.5 lift
 association = association_rules(
     frequent_itemsets, metric="lift", min_threshold=1.5)
-#number of items with 1.5 lift
-association.shape
 
 # filter the best recommendations we will use the highest confidence value for each antecedent. We ran with the top 20 most frequent items and got some recommendations
-recommendations = association.sort_values(
-    ['confidence', 'lift'], ascending=False)
-
-# Save it to csv for any future useage instead of running the code file
-# recommendations.to_csv('companations.csv')
-
-# We are interested in giving unusual recommenditions to the restaurant
-best_item_recommendations2 = recommendations.drop_duplicates(
-    subset=['consequents']).head(20)
-
-# Searching for the left, support and confedint of specific companations
-# the best companations based on the highest numbers
-recommendations[(recommendations['lift'] >= 0.4) &
-                (recommendations['confidence'] >= 0.9) &
-                (recommendations['support'] >= 0.04)]
-
-# check the probability of a specific item to be with another
-recommendations.loc[(recommendations['antecedents'] == {'Korma'}) & (
-    recommendations['consequents'] == {'Naan'})]
-# check What could come with a specidic item
-# We should search for the lowest ordered items
-recommendations.loc[recommendations['consequents'] == {'Korma'}]
-
-
+association.sort_values(
+    ['confidence', 'lift'], ascending=False).head(10)
 
 ```
-Create some rules based on the outcomes of the application of the Apriori algorithm approach with association rules to the sales transaction data in an Indian restaurant. 
 
--If a customer ordered Madras, Chutney Items, and  Papadum would then be ordered with a 89% confidence level. 
-
--If a consumer ordered Butter Chicken and Papadum, Rice would then be ordered with a 95% confidence level.   
-
--If a consumer orders Aloo, Rice, and Curry Items, Nana would then be ordered with a 80% confidence level. 
+The results of the Apriori algorithm on the data set of the restaurant showed that there were **326** association rules that emerged. It was found that the purchase of `Rice, Sauce, Chutney` was with a **87%** confidence accompanied by the purchase of `Papadum`. Similarly, the purchase of `Rice, Sauce, Naan, Chutney`was often accompanied by the purchase of `Papadum`. From the previous analysis `Papadum` found to be one of the popular items in the restuarnt. However, by analysing the likelyhood of association with item popularity [lift] it is found to be strongly associated of **3** times more likely of buying this combination together than buying `Papadum` alone. These findings suggest that there may be underlying factors, such as complementary needs or preferences, that drive the co-occurrence of these items in the same transaction. In addition to these strong associations, the Apriori algorithm also identified several weaker associations, such as the relationship between `Rice, Naan` and `Masala, Papadum, Chutney` with a **%6** confidence and **1.5** lift. Further investigation of these weaker associations may also be valuable in understanding consumer behavior and identifying potential opportunities for product promotion or cross-selling.
 
 # Limitations & Other Considerations
 Although the Apriori algorithm has traditionally been important in many application areas, it has a number of inefficiencies and trade-offs that make it less competitive than alternative algorithms. The method repeatedly checks the database, which lowers performance as a whole. Therefore, the program makes the assumption that the database is permanently stored in memory. It is the simplest, however the database takes up a lot of memory. The menu list's items could vary over time.
