@@ -207,6 +207,8 @@ plt.plot(monthly['month'], monthly['total'])
 plt.xlabel('Date')
 plt.ylabel('Total sales (POUND)')
 plt.title('Total monthly sales')
+
+monthly[monthly['month'] >= datetime.date(2019, 1, 1)]
 ```
 
 From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.
