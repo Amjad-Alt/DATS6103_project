@@ -282,7 +282,7 @@ The results of the Apriori algorithm on the data set of the restaurant showed th
 # Limitations & Other Considerations
 While the Apriori algorithm has been widely used in various applications, it has several limitations and inefficiencies that make it less competitive compared to other algorithms. One major issue is that the algorithm requires multiple scans of the database, which can negatively impact performance. As a result, the algorithm assumes that the database is stored in memory, which can lead to high memory usage. Additionally, the Apriori algorithm is relatively simple, but it may not be well-suited for situations where the list of items on the menu changes over time. Overall, it is important to consider these trade-offs and inefficiencies when deciding which algorithm to use for a particular problem.
 
-#### I think this should be deleted and the previous limitations are good enough
+# Recommendation
 
 1) Such research should be carried out in close collaboration with an accounting institution, such as a firm. This makes it simpler to declare that the model's performance is represented in a real-world environment and that it genuinely helps in profit optimization, which is a further validation of the model.
 
