@@ -118,7 +118,11 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="literature-review" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Literature Review</h1>
-<p>One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience (Kang et al., 2012; Lu et al., 2013; Luo &amp; Xu, 2021). While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers’ collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant’s menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.</p>
+<p>According to information we got from customer feedback, prior research in this area was primarily concerned with the impact of menu design, staff training and marketing efforts (Kang et al., 2012; Lu et al., 2013; Luo &amp; Xu., 2021). There is still a need for further research on the most effective methods for collecting and utilizing customers’ collected information.</p>
+<p>Recent research has focused on how to predict sales patterns utilizing data mining-based analysis, such as market basket analysis. Studies like those that (Aditiya Hermawan and Riki, 2019) took a step further by working to suggest various combinations of items based on the likelihood of their occurence in the data which can help in the restaurant profit by applying Association of items at the O! Fish resturant.</p>
+<!--
+(One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience (Kang et al., 2012; Lu et al., 2013; Luo & Xu, 2021). While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers' collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant's menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.
+)-->
 </section>
 <section id="description-of-data" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Description Of Data</h1>
@@ -266,6 +270,16 @@ Last Sale:  2019-12-07 22:24:00</code></pre>
 </div>
 </div>
 <p>From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.</p>
+<p><strong>Product Price and Total Quantity of Items</strong></p>
+<div class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>(0.0, 1000.0)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Final_Project_Summary_files/figure-html/cell-8-output-2.png" width="614" height="422"></p>
+</div>
+</div>
+<p>From the above scatter plot we can see the relation between product price and count of the items ordered, as most of the points are clustered towards lower price and the count towards the higher price category is also very less hence we can incur that the lower the product price more the number of orders placed and it is vice versa for the higher priced items.</p>
 </section>
 <section id="modeling" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="modeling"><span class="header-section-number">5.2</span> Modeling</h2>
@@ -286,7 +300,7 @@ Last Sale:  2019-12-07 22:24:00</code></pre>
 </section>
 <section id="results" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="results"><span class="header-section-number">5.3</span> Results</h2>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>Processing 1190 combinations | Sampling itemset size 2Processing 1641 combinations | Sampling itemset size 3Processing 1024 combinations | Sampling itemset size 4Processing 105 combinations | Sampling itemset size 5Processing 12 combinations | Sampling itemset size 6</code></pre>
 </div>
@@ -296,7 +310,7 @@ Last Sale:  2019-12-07 22:24:00</code></pre>
 DataFrames with non-bool types result in worse computationalperformance and their support might be discontinued in the future.Please use a DataFrame with bool type
 </code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div class="cell-output cell-output-display" data-execution_count="9">
 
 <div>
 
@@ -317,9 +331,9 @@ DataFrames with non-bool types result in worse computationalperformance and thei
   </thead>
   <tbody>
     <tr>
-      <th>279</th>
+      <th>278</th>
       <td>(Papadum)</td>
-      <td>(Aloo, Naan, Chutney, Rice)</td>
+      <td>(Chutney, Naan, Rice, Aloo)</td>
       <td>0.284392</td>
       <td>0.040681</td>
       <td>0.031574</td>
@@ -341,9 +355,9 @@ DataFrames with non-bool types result in worse computationalperformance and thei
       <td>1.034251</td>
     </tr>
     <tr>
-      <th>185</th>
+      <th>184</th>
       <td>(Naan, Rice)</td>
-      <td>(Masala, Chutney)</td>
+      <td>(Chutney, Masala)</td>
       <td>0.468986</td>
       <td>0.054714</td>
       <td>0.039561</td>
@@ -355,7 +369,7 @@ DataFrames with non-bool types result in worse computationalperformance and thei
     <tr>
       <th>244</th>
       <td>(Naan, Rice)</td>
-      <td>(Sauce, Masala)</td>
+      <td>(Masala, Sauce)</td>
       <td>0.468986</td>
       <td>0.049489</td>
       <td>0.036575</td>
@@ -365,9 +379,9 @@ DataFrames with non-bool types result in worse computationalperformance and thei
       <td>1.030910</td>
     </tr>
     <tr>
-      <th>295</th>
+      <th>294</th>
       <td>(Naan, Rice)</td>
-      <td>(Masala, Chutney, Papadum)</td>
+      <td>(Chutney, Masala, Papadum)</td>
       <td>0.468986</td>
       <td>0.044189</td>
       <td>0.032022</td>

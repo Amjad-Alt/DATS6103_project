@@ -70,8 +70,13 @@ Profit:
 
 
 # Literature Review
-One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience (Kang et al., 2012; Lu et al., 2013; Luo & Xu, 2021). While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers' collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant's menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.
+According to information we got from customer feedback, prior research in this area was primarily concerned with the impact of menu design, staff training and marketing efforts (Kang et al., 2012; Lu et al., 2013; Luo & Xu., 2021). There is still a need for further research on the most effective methods for collecting and utilizing customers' collected information.
 
+Recent research has focused on how to predict sales patterns utilizing data mining-based analysis, such as market basket analysis. Studies like those that (Aditiya Hermawan and Riki, 2019) took a step further by working to suggest various combinations of items based on the likelihood of their occurence in the data which can help in the restaurant profit by applying Association of items at the O! Fish resturant.
+
+<!--
+(One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience (Kang et al., 2012; Lu et al., 2013; Luo & Xu, 2021). While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers' collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant's menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.
+)-->
 # Description Of Data
 The data for this project was sourced from Kaggle and consists of 74,818 observations of an Indian takeaway restaurant located in London, UK, covering the period from 2015 to 2019. The dataset includes six variables, which were augmented by an additional four variables for the purposes of this study.
 
@@ -212,6 +217,30 @@ monthly[monthly['month'] >= datetime.date(2019, 1, 1)]
 ```
 
 From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.
+
+**Product Price and Total Quantity of Items**
+```{python}
+data["date"] = pd.to_datetime(data['Order Date']).dt.date
+data
+
+unique_data = data.drop_duplicates(subset=["Item Name"])
+unique_data
+
+count = data.groupby(['Item Name']).count().reset_index()
+count = count.iloc[:, :2]
+count.columns = ['Item Name', "Count"]
+
+count_1 = count.merge(unique_data, on="Item Name", how="left")
+count_1 = count_1[["Item Name", "Count", "Product Price"]]
+count_1 = count_1.sort_values(by="Count", ascending=False)
+count_1
+
+sns.scatterplot(x="Count", y="Product Price", data=count_1)
+plt.xlim(0, 1000)
+```
+
+From the above scatter plot we can see the relation between product price and count of the items ordered, as most of the points are clustered towards lower price and the count towards the higher price category is also very less hence we can incur that the lower the product price more the number of orders placed and it is vice versa for the higher priced items.
+
 
 
 ## Modeling
