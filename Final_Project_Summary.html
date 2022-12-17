@@ -53,12 +53,16 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis"><span class="toc-section-number">5</span>  Analysis</a>
   <ul class="collapse">
   <li><a href="#eda-and-graphs" id="toc-eda-and-graphs" class="nav-link" data-scroll-target="#eda-and-graphs"><span class="toc-section-number">5.1</span>  EDA and Graphs</a></li>
-  <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling"><span class="toc-section-number">5.2</span>  Modeling</a></li>
+  <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling"><span class="toc-section-number">5.2</span>  Modeling</a>
+  <ul class="collapse">
+  <li><a href="#apriori-algorithm" id="toc-apriori-algorithm" class="nav-link" data-scroll-target="#apriori-algorithm"><span class="toc-section-number">5.2.1</span>  Apriori Algorithm</a></li>
+  </ul></li>
   <li><a href="#results-and-interpretation" id="toc-results-and-interpretation" class="nav-link" data-scroll-target="#results-and-interpretation"><span class="toc-section-number">5.3</span>  Results and Interpretation</a></li>
   </ul></li>
   <li><a href="#limitations-other-considerations" id="toc-limitations-other-considerations" class="nav-link" data-scroll-target="#limitations-other-considerations"><span class="toc-section-number">6</span>  Limitations &amp; Other Considerations</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="toc-section-number">7</span>  Conclusion</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="toc-section-number">8</span>  References</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="toc-section-number">8</span>  Future Work</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="toc-section-number">9</span>  References</a></li>
   </ul>
 </nav>
 </div>
@@ -89,13 +93,12 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="introduction" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>Restaurants play a crucial role in a nation’ s economy and culture. Most of us have visited at least once, whether it was for social events or a fast snack. Given the recent increase in food trucks and popup restaurants, it is crucial for the business owner to decide when and where to create new restaurants because doing so requires a significant investment of time, money, and effort. This raises the issue of determining the appropriate time and location to establish a new restaurant.The business environment is changing quickly in the restaurant industry. The introduction of several restaurants with varied features or unique themes serves as a sign of this. “The rise of food and beverage businesses is still documented as strong growth in various parts of the world. Due to the increasing expansion of the restaurant industry, there is currently competition among restaurant business owners. As a result, restaurant owners must be well-prepared for this competition, which spans everything from restaurant concepts to product innovation and operational systems.</p>
-<p>One of the reasons for the growth of the restaurant industry is that the current food and beverage industry, particularly this restaurant, promises enormous profits and views people’s need to eat and drink as a basic necessity that must be met in order to exist. This is a chance that can be used as a successful business opportunity. It makes sense that there are so many restaurants with a variety of concepts, operational methods, and creativity with diverse product developments that showcase what these establishments have to offer to draw clients or notions that can be displayed to customers.</p>
+<p>Restaurants play a crucial role in a nation’ s economy and culture. Most of us have visited at least once, a variety of purposes. Given the recent increase in food trucks and popup restaurants, it is essential for the business owners to carefully consider the timing and location of new restaurant openings, as this requires a significant investment of resources. The rapidly changing business environment in the restaurant industry, characterized by the introduction of diverse restaurants with unique features and themes, presents both opportunities and challenges for restaurant owners. The strong growth of the food and beverage sector in various parts of the world has resulted in increased competition among restaurant business owners, highlighting the need for them to be well-prepared in all aspects of their operations, including concept, product innovation, and operational systems. One of the reasons for the growth of the restaurant industry is that the current food and beverage industry, particularly this restaurant, promises enormous profits and views people’s need to eat and drink as a basic necessity that must be met in order to exist. This is a chance that can be used as a successful business opportunity. It makes sense that there are so many restaurants with a variety of concepts, operational methods, and creativity with diverse product developments that showcase what these establishments have to offer to draw clients or notions that can be displayed to customers.</p>
 <p>Knowing the consumer’s preferences, their purchasing habits with regard to the products they frequently purchase, and their product purchase patterns, which can be seen through purchase transaction data, are all necessary for developing the right sales strategy and creating the right target promotion. Data mining techniques can be used to extract information from stored transaction data in order to create new data or data patterns. For instance, data to determine the sales trends in relation to the menu association rules. A priori algorithm, also known as market basket analysis, is a technique that may be used to examine customer purchasing behavior and generate association rules using the “if then” pattern.</p>
 </section>
 <section id="smart-questions" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> SMART Questions</h1>
-<p>With the intention of focusing the project to Raising the profit of an Indian takeaway restaurant by giving marketing suggestions of association supported by data, we focused on recent data for Indian takeaway restaurant’s dataset placed in London, UK . In particular, we inquired into to two aspects of Indian restaurant which is given below:</p>
+<p>With the intention of focusing the project to raise the profit of an Indian takeaway restaurant by giving marketing suggestions of association supported by data, we focused on recent data for Indian takeaway restaurant’s dataset placed in London, UK . In particular, we inquired into to two aspects of Indian restaurant which is given below:</p>
 <p>Quantity:</p>
 <ul>
 <li><p>What is the most ordered product?</p></li>
@@ -110,10 +113,11 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="literature-review" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Literature Review</h1>
+<p>One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience. While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers’ collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant’s menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.</p>
 </section>
 <section id="description-of-data" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Description Of Data</h1>
-<p>Our data was sourced from the kaggle and it is Indian takeaway restaurant’s dataset placed in London, UK from the year of 2015 to 2019. Our Dataset contain 74,818 number of observations with 6 variable and then we have added extra 4 variable to the datatset.</p>
+<p>The data for this project was sourced from Kaggle and consists of 74,818 observations of an Indian takeaway restaurant located in London, UK, covering the period from 2015 to 2019. The dataset includes six variables, which were augmented by an additional four variables for the purposes of this study.</p>
 <p>1.Order Number - receipt number.</p>
 <p>2.Order Date - date and time of the order.</p>
 <p>3.Item Name - name of the order in the menu.</p>
@@ -129,9 +133,72 @@ ul.task-list li input[type="checkbox"] {
 <h1 data-number="5"><span class="header-section-number">5</span> Analysis</h1>
 <section id="eda-and-graphs" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="eda-and-graphs"><span class="header-section-number">5.1</span> EDA and Graphs</h2>
+<p><strong>Top 20 and Least 20 Sold Items</strong></p>
+<div class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>Text(0.5, 1.0, 'Least 20 sold items')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Final_Project_Summary_files/figure-html/cell-4-output-2.png" width="1380" height="641"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Final_Project_Summary_files/figure-html/cell-4-output-3.png" width="1412" height="641"></p>
+</div>
+</div>
+<p>We can see from the above two figure ,In the whole data of 248 items of 2015-2019 years the most ordered product is Plain Papadum being ordered 10000 times. On the other hand during the same time the least ordered product is multiple items of Prown, Kurma and Lamp Persion being ordered only once.</p>
+<p><strong>Average Number of Orders by Hour of the Day</strong></p>
+<div class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>Text(0.5, 1.0, 'Average number of orders by hour of the day')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Final_Project_Summary_files/figure-html/cell-5-output-2.png" width="868" height="515"></p>
+</div>
+</div>
+<p>From the above bar graph, we visualized that Usually customers start ordering from 10 o’clock in the morning. The rush horse start from 4 o’clock and the peak is at 6 then orders decline until 12 o’clock in the evening.</p>
+<p><strong>Average Orders by Day of Week</strong></p>
+<div class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>([0, 1, 2, 3, 4, 5, 6],
+ [Text(0, 0, ''),
+  Text(0, 0, ''),
+  Text(0, 0, ''),
+  Text(0, 0, ''),
+  Text(0, 0, ''),
+  Text(0, 0, ''),
+  Text(0, 0, '')])</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Final_Project_Summary_files/figure-html/cell-6-output-2.png" width="585" height="506"></p>
+</div>
+</div>
+<p>We see from the above graph for the days, Fridays and Saturdays are the most busiest days in the week, and we have to point out that UK weekends are saturday and sunday. Therefore we can say that the average number of orders in the weekends is higher than the weekdays.</p>
+<p><strong>Total Monthly Sales</strong></p>
+<div class="cell" data-execution_count="6">
+<div class="cell-output cell-output-stdout">
+<pre><code>First Sale:  2015-01-09 14:42:00
+Last Sale:  2019-12-07 22:24:00</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>Text(0.5, 1.0, 'Total monthly sales')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Final_Project_Summary_files/figure-html/cell-7-output-3.png" width="612" height="442"></p>
+</div>
+</div>
+<p>From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.</p>
 </section>
 <section id="modeling" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="modeling"><span class="header-section-number">5.2</span> Modeling</h2>
+<section id="apriori-algorithm" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="apriori-algorithm"><span class="header-section-number">5.2.1</span> Apriori Algorithm</h3>
+<p>Apriori algorithm is a powerful tool for discovering frequent item sets in large datasets. It is based on the principle of association rule mining, which aims to identify patterns of co-occurrence among items in a dataset. By analyzing the frequency of item sets, the Apriori algorithm can uncover hidden relationships and insights that may not be immediately apparent from the raw data. It has proven to be a robust and effective method for extracting useful information, making it a valuable tool for researchers and practitioners in a wide range of fields. It has three main outputs: support, confident, and lift.</p>
+<ol type="1">
+<li><p>Support is a measure of the frequency of an itemset or association rule in the transaction dataset. It is calculated as the percentage of transactions in the dataset that contain the itemset or rule. For example, if the support of an association is 5%, this means that the item appears in 5% of the transactions in the dataset. Support is used to identify frequent itemsets are worth considering for further analysis. The minimum support threshold is set by the user and in this project we set it by <strong>0.0315</strong> which is <code>(number of unique items * 0.5)/ 100</code></p></li>
+<li><p>Confidence is a measure of the reliability of an association rule. It is calculated as the percentage of transactions that contain the antecedent (A) of the rule that also contain the consequent (B). For example, if the rule is A =&gt; B and the confidence is 60%, this means that 60% of the transactions that contain A also contain B. Confidence is used to evaluate the quality of an association rule and determine whether it is worth considering for further analysis.</p></li>
+<li><p>Lift is a useful metric for identifying interesting and potentially useful associations in a dataset. If the lift for the association between A and B is 3, this means that customers are three times more likely to purchase A and B together than they would be if the two items were independent. A lift value of 1 to infinity would indicate that there is no relationship between the two items, while a lift value greater than 1 indicates a positive relationship and a lift value less than 1 indicates a negative relationship. The minimum lift threshold is set by the user and in this project we set it by <strong>1.5</strong></p></li>
+</ol>
+</section>
 </section>
 <section id="results-and-interpretation" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="results-and-interpretation"><span class="header-section-number">5.3</span> Results and Interpretation</h2>
@@ -143,7 +210,13 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="limitations-other-considerations" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Limitations &amp; Other Considerations</h1>
-<p>It is the simplest, however the database takes up a lot of memory. The menu list’s items could vary over time.</p>
+<p>Although the Apriori algorithm has traditionally been important in many application areas, it has a number of inefficiencies and trade-offs that make it less competitive than alternative algorithms. The method repeatedly checks the database, which lowers performance as a whole. Therefore, the program makes the assumption that the database is permanently stored in memory. It is the simplest, however the database takes up a lot of memory. The menu list’s items could vary over time.</p>
+<ol type="1">
+<li><p>Such research should be carried out in close collaboration with an accounting institution, such as a firm. This makes it simpler to declare that the model’s performance is represented in a real-world environment and that it genuinely helps in profit optimization, which is a further validation of the model.</p></li>
+<li><p>The project should be carried out in coordination with end users, such as restaurants or supermarkets, as the model would benefit these firms in maximizing earnings and lowering losses, to facilitate the ease of adoption of this instrument.</p></li>
+<li><p>More tests should be run to enhance the model’s performance. An enlarged presentation to fresh marked examples from new sales subjects can without a doubt increase the algorithm’s precision.</p></li>
+<li><p>The business network should obtain expertise input from the outset of the project and address upcoming social, moral, and protection concerns that are crucial to the business sector.</p></li>
+</ol>
 </section>
 <section id="conclusion" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Conclusion</h1>
@@ -154,11 +227,16 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Compared to applying promotional methods manually, this program generates item association rules or menu combinations in customer purchase patterns that are precise and on-target.</p></li>
 </ol>
 </section>
-<section id="references" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> References</h1>
+<section id="future-work" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Future Work</h1>
+<p>There is still so much to be accomplished. The researcher will continue to gather data in order to improve the accuracy of the current model and to make it better capture hidden events. As a result, the model will be able to scale on an even plane, enabling a sizable number of individuals to use it as a service.Even individuals who lack specific knowledge will be able to start the monitoring process. Additionally, it will be simpler to expand the model’s ability to maximize server revenues and remotely deliver the results to users by using the same channel as a result.</p>
+</section>
+<section id="references" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> References</h1>
 <p>Kurnia, Y., Isharianto, Y., Giap, Y.C., Hermawan, A., &amp; Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm. 1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.</p>
 <p>Siddamsetty, S., Vangala, R.R., Reddy, L.,&amp; Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.</p>
 <p>Dhanawde, S.(2022). Food Sales Prediction System using Apriori Algorithm. International Journal of Creative Research Thoughts (IJCRT), Volume. 10, Issue 4, ISSN: 2320-2882.</p>
+<p>Kaur, N., &amp; Kang, S. (2016). Market Basket Analysis: Identify the changing trends of market data using associate rule mining. Elsevier: Procedia computer science. Newcastle- upon-Tyne, UNITED KINGDOM: Cambridge Scholars Publishing. on Computational Intelligence and Security, 445-449.</p>
 </section>
 
 </main>

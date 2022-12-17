@@ -898,7 +898,7 @@ count_1 = count_1[["Item Name", "Count", "Product Price"]]
 count_1 = count_1.sort_values(by="Count", ascending=False)
 count_1
 
-# Here we can see how many times each item has been ordered from 2016 to 2019.
+# Here we can see how many times each item has been ordered from 2015 to 2019.
  # %%
 sns.scatterplot(x="Count", y="Product Price", data=count_1)
 plt.xlim(0, 1000)
