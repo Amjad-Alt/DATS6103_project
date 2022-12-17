@@ -255,14 +255,21 @@ As a result of the study's findings, the analysis of the application to determin
 There is still so much to be accomplished. The researcher will continue to gather data in order to improve the accuracy of the current model and to make it better capture hidden events. As a result, the model will be able to scale on an even plane, enabling a sizable number of individuals to use it as a service.Even individuals who lack specific knowledge will be able to start the monitoring process. Additionally, it will be simpler to expand the model's ability to maximize server revenues and remotely deliver the results to users by using the same channel as a result.
 
 # References
-Kurnia, Y.,  Isharianto, Y.,  Giap, Y.C.,  Hermawan, A.,  & Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm.  1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.
-
-Siddamsetty, S., Vangala, R.R., Reddy, L.,& Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.
 
 Dhanawde, S.(2022). Food Sales Prediction System using Apriori
 Algorithm. International Journal of Creative Research Thoughts (IJCRT), Volume. 10, Issue 4, ISSN: 2320-2882.
 
+Kang, H., Yoo, S. J., &amp; Han, D. (2012). Senti-lexicon and improved naïve Bayes algorithms for sentiment analysis of restaurant reviews. Expert Systems with Applications, 39(5), 6000–6010. https://doi.org/10.1016/j.eswa.2011.11.107 
+
 Kaur, N., & Kang, S. (2016). Market Basket Analysis: Identify the changing trends of market data using associate rule mining. Elsevier: Procedia computer science. Newcastle- upon-Tyne, UNITED KINGDOM: Cambridge Scholars Publishing. on Computational Intelligence and Security, 445-449.
+
+Kurnia, Y.,  Isharianto, Y.,  Giap, Y.C.,  Hermawan, A.,  & Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm.  1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.
+
+Lu, X., Ba, S., Huang, L., &amp; Feng, Y. (2013). Promotional marketing or word-of-mouth? evidence from online restaurant reviews. Information Systems Research, 24(3), 596–612. https://doi.org/10.1287/isre.1120.0454 
+
+Luo, Y., &amp; Xu, X. (2021). Comparative study of deep learning models for analyzing online restaurant reviews in the era of the COVID-19 pandemic. International Journal of Hospitality Management, 94, 102849. https://doi.org/10.1016/j.ijhm.2020.102849 
+
+Siddamsetty, S., Vangala, R.R., Reddy, L.,& Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.
 
 
 
