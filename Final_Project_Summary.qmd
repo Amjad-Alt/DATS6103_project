@@ -70,7 +70,7 @@ Profit:
 
 
 # Literature Review
-One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience. While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers' collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant's menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.
+One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience (Kang et al., 2012; Lu et al., 2013; Luo & Xu, 2021). While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers' collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant's menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.
 
 # Description Of Data
 The data for this project was sourced from Kaggle and consists of 74,818 observations of an Indian takeaway restaurant located in London, UK, covering the period from 2015 to 2019. The dataset includes six variables, which were augmented by an additional four variables for the purposes of this study.
@@ -224,17 +224,65 @@ Apriori algorithm is a powerful tool for discovering frequent item sets in large
 
 3.	Lift is a useful metric for identifying interesting and potentially useful associations in a dataset. If the lift for the association between A and B is 3, this means that customers are three times more likely to purchase A and B together than they would be if the two items were independent. A lift value of 1 to infinity would indicate that there is no relationship between the two items, while a lift value greater than 1 indicates a positive relationship and a lift value less than 1 indicates a negative relationship. The minimum lift threshold is set by the user and in this project we set it by **1.5**
 
-## Results and Interpretation
-Create some rules based on the outcomes of the application of the Apriori algorithm approach with association rules to the sales transaction data in an Indian restaurant. 
+### Prepering data
+It is often necessary to classify and organize different items into categories for the purpose of analysis and comparison. One approach that is taken in this project is to treat items that are the same thing but have different flavors or variations as separate categories. However, a more effective method is to group these items under the main category of the main item name, without indicating the specific flavors or variations. Therefore items names in the list reduced from **248** to be **63**. This approach has the advantage of allowing for a more streamlined and concise organization of data, as well as reducing the potential for confusion or misunderstanding. Additionally, grouping items in this way can facilitate a more holistic and comprehensive analysis of the data, as it allows for a more integrated and comprehensive view of the relationships between different items.
 
--If a customer ordered Madras, Chutney Items, and  Papadum would then be ordered with a 89% confidence level. 
+On consumer behavior and purchasing patterns, it is often necessary to analyze data on individual receipts and the items that were purchased. One approach that has been taken is to group items under a receipt number and then convert the items into columns, with each column indicating the presence or absence of that item on the receipt. This approach allows for the creation of a matrix-like structure in which each row represents a receipt and each column represents a specific item. This type of organization is useful because it allows for the efficient analysis of data on multiple receipts at once, as well as facilitating the identification of trends and patterns in consumer behavior. 
 
--If a consumer ordered Butter Chicken and Papadum, Rice would then be ordered with a 95% confidence level.   
+```{python}
+res2 = data[['Order Number', 'Item Name', 'Quantity']].copy()
 
--If a consumer orders Aloo, Rice, and Curry Items, Nana would then be ordered with a 80% confidence level. 
+# Create cateogries for each item that has different flavors
+res2['Item Name'] = res2['Item Name'].apply(lambda x: 'Naan' if 'Naan' in x else 'Sauce' if 'Sauce' in x else 'Papadum' if 'Papadum' in x else 'Salad' if 'Salad' in x else 'Balti' if 'Balti' in x
+                                            else 'Rice' if 'Rice' in x else 'Balti' if 'Balti' in x else 'Bhajee' if 'Bhajee' in x else 'Bhajee' if 'Bhaji' in x else 'Mushroom' if 'Mushroom' in x else
+                                            'Chutney' if 'Chutney' in x else'Pasanda' if 'Pasanda' in x else 'Biryani' if 'Biryani' in x else 'Korma' if 'Korma' in x else 'Aloo' if 'Aloo' in x else
+                                            'Curry' if 'Curry' in x else 'Sheek' if 'Sheek' in x else 'Samosa' if 'Samosa' in x else 'Hari Mirch' if 'Hari Mirch' in x else 'Madras' if 'Madras' in x
+                                            else 'wine' if 'wine' in x else 'Lemonade' if 'Lemonade' in x else 'Water' if 'Water' in x else 'COBRA' if 'COBRA' in x else 'Coke' if 'Coke' in x else
+                                            'Karahi' if 'Karahi' in x else 'Jalfrezi' if 'Jalfrezi' in x else 'Bhuna' if 'Bhuna' in x else 'Dupiaza' if 'Dupiaza' in x else 'Methi' if 'Methi' in x
+                                            else 'Lal Mirch' if 'Lal Mirch' in x else 'Shashlick' if 'Shashlick' in x else 'Shashlick' if 'Shaslick' in x else 'Sizzler' if 'Sizzler' in x else
+                                            'Dall' if 'Dall' in x else 'Sylhet' if 'Sylhet' in x else 'Mysore' if 'Mysore' in x else 'Puree' if 'Puree' in x else 'Paratha' if 'Paratha' in x else
+                                            'Chaat' if 'Chaat' in x else 'Achar' if 'Achar' in x else 'Vindaloo' if 'Vindaloo' in x else 'Dhansak' if 'Dhansak' in x else 'Haryali' if 'Haryali' in x
+                                            else 'Rogon' if 'Rogon' in x else 'Hazary' if 'Hazary' in x else 'Roshni' if 'Roshni' in x else 'Jeera' if 'Jeera' in x else 'Rezala' if 'Rezala' in x
+                                            else 'Bengal' if 'Bengal' in x else 'Bengal' if 'Butterfly' in x else 'Pathia' if 'Pathia' in x else 'Masala' if 'Masala' in x else 'Paneer' if 'Paneer' in x
+                                            else 'Saag' if 'Saag' in x else 'Tandoori' if 'Tandoori' in x else 'Tikka' if 'Tikka' in x else 'Chilli Garlic' if 'Chilli' in x else 'Chapati' if 'Chapati' in x
+                                            else 'Pickle' if 'Pickle' in x else 'Pakora' if 'Pakora' in x else 'Fries' if 'Fries' in x else 'Starters' if 'Starter' in x else 'Raitha' if 'Raitha' in x
+                                            else 'Rolls' if 'Roll' in x else 'Butter Chicken' if 'Butter' in x else 'Persian')
+
+# Group order number so each order has its ouwn set of items
+item_list = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
+             .min().unstack().reset_index().fillna(0)
+             .set_index('Order Number'))
+# create one hot incoding
+def hot_encode(x):
+    if(x <= 0):
+        return 0
+    if(x >= 1):
+        return 1
+# Encoding the datasets
+sparse_df_items = item_list.applymap(hot_encode)
+```
+## Results 
+```{python}
+frequent_itemsets = apriori(
+    sparse_df_items, min_support=0.0315, use_colnames=True, verbose=1)
+
+#adding left number of items with 1.5 lift
+association = association_rules(
+    frequent_itemsets, metric="lift", min_threshold=1.5)
+
+association.sort_values(
+    ['confidence', 'lift'], ascending=False).head(5)
+
+association.sort_values(
+    ['confidence', 'lift'], ascending=False).tail(5)
+```
+
+The results of the Apriori algorithm on the data set of the restaurant showed that there were **326** association rules that emerged. It was found that the purchase of `Rice, Sauce, Chutney` was with a **87%** confidence accompanied by the purchase of `Papadum`,and this combination  found to be repeated **6%** of the total dataset. Similarly, the purchase of `Rice, Sauce, Naan, Chutney`was often accompanied by the purchase of `Papadum`. From the previous analysis, `Papadum` found to be one of the popular items in the restuarnt. However, Upon analyzing the lift value, it was found that the combination of `Papadum` had a strong association with a lift of 3, indicating that the likelihood of purchasing this combination together was 3 times greater than the likelihood of purchasing `Papadum` alone. These findings suggest that there may be underlying factors, such as complementary needs or preferences, that drive the co-occurrence of these items in the same transaction. In addition to these strong associations, the Apriori algorithm also identified several weaker associations, such as the relationship between `Rice, Naan` and `Masala, Papadum, Chutney` with a **6%** confidence and **1.5** lift. Further investigation of these weaker associations may also be valuable in understanding consumer behavior and identifying potential opportunities for product promotion or cross-selling.
 
 # Limitations & Other Considerations
-Although the Apriori algorithm has traditionally been important in many application areas, it has a number of inefficiencies and trade-offs that make it less competitive than alternative algorithms. The method repeatedly checks the database, which lowers performance as a whole. Therefore, the program makes the assumption that the database is permanently stored in memory. It is the simplest, however the database takes up a lot of memory. The menu list's items could vary over time.
+While the Apriori algorithm has been widely used in various applications, it has several limitations and inefficiencies that make it less competitive compared to other algorithms. One major issue is that the algorithm requires multiple scans of the database, which can negatively impact performance. As a result, the algorithm assumes that the database is stored in memory, which can lead to high memory usage. Additionally, the Apriori algorithm is relatively simple, but it may not be well-suited for situations where the list of items on the menu changes over time. Overall, it is important to consider these trade-offs and inefficiencies when deciding which algorithm to use for a particular problem.
+
+#### I think this should be deleted and the previous limitations are good enough
 
 1) Such research should be carried out in close collaboration with an accounting institution, such as a firm. This makes it simpler to declare that the model's performance is represented in a real-world environment and that it genuinely helps in profit optimization, which is a further validation of the model.
 
@@ -245,26 +293,34 @@ Although the Apriori algorithm has traditionally been important in many applicat
 4) The business network should obtain expertise input from the outset of the project and address upcoming social, moral, and protection concerns that are crucial to the business sector.
 
 # Conclusion
-As a result of the study's findings, the analysis of the application to determine the sales pattern (item association rules) in the Indian restaurant Takeaways that was submitted in earlier chapters, and the data mining technique used to uncover new information patterns, it can be said that the following: 
+The findings of this project demonstrate that the application of the Apriori algorithm to analyze sales patterns in the context of Indian restaurant takeaways can provide valuable insights for informed promotional development strategies. 
+- The use of item association rules in consumer purchase patterns can help restaurants  identify targeted promotional strategies that may increase the number of orders for lower-selling items. For example, by promoting the purchase of a lower-selling item in combination with it is popular associated items to customers. That can potentially increase the number of orders for the lower-selling item. This approach has the potential to be more precise and targeted compared to traditional manual methods of promotion. 
 
-1. The employment of a priori algorithms in the field of data mining is known to provide new, useful information patterns that may be utilized to identify sales patterns (item association rules).
+- One way that restaurants can potentially increase their profits is by offering promotions and discounts during off-peak times, such as weekdays. The analysis of customer purchasing patterns, as identified through the use of item association rules, can provide valuable insights into which menu items are frequently purchased together and could be promoted as a bundle deal. For example, a restaurant could offer a promotion where a customer who purchases a set of items can have the associated item for free. By targeting promotions at times when foot traffic is typically lower, such as weekdays, restaurants may be able to attract additional customers and boost their profits.
 
-2. Indian restaurants can use item association (menu) rules in consumer purchase patterns to inform their promotional development strategies based on items (menus) bought at the same time to increase sales. This application of knowing the sales pattern (item association rule) is made possible by the implementation of an a priori data mining science algorithm. 
+- Another way that restaurants can make use of item association rules is through visual marketing, such as using appealing images of menu items that are frequently purchased together in promotional materials. This approach can help to attract the attention of potential customers and encourage them to make purchases. By identifying the most popular item combinations, restaurants can be more strategic and targeted in their visual marketing efforts, rather than simply guessing which items might look appealing together. By effectively leveraging the power of item association rules and visual marketing, restaurants may be able to increase their profits.
 
-3. Compared to applying promotional methods manually, this program generates item association rules or menu combinations in customer purchase patterns that are precise and on-target.
+Overall, the use of the Apriori algorithm in data mining can be a useful tool for uncovering new and useful patterns of information that can inform business strategies and decision-making. The final result can provide a wealth of information that can be utilized to inform various aspects of a business's operations like inform marketing and promotional strategies, menu planning, and pricing decisions. 
 
 # Future Work
 There is still so much to be accomplished. The researcher will continue to gather data in order to improve the accuracy of the current model and to make it better capture hidden events. As a result, the model will be able to scale on an even plane, enabling a sizable number of individuals to use it as a service.Even individuals who lack specific knowledge will be able to start the monitoring process. Additionally, it will be simpler to expand the model's ability to maximize server revenues and remotely deliver the results to users by using the same channel as a result.
 
 # References
-Kurnia, Y.,  Isharianto, Y.,  Giap, Y.C.,  Hermawan, A.,  & Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm.  1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.
-
-Siddamsetty, S., Vangala, R.R., Reddy, L.,& Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.
 
 Dhanawde, S.(2022). Food Sales Prediction System using Apriori
 Algorithm. International Journal of Creative Research Thoughts (IJCRT), Volume. 10, Issue 4, ISSN: 2320-2882.
 
+Kang, H., Yoo, S. J., &amp; Han, D. (2012). Senti-lexicon and improved naïve Bayes algorithms for sentiment analysis of restaurant reviews. Expert Systems with Applications, 39(5), 6000–6010. https://doi.org/10.1016/j.eswa.2011.11.107 
+
 Kaur, N., & Kang, S. (2016). Market Basket Analysis: Identify the changing trends of market data using associate rule mining. Elsevier: Procedia computer science. Newcastle- upon-Tyne, UNITED KINGDOM: Cambridge Scholars Publishing. on Computational Intelligence and Security, 445-449.
+
+Kurnia, Y.,  Isharianto, Y.,  Giap, Y.C.,  Hermawan, A.,  & Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm.  1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.
+
+Lu, X., Ba, S., Huang, L., &amp; Feng, Y. (2013). Promotional marketing or word-of-mouth? evidence from online restaurant reviews. Information Systems Research, 24(3), 596–612. https://doi.org/10.1287/isre.1120.0454 
+
+Luo, Y., &amp; Xu, X. (2021). Comparative study of deep learning models for analyzing online restaurant reviews in the era of the COVID-19 pandemic. International Journal of Hospitality Management, 94, 102849. https://doi.org/10.1016/j.ijhm.2020.102849 
+
+Siddamsetty, S., Vangala, R.R., Reddy, L.,& Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.
 
 
 
