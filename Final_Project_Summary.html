@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.280">
+<meta name="generator" content="quarto-1.1.251">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -59,13 +59,15 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling"><span class="toc-section-number">5.2</span>  Modeling</a>
   <ul class="collapse">
   <li><a href="#apriori-algorithm" id="toc-apriori-algorithm" class="nav-link" data-scroll-target="#apriori-algorithm"><span class="toc-section-number">5.2.1</span>  Apriori Algorithm</a></li>
+  <li><a href="#prepering-data" id="toc-prepering-data" class="nav-link" data-scroll-target="#prepering-data"><span class="toc-section-number">5.2.2</span>  Prepering data</a></li>
   </ul></li>
-  <li><a href="#results-and-interpretation" id="toc-results-and-interpretation" class="nav-link" data-scroll-target="#results-and-interpretation"><span class="toc-section-number">5.3</span>  Results and Interpretation</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="toc-section-number">5.3</span>  Results</a></li>
   </ul></li>
   <li><a href="#limitations-other-considerations" id="toc-limitations-other-considerations" class="nav-link" data-scroll-target="#limitations-other-considerations"><span class="toc-section-number">6</span>  Limitations &amp; Other Considerations</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="toc-section-number">7</span>  Conclusion</a></li>
-  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="toc-section-number">8</span>  Future Work</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="toc-section-number">9</span>  References</a></li>
+  <li><a href="#recommendation" id="toc-recommendation" class="nav-link" data-scroll-target="#recommendation"><span class="toc-section-number">7</span>  Recommendation</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="toc-section-number">8</span>  Conclusion</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="toc-section-number">9</span>  Future Work</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="toc-section-number">10</span>  References</a></li>
   </ul>
 </nav>
 </div>
@@ -87,7 +89,6 @@ ul.task-list li input[type="checkbox"] {
           </div>
   </div>
     
-  
     
   </div>
   
@@ -116,7 +117,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="literature-review" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Literature Review</h1>
-<p>One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience. While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers’ collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant’s menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.</p>
+<!--
+(One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience (Kang et al., 2012; Lu et al., 2013; Luo & Xu, 2021). While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers' collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant's menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.
+)-->
 </section>
 <section id="description-of-data" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Description Of Data</h1>
@@ -142,10 +145,10 @@ ul.task-list li input[type="checkbox"] {
 <pre><code>Text(0.5, 1.0, 'Least 20 sold items')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="Final_Project_Summary_files/figure-html/cell-4-output-2.png" width="1380" height="641"></p>
+<p><img src="Final_Project_Summary_files/figure-html/cell-4-output-2.png" class="img-fluid"></p>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="Final_Project_Summary_files/figure-html/cell-4-output-3.png" width="1412" height="641"></p>
+<p><img src="Final_Project_Summary_files/figure-html/cell-4-output-3.png" class="img-fluid"></p>
 </div>
 </div>
 <p>We can see from the above two figure ,In the whole data of 248 items of 2015-2019 years the most ordered product is Plain Papadum being ordered 10000 times. On the other hand during the same time the least ordered product is multiple items of Prown, Kurma and Lamp Persion being ordered only once.</p>
@@ -155,7 +158,7 @@ ul.task-list li input[type="checkbox"] {
 <pre><code>Text(0.5, 1.0, 'Average number of orders by hour of the day')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="Final_Project_Summary_files/figure-html/cell-5-output-2.png" width="868" height="515"></p>
+<p><img src="Final_Project_Summary_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
 </div>
 </div>
 <p>From the above bar graph, we visualized that Usually customers start ordering from 10 o’clock in the morning. The rush horse start from 4 o’clock and the peak is at 6 then orders decline until 12 o’clock in the evening.</p>
@@ -172,7 +175,7 @@ ul.task-list li input[type="checkbox"] {
   Text(0, 0, '')])</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="Final_Project_Summary_files/figure-html/cell-6-output-2.png" width="585" height="506"></p>
+<p><img src="Final_Project_Summary_files/figure-html/cell-6-output-2.png" class="img-fluid"></p>
 </div>
 </div>
 <p>We see from the above graph for the days, Fridays and Saturdays are the most busiest days in the week, and we have to point out that UK weekends are saturday and sunday. Therefore we can say that the average number of orders in the weekends is higher than the weekdays.</p>
@@ -260,7 +263,7 @@ Last Sale:  2019-12-07 22:24:00</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="Final_Project_Summary_files/figure-html/cell-7-output-3.png" width="612" height="442"></p>
+<p><img src="Final_Project_Summary_files/figure-html/cell-7-output-3.png" class="img-fluid"></p>
 </div>
 </div>
 <p>From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.</p>
@@ -276,18 +279,118 @@ Last Sale:  2019-12-07 22:24:00</code></pre>
 <li><p>Lift is a useful metric for identifying interesting and potentially useful associations in a dataset. If the lift for the association between A and B is 3, this means that customers are three times more likely to purchase A and B together than they would be if the two items were independent. A lift value of 1 to infinity would indicate that there is no relationship between the two items, while a lift value greater than 1 indicates a positive relationship and a lift value less than 1 indicates a negative relationship. The minimum lift threshold is set by the user and in this project we set it by <strong>1.5</strong></p></li>
 </ol>
 </section>
+<section id="prepering-data" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="prepering-data"><span class="header-section-number">5.2.2</span> Prepering data</h3>
+<p>It is often necessary to classify and organize different items into categories for the purpose of analysis and comparison. One approach that is taken in this project is to treat items that are the same thing but have different flavors or variations as separate categories. However, a more effective method is to group these items under the main category of the main item name, without indicating the specific flavors or variations. Therefore items names in the list reduced from <strong>248</strong> to be <strong>63</strong>. This approach has the advantage of allowing for a more streamlined and concise organization of data, as well as reducing the potential for confusion or misunderstanding. Additionally, grouping items in this way can facilitate a more holistic and comprehensive analysis of the data, as it allows for a more integrated and comprehensive view of the relationships between different items.</p>
+<p>On consumer behavior and purchasing patterns, it is often necessary to analyze data on individual receipts and the items that were purchased. One approach that has been taken is to group items under a receipt number and then convert the items into columns, with each column indicating the presence or absence of that item on the receipt. This approach allows for the creation of a matrix-like structure in which each row represents a receipt and each column represents a specific item. This type of organization is useful because it allows for the efficient analysis of data on multiple receipts at once, as well as facilitating the identification of trends and patterns in consumer behavior.</p>
 </section>
-<section id="results-and-interpretation" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="results-and-interpretation"><span class="header-section-number">5.3</span> Results and Interpretation</h2>
-<p>Create some rules based on the outcomes of the application of the Apriori algorithm approach with association rules to the sales transaction data in an Indian restaurant.</p>
-<p>-If a customer ordered Madras, Chutney Items, and &nbsp;Papadum would then be ordered with a 89% confidence level.</p>
-<p>-If a consumer ordered Butter Chicken and&nbsp;Papadum, Rice would then be ordered with a 95% confidence level. &nbsp;</p>
-<p>-If a consumer orders Aloo, Rice, and Curry Items, Nana&nbsp;would then be ordered with a 80% confidence level.&nbsp;</p>
+</section>
+<section id="results" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="results"><span class="header-section-number">5.3</span> Results</h2>
+<div class="cell" data-execution_count="8">
+<div class="cell-output cell-output-stdout">
+<pre><code>Processing 1190 combinations | Sampling itemset size 2Processing 1641 combinations | Sampling itemset size 3Processing 1024 combinations | Sampling itemset size 4Processing 105 combinations | Sampling itemset size 5Processing 12 combinations | Sampling itemset size 6</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\duvvi\miniconda3\lib\site-packages\mlxtend\frequent_patterns\fpcommon.py:111: DeprecationWarning:
+
+DataFrames with non-bool types result in worse computationalperformance and their support might be discontinued in the future.Please use a DataFrame with bool type
+</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>antecedents</th>
+      <th>consequents</th>
+      <th>antecedent support</th>
+      <th>consequent support</th>
+      <th>support</th>
+      <th>confidence</th>
+      <th>lift</th>
+      <th>leverage</th>
+      <th>conviction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>279</th>
+      <td>(Papadum)</td>
+      <td>(Chutney, Naan, Rice, Aloo)</td>
+      <td>0.284392</td>
+      <td>0.040681</td>
+      <td>0.031574</td>
+      <td>0.111024</td>
+      <td>2.729144</td>
+      <td>0.020005</td>
+      <td>1.079128</td>
+    </tr>
+    <tr>
+      <th>238</th>
+      <td>(Naan, Rice)</td>
+      <td>(Papadum, Korma)</td>
+      <td>0.468986</td>
+      <td>0.061058</td>
+      <td>0.043219</td>
+      <td>0.092153</td>
+      <td>1.509266</td>
+      <td>0.014583</td>
+      <td>1.034251</td>
+    </tr>
+    <tr>
+      <th>184</th>
+      <td>(Naan, Rice)</td>
+      <td>(Chutney, Masala)</td>
+      <td>0.468986</td>
+      <td>0.054714</td>
+      <td>0.039561</td>
+      <td>0.084355</td>
+      <td>1.541744</td>
+      <td>0.013901</td>
+      <td>1.032372</td>
+    </tr>
+    <tr>
+      <th>244</th>
+      <td>(Naan, Rice)</td>
+      <td>(Sauce, Masala)</td>
+      <td>0.468986</td>
+      <td>0.049489</td>
+      <td>0.036575</td>
+      <td>0.077988</td>
+      <td>1.575880</td>
+      <td>0.013366</td>
+      <td>1.030910</td>
+    </tr>
+    <tr>
+      <th>293</th>
+      <td>(Naan, Rice)</td>
+      <td>(Papadum, Chutney, Masala)</td>
+      <td>0.468986</td>
+      <td>0.044189</td>
+      <td>0.032022</td>
+      <td>0.068279</td>
+      <td>1.545169</td>
+      <td>0.011298</td>
+      <td>1.025856</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The results of the Apriori algorithm on the data set of the restaurant showed that there were <strong>326</strong> association rules that emerged. It was found that the purchase of <code>Rice, Sauce, Chutney</code> was with a <strong>87%</strong> confidence accompanied by the purchase of <code>Papadum</code>,and this combination found to be repeated <strong>6%</strong> of the total dataset. Similarly, the purchase of <code>Rice, Sauce, Naan, Chutney</code>was often accompanied by the purchase of <code>Papadum</code>. From the previous analysis, <code>Papadum</code> found to be one of the popular items in the restuarnt. However, Upon analyzing the lift value, it was found that the combination of <code>Papadum</code> had a strong association with a lift of 3, indicating that the likelihood of purchasing this combination together was 3 times greater than the likelihood of purchasing <code>Papadum</code> alone. These findings suggest that there may be underlying factors, such as complementary needs or preferences, that drive the co-occurrence of these items in the same transaction. In addition to these strong associations, the Apriori algorithm also identified several weaker associations, such as the relationship between <code>Rice, Naan</code> and <code>Masala, Papadum, Chutney</code> with a <strong>6%</strong> confidence and <strong>1.5</strong> lift. Further investigation of these weaker associations may also be valuable in understanding consumer behavior and identifying potential opportunities for product promotion or cross-selling.</p>
 </section>
 </section>
 <section id="limitations-other-considerations" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Limitations &amp; Other Considerations</h1>
-<p>Although the Apriori algorithm has traditionally been important in many application areas, it has a number of inefficiencies and trade-offs that make it less competitive than alternative algorithms. The method repeatedly checks the database, which lowers performance as a whole. Therefore, the program makes the assumption that the database is permanently stored in memory. It is the simplest, however the database takes up a lot of memory. The menu list’s items could vary over time.</p>
+<p>While the Apriori algorithm has been widely used in various applications, it has several limitations and inefficiencies that make it less competitive compared to other algorithms. One major issue is that the algorithm requires multiple scans of the database, which can negatively impact performance. As a result, the algorithm assumes that the database is stored in memory, which can lead to high memory usage. Additionally, the Apriori algorithm is relatively simple, but it may not be well-suited for situations where the list of items on the menu changes over time. Overall, it is important to consider these trade-offs and inefficiencies when deciding which algorithm to use for a particular problem.</p>
+</section>
+<section id="recommendation" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Recommendation</h1>
 <ol type="1">
 <li><p>Such research should be carried out in close collaboration with an accounting institution, such as a firm. This makes it simpler to declare that the model’s performance is represented in a real-world environment and that it genuinely helps in profit optimization, which is a further validation of the model.</p></li>
 <li><p>The project should be carried out in coordination with end users, such as restaurants or supermarkets, as the model would benefit these firms in maximizing earnings and lowering losses, to facilitate the ease of adoption of this instrument.</p></li>
@@ -295,25 +398,28 @@ Last Sale:  2019-12-07 22:24:00</code></pre>
 <li><p>The business network should obtain expertise input from the outset of the project and address upcoming social, moral, and protection concerns that are crucial to the business sector.</p></li>
 </ol>
 </section>
-<section id="conclusion" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Conclusion</h1>
-<p>As a result of the study’s findings, the analysis of the application to determine the sales pattern (item association rules) in the Indian restaurant Takeaways that was submitted in earlier chapters, and the data mining technique used to uncover new information patterns, it can be said that the following:</p>
-<ol type="1">
-<li><p>The employment of a priori algorithms in the field of data mining is known to provide new, useful information patterns that may be utilized to identify sales patterns (item association rules).</p></li>
-<li><p>Indian&nbsp;restaurants can use item association (menu) rules in consumer purchase patterns to inform their promotional development strategies based on items (menus) bought at the same time to increase sales. This application of knowing the sales pattern (item association rule) is made possible by the implementation of an a priori data mining science algorithm.</p></li>
-<li><p>Compared to applying promotional methods manually, this program generates item association rules or menu combinations in customer purchase patterns that are precise and on-target.</p></li>
-</ol>
+<section id="conclusion" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Conclusion</h1>
+<p>The findings of this project demonstrate that the application of the Apriori algorithm to analyze sales patterns in the context of Indian restaurant takeaways can provide valuable insights for informed promotional development strategies. - The use of item association rules in consumer purchase patterns can help restaurants identify targeted promotional strategies that may increase the number of orders for lower-selling items. For example, by promoting the purchase of a lower-selling item in combination with it is popular associated items to customers. That can potentially increase the number of orders for the lower-selling item. This approach has the potential to be more precise and targeted compared to traditional manual methods of promotion.</p>
+<ul>
+<li><p>One way that restaurants can potentially increase their profits is by offering promotions and discounts during off-peak times, such as weekdays. The analysis of customer purchasing patterns, as identified through the use of item association rules, can provide valuable insights into which menu items are frequently purchased together and could be promoted as a bundle deal. For example, a restaurant could offer a promotion where a customer who purchases a set of items can have the associated item for free. By targeting promotions at times when foot traffic is typically lower, such as weekdays, restaurants may be able to attract additional customers and boost their profits.</p></li>
+<li><p>Another way that restaurants can make use of item association rules is through visual marketing, such as using appealing images of menu items that are frequently purchased together in promotional materials. This approach can help to attract the attention of potential customers and encourage them to make purchases. By identifying the most popular item combinations, restaurants can be more strategic and targeted in their visual marketing efforts, rather than simply guessing which items might look appealing together. By effectively leveraging the power of item association rules and visual marketing, restaurants may be able to increase their profits.</p></li>
+</ul>
+<p>Overall, the use of the Apriori algorithm in data mining can be a useful tool for uncovering new and useful patterns of information that can inform business strategies and decision-making. The final result can provide a wealth of information that can be utilized to inform various aspects of a business’s operations like inform marketing and promotional strategies, menu planning, and pricing decisions.</p>
 </section>
-<section id="future-work" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Future Work</h1>
+<section id="future-work" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Future Work</h1>
 <p>There is still so much to be accomplished. The researcher will continue to gather data in order to improve the accuracy of the current model and to make it better capture hidden events. As a result, the model will be able to scale on an even plane, enabling a sizable number of individuals to use it as a service.Even individuals who lack specific knowledge will be able to start the monitoring process. Additionally, it will be simpler to expand the model’s ability to maximize server revenues and remotely deliver the results to users by using the same channel as a result.</p>
 </section>
-<section id="references" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> References</h1>
-<p>Kurnia, Y., Isharianto, Y., Giap, Y.C., Hermawan, A., &amp; Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm. 1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.</p>
-<p>Siddamsetty, S., Vangala, R.R., Reddy, L.,&amp; Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.</p>
+<section id="references" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> References</h1>
 <p>Dhanawde, S.(2022). Food Sales Prediction System using Apriori Algorithm. International Journal of Creative Research Thoughts (IJCRT), Volume. 10, Issue 4, ISSN: 2320-2882.</p>
+<p>Kang, H., Yoo, S. J., &amp; Han, D. (2012). Senti-lexicon and improved naïve Bayes algorithms for sentiment analysis of restaurant reviews. Expert Systems with Applications, 39(5), 6000–6010. https://doi.org/10.1016/j.eswa.2011.11.107</p>
 <p>Kaur, N., &amp; Kang, S. (2016). Market Basket Analysis: Identify the changing trends of market data using associate rule mining. Elsevier: Procedia computer science. Newcastle- upon-Tyne, UNITED KINGDOM: Cambridge Scholars Publishing. on Computational Intelligence and Security, 445-449.</p>
+<p>Kurnia, Y., Isharianto, Y., Giap, Y.C., Hermawan, A., &amp; Riki.(2019). Study of application of data mining market basket analysis for knowing sales pattern (association of items) at the O! Fish restaurant using apriori algorithm. 1st International Conference on Advance and Scientific Innovation (ICASI), 10.1088/1742-6596/1175/1/012047.</p>
+<p>Lu, X., Ba, S., Huang, L., &amp; Feng, Y. (2013). Promotional marketing or word-of-mouth? evidence from online restaurant reviews. Information Systems Research, 24(3), 596–612. https://doi.org/10.1287/isre.1120.0454</p>
+<p>Luo, Y., &amp; Xu, X. (2021). Comparative study of deep learning models for analyzing online restaurant reviews in the era of the COVID-19 pandemic. International Journal of Hospitality Management, 94, 102849. https://doi.org/10.1016/j.ijhm.2020.102849</p>
+<p>Siddamsetty, S., Vangala, R.R., Reddy, L.,&amp; Vattipally, P.R.(2021). Restaurant Revenue Prediction using Machine Learning. International Research Journal of Engineering and Technology, Volume. 08, Issue 12.</p>
 </section>
 
 </main>
@@ -359,24 +465,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
     setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -412,42 +501,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
       });
-    }
+      return popup.innerHTML;
+    });
   }
 });
 </script>

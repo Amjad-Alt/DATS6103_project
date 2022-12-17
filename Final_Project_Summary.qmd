@@ -70,8 +70,9 @@ Profit:
 
 
 # Literature Review
-One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience (Kang et al., 2012; Lu et al., 2013; Luo & Xu, 2021). While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers' collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant's menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.
-
+<!--
+(One extensively researched area in the field of restaurant data is the use of customer reviews and ratings to improve the quality of service and overall customer experience (Kang et al., 2012; Lu et al., 2013; Luo & Xu, 2021). While this has been shown to be valuable for informing decisions related to menu design, staff training, and marketing efforts, there is still a need for further research on the most effective methods for collecting and utilizing customers' collected information. There is a gap in research on the use of data analytics in the restaurant industry to optimize various aspects of the business, such as by examining the association between items on a restaurant's menu and the likelihood of their co-occurrence. While there has been some research on these topics, there is a need for more in-depth and comprehensive studies that assess the impact of such associations on the financial performance and competitiveness of restaurants.
+)-->
 # Description Of Data
 The data for this project was sourced from Kaggle and consists of 74,818 observations of an Indian takeaway restaurant located in London, UK, covering the period from 2015 to 2019. The dataset includes six variables, which were augmented by an additional four variables for the purposes of this study.
 
@@ -212,6 +213,13 @@ monthly[monthly['month'] >= datetime.date(2019, 1, 1)]
 ```
 
 From the above graph, We can see that monthly sales had been growing up to a point in the middle of 2019 where they suffered a big drop. The month in which sales fell was August 2019 which is due to two heatwaves and flooding accounted in Uk in the month of August and November 2019.
+
+```{python}
+
+
+```
+
+
 
 
 ## Modeling
