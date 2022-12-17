@@ -225,6 +225,7 @@ Apriori algorithm is a powerful tool for discovering frequent item sets in large
 ### Prepering data
 It is often necessary to classify and organize different items into categories for the purpose of analysis and comparison. One approach that is taken in this project is to treat items that are the same thing but have different flavors or variations as separate categories. However, it has been suggested that a more effective method may be to group these items under the main category of the main item name, without indicating the specific flavors or variations. This approach has the advantage of allowing for a more streamlined and concise organization of data, as well as reducing the potential for confusion or misunderstanding. Additionally, grouping items in this way can facilitate a more holistic and comprehensive analysis of the data, as it allows for a more integrated and comprehensive view of the relationships between different items.
 
+On consumer behavior and purchasing patterns, it is often necessary to analyze data on individual receipts and the items that were purchased. One approach that has been taken is to group items under a receipt number and then convert the items into columns, with each column indicating the presence or absence of that item on the receipt. This approach allows for the creation of a matrix-like structure in which each row represents a receipt and each column represents a specific item. This type of organization is useful because it allows for the efficient analysis of data on multiple receipts at once, as well as facilitating the identification of trends and patterns in consumer behavior. 
 ## Results 
 ```{python}
 
@@ -246,9 +247,6 @@ res2['Item Name'] = res2['Item Name'].apply(lambda x: 'Naan' if 'Naan' in x else
                                             else 'Pickle' if 'Pickle' in x else 'Pakora' if 'Pakora' in x else 'Fries' if 'Fries' in x else 'Starters' if 'Starter' in x else 'Raitha' if 'Raitha' in x
                                             else 'Rolls' if 'Roll' in x else 'Butter Chicken' if 'Butter' in x else 'Persian')
 
-# check if it worked
-col = res2['Item Name'] == 'wine'
-res2[col]
 
 # Group order number so each order has its ouwn set of items
 item_list = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
@@ -256,8 +254,6 @@ item_list = (res2.groupby(['Order Number', 'Item Name'])['Quantity']
              .set_index('Order Number'))
 
 # create one hot incoding
-
-
 def hot_encode(x):
     if(x <= 0):
         return 0
